@@ -1,0 +1,93 @@
+.media-share {
+	position: relative;
+	display: inline-block;
+}
+
+.share-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--text);
+	transition: background-color 0.3s;
+}
+
+.share-button:hover {
+	background-color: var(--hover);
+}
+
+.share-dropdown {
+	position: absolute;
+	right: 0;
+	top: 100%;
+	background-color: var(--background);
+	border: 1px solid var(--border);
+	border-radius: 6px;
+	width: 180px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-10px);
+	transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+	z-index: 100;
+}
+
+.share-dropdown.active {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+	transition: opacity 0.3s, transform 0.3s;
+}
+
+.share-option {
+	display: flex;
+	align-items: center;
+	padding: 10px 15px;
+	color: var(--text);
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	background: none;
+	width: 100%;
+	text-align: left;
+	font-size: 14px;
+	transition: background-color 0.2s;
+}
+
+.share-option:hover {
+	background-color: var(--hover);
+}
+
+.share-option svg {
+	margin-right: 10px;
+	width: 18px;
+	height: 18px;
+}
+
+.copy-link {
+	border-top: 1px solid var(--border);
+}
+
+.copy-feedback {
+	position: absolute;
+	bottom: 100%;
+	right: 0;
+	background-color: var(--background);
+	color: var(--text);
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 12px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	opacity: 0;
+	transform: translateY(10px);
+	transition: opacity 0.3s, transform 0.3s;
+}
+
+.copy-feedback.active {
+	opacity: 1;
+	transform: translateY(0);
+}

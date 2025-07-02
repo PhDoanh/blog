@@ -23,6 +23,10 @@ import Breadcrumbs from "./Breadcrumbs"
 import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
+import BackToTop from "./BackToTop"
+import Graph2 from "./Graph2"
+import MediaShare from "./MediaShare"
+import EditThisPage from "./EditThisPage"
 
 export {
   ArticleTitle,
@@ -50,4 +54,8 @@ export {
   Comments,
   Flex,
   ConditionalRender,
+  BackToTop,
+  Graph2,
+  MediaShare,
+  EditThisPage,
 }

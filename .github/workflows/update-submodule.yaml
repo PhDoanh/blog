@@ -1,0 +1,31 @@
+name: Update content submodule on dispatch
+on:
+  repository_dispatch:
+    types: [content-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.PAT_FOR_PUSH }}
+          ref: dev
+
+      - name: Bump submodule to remote
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git submodule update --remote --recursive content
+          git add content
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No change in content"
+            exit 0
+          fi
+          git commit -m "chore: update content submodule on dev branch"
+          git push origin dev
