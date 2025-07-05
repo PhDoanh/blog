@@ -1,3 +1,121 @@
 @use "./base.scss";
+@use "./variables.scss" as *;
 
 // put your custom CSS here!
+.readermode svg {
+	fill: none;
+}
+
+.callout {
+	&[data-callout="explain"] {
+		--color: #44cf6e;
+		--border: #44cf6e44;
+		--bg: #44cf6e10;
+		--callout-icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLXRleHQtc2VhcmNoIj48cGF0aCBkPSJNMjEgNkgzIi8+PHBhdGggZD0iTTEwIDEySDMiLz48cGF0aCBkPSJNMTAgMThIMyIvPjxjaXJjbGUgY3g9IjE3IiBjeT0iMTUiIHI9IjMiLz48cGF0aCBkPSJtMjEgMTktMS45LTEuOSIvPjwvc3ZnPg==");
+	}
+
+	&[data-callout="advices"] {
+		--color: #a16a49;
+		--border: #a16a4944;
+		--bg: #a16a4910;
+		--callout-icon: url("data:image/svg+xml; utf8, %3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-speech'%3E%3Cpath d='M8.8 20v-4.1l1.9.2a2.3 2.3 0 0 0 2.164-2.1V8.3A5.37 5.37 0 0 0 2 8.25c0 2.8.656 3.054 1 4.55a5.77 5.77 0 0 1 .029 2.758L2 20'/%3E%3Cpath d='M19.8 17.8a7.5 7.5 0 0 0 .003-10.603'/%3E%3Cpath d='M17 15a3.5 3.5 0 0 0-.025-4.975'/%3E%3C/svg%3E");
+	}
+	
+				&[data-callout="suggest"] {
+					--color: #d0b530;
+					--border: #d0b53044;
+					--bg: #d0b53010;
+					--callout-icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWxpZ2h0YnVsYiI+PHBhdGggZD0iTTE1IDE0Yy4yLTEgLjctMS43IDEuNS0yLjUgMS0uOSAxLjUtMi4yIDEuNS0zLjVBNiA2IDAgMCAwIDYgOGMwIDEgLjIgMi4yIDEuNSAzLjUuNy43IDEuMyAxLjUgMS41IDIuNSIvPjxwYXRoIGQ9Ik05IDE4aDYiLz48cGF0aCBkPSJNMTAgMjJoNCIvPjwvc3ZnPg==");
+				}
+		
+				&[data-callout="news"] {
+					--color: #e9973f;
+					--border: #e9973f44;
+					--bg: #e9973f10;
+					--callout-icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZyI+PHBhdGggZD0iTTEwLjI2OCAyMWEyIDIgMCAwIDAgMy40NjQgMCIvPjxwYXRoIGQ9Ik0yMiA4YzAtMi4zLS44LTQuMy0yLTYiLz48cGF0aCBkPSJNMy4yNjIgMTUuMzI2QTEgMSAwIDAgMCA0IDE3aDE2YTEgMSAwIDAgMCAuNzQtMS42NzNDMTkuNDEgMTMuOTU2IDE4IDEyLjQ5OSAxOCA4QTYgNiAwIDAgMCA2IDhjMCA0LjQ5OS0xLjQxMSA1Ljk1Ni0yLjczOCA3LjMyNiIvPjxwYXRoIGQ9Ik00IDJDMi44IDMuNyAyIDUuNyAyIDgiLz48L3N2Zz4=");
+				}
+		
+				&[data-callout="support"] {
+					--color: #e36ba7;
+					--border: #e36ba744;
+					--bg: #e36ba710;
+					--callout-icon: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWhlYXJ0Ij48cGF0aCBkPSJNMTkgMTRjMS40OS0xLjQ2IDMtMy4yMSAzLTUuNUE1LjUgNS41IDAgMCAwIDE2LjUgM2MtMS43NiAwLTMgLjUtNC41IDItMS41LTEuNS0yLjc0LTItNC41LTJBNS41IDUuNSAwIDAgMCAyIDguNWMwIDIuMyAxLjUgNC4wNSAzIDUuNWw3IDdaIi8+PC9zdmc+");
+				}
+		
+				&[data-callout="content"] {
+					--color: var(--darkgray);
+					--border: #00000000;
+					--bg: #00000000;
+					padding: 0;
+					margin: 0.5rem 0;
+		
+					& .callout-title {
+						padding: 0;
+						margin: 0;
+						gap: 0;
+		
+						& .callout-icon {
+							--icon-size: 0;
+						}
+		
+						& .callout-title-inner {
+							font-weight: normal;
+						}
+		
+						& .fold-callout-icon {
+							padding-left: 10px;
+						}
+					}
+				}
+				}
+		
+				@media all and ($mobile) {
+		
+					// Thêm style cho mobile view
+					.toc {
+						min-height: auto;
+						margin-bottom: 1.5rem;
+					}
+		
+					// Giữ mũi tên luôn mở rộng trên mobile
+					button.toc-header {
+						&.collapsed .fold {
+							transform: rotateZ(0deg);
+						}
+					}
+		
+					// Loại bỏ hiệu ứng mờ dần trên mobile và giữ chúng luôn sáng
+					ul.toc-content.overflow {
+						max-height: none;
+		
+						&>li>a {
+							opacity: 0.75;
+							transition: none;
+		
+							&.in-view {
+								opacity: 0.75;
+							}
+		
+							&:hover {
+								opacity: 1;
+							}
+						}
+		
+						// Hiển thị nội dung TOC ngay cả khi đang ở trạng thái collapsed
+						&.collapsed {
+							display: block !important;
+						}
+					}
+		
+					footer {
+						text-align: center;
+		
+						& ul {
+							flex-direction: column;
+							gap: 0rem;
+							align-items: center;
+						}
+					}
+		
+		
+				}
