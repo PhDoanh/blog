@@ -209,6 +209,11 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
       document.dispatchEvent(event)
     `)
   }
+
+  componentResources.afterDOMLoaded.push(`
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }`)
 }
 
 // This emitter should not update the `resources` parameter. If it does, partial

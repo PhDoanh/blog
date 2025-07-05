@@ -43,7 +43,7 @@ export default {
     },
     recentNotes: {
       title: "Recent Notes",
-      seeRemainingMore: ({ remaining }) => `See ${remaining} more →`,
+      seeRemainingMore: ({ remaining }) => `See ${remaining} more ...`,
     },
     transcludes: {
       transcludeOf: ({ targetSlug }) => `Transclude of ${targetSlug}`,
@@ -51,7 +51,7 @@ export default {
     },
     search: {
       title: "Search",
-      searchBarPlaceholder: "Search for something",
+      searchBarPlaceholder: "Search for keyword or #tag",
     },
     tableOfContents: {
       title: "Table of Contents",

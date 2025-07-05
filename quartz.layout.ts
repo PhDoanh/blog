@@ -31,9 +31,8 @@ const sharedFlex = Component.Flex({
       Component: Component.ContentMeta(),
       grow: true,
     },
-    {
-      Component: Component.MediaShare(),
-    },
+    { Component: Component.Bookmark() },
+    { Component: Component.MediaShare() },
     {
       Component: Component.Graph2(
         {
@@ -71,22 +70,24 @@ export const sharedPageComponents: SharedLayout = {
     Component.Comments({
       provider: 'giscus',
       options: {
-        repo: 'PhDoanh/doanhanma',
-        repoId: 'R_kgDOMh8WzA',
-        category: 'General',
-        categoryId: 'DIC_kwDOMh8WzM4Chibl',
+        repo: 'PhDoanh/blog',
+        repoId: 'R_kgDOPFpROQ',
+        category: 'Announcements',
+        categoryId: 'DIC_kwDOPFpROc4CsZgE',
         inputPosition: "top",
+        lightTheme: "light_tritanopia",
+        darkTheme: "dark_tritanopia",
       }
     }),
     Component.BackToTop(),
   ],
   footer: Component.Footer({
     links: {
-      GitHub: "https://github.com/PhDoanh/blog",
+      Email: "mailto:phdoanh285@gmail.com",
       Community: "facebook group link",
       Donate: "https://ko-fi.com/pgdoanh",
-      "Bug report": "github issues link",
-      "Feature request": "github issues link",
+      "Bug report": "https://github.com/PhDoanh/blog/issues/new?template=bug_report.md",
+      "Feature request": "https://github.com/PhDoanh/blog/issues/new?template=feature_request.md",
     },
   }),
 }

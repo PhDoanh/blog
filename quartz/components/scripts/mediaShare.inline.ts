@@ -1,52 +1,56 @@
+// Định nghĩa callback ở scope module để giữ tham chiếu cố định
+let toggleDropdown: ((e: MouseEvent) => void) | null = null;
+let closeDropdownOutside: ((e: MouseEvent) => void) | null = null;
+let copyLink: (() => void) | null = null;
+
 function setupMediaShareEvents() {
-	// Get DOM elements
 	const shareButton = document.getElementById('share-button');
 	const shareDropdown = document.getElementById('share-dropdown');
 	const copyLinkButton = document.getElementById('copy-link');
 
 	if (!shareButton || !shareDropdown || !copyLinkButton) {
-		// Elements not found yet, try again after a short delay
-		setTimeout(setupMediaShareEvents, 50);
+		// Elements not found yet, try again after a short delay (tối đa 20 lần)
+		if (!(window as any).__mediaShareRetry) (window as any).__mediaShareRetry = 0;
+		if ((window as any).__mediaShareRetry++ < 20) {
+			setTimeout(setupMediaShareEvents, 50);
+		}
 		return;
 	}
 
-	// Remove any existing event listeners (to prevent duplicates)
-	shareButton.removeEventListener('click', toggleDropdown);
-	document.removeEventListener('click', closeDropdownOutside);
-	copyLinkButton.removeEventListener('click', copyLink);
+	// Nếu đã có callback, gỡ event cũ
+	if (toggleDropdown) shareButton.removeEventListener('click', toggleDropdown);
+	if (closeDropdownOutside) document.removeEventListener('click', closeDropdownOutside);
+	if (copyLink) copyLinkButton.removeEventListener('click', copyLink);
 
-	// Handle share button click
-	function toggleDropdown(e: MouseEvent) {
+	// Định nghĩa callback chỉ một lần
+	toggleDropdown = function (e: MouseEvent) {
 		e.stopPropagation();
-		shareDropdown?.classList.toggle('active');
-	}
+		shareDropdown.classList.toggle('active');
+	};
 
-	// Close dropdown when clicking outside
-	function closeDropdownOutside(e: MouseEvent) {
-		if (!shareButton?.contains(e.target as Node) && !shareDropdown?.contains(e.target as Node)) {
-			shareDropdown?.classList.remove('active');
+	closeDropdownOutside = function (e: MouseEvent) {
+		if (
+			!shareButton.contains(e.target as Node) &&
+			!shareDropdown.contains(e.target as Node)
+		) {
+			shareDropdown.classList.remove('active');
 		}
-	}
+	};
 
-	// Handle copy link button click
-	function copyLink() {
-		// Get the current URL
+	copyLink = function () {
 		const url = window.location.href;
-
-		// Copy to clipboard
 		navigator.clipboard.writeText(url).then(() => {
-			// Show feedback
+			// Xóa feedback cũ nếu có
+			document.querySelectorAll('.copy-feedback').forEach(fb => fb.remove());
 			const feedback = document.createElement('div');
 			feedback.className = 'copy-feedback';
 			feedback.textContent = 'Link copied!';
 			document.querySelector('.media-share')?.appendChild(feedback);
 
-			// Animate feedback
 			setTimeout(() => {
 				feedback.classList.add('active');
 			}, 10);
 
-			// Remove feedback after delay
 			setTimeout(() => {
 				feedback.classList.remove('active');
 				setTimeout(() => {
@@ -54,14 +58,13 @@ function setupMediaShareEvents() {
 				}, 300);
 			}, 2000);
 
-			// Close dropdown
-			shareDropdown?.classList.remove('active');
+			shareDropdown.classList.remove('active');
 		}).catch(err => {
 			console.error('Could not copy text: ', err);
 		});
-	}
+	};
 
-	// Add event listeners
+	// Gắn event mới
 	shareButton.addEventListener('click', toggleDropdown);
 	document.addEventListener('click', closeDropdownOutside);
 	copyLinkButton.addEventListener('click', copyLink);

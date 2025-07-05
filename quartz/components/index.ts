@@ -27,6 +27,7 @@ import BackToTop from "./BackToTop"
 import Graph2 from "./Graph2"
 import MediaShare from "./MediaShare"
 import EditThisPage from "./EditThisPage"
+import Bookmark from "./Bookmark"
 
 export {
   ArticleTitle,
@@ -58,4 +59,5 @@ export {
   Graph2,
   MediaShare,
   EditThisPage,
+  Bookmark,
 }

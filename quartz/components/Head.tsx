@@ -82,7 +82,9 @@ export default (() => {
           </>
         )}
 
+        <meta name="theme-color" content="#faf8f8" />
         <link rel="icon" href={iconPath} />
+        <link rel="manifest" href="/manifest.json" />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
 
