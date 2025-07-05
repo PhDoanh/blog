@@ -18,7 +18,35 @@ export default (() => {
 	}
 
 	// Sao chép CSS từ Link component
-	GitHubEditLink.css = Link({} as any).css
+	GitHubEditLink.css = `
+		.quartz-link {
+			text-decoration: none;
+			color: var(--darkgray);
+			display: inline-flex;
+			align-items: center;
+		}
+		
+		.quartz-link:hover {
+			color: currentColor;
+			text-decoration: none;
+		}
+		
+		.quartz-link .link-icon {
+			font-size: var(--icon-size, 1em);
+			line-height: 1;
+			display: inline-flex;
+			align-items: center;
+		}
+		
+		.quartz-link .link-icon svg {
+			width: 1em;
+			height: 1em;
+		}
+		
+		.quartz-link .link-icon + .link-label {
+			margin-left: 0.5rem;
+		}
+	`
 
 	return GitHubEditLink
 }) satisfies QuartzComponentConstructor
