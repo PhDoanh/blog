@@ -33,7 +33,7 @@ export default {
       title: "Chế độ đọc",
     },
     explorer: {
-      title: "Trong bài này",
+      title: "Khám phá",
     },
     footer: {
       createdWith: "Được tạo bởi",
@@ -43,7 +43,7 @@ export default {
     },
     recentNotes: {
       title: "Bài viết gần đây",
-      seeRemainingMore: ({ remaining }) => `Xem ${remaining} thêm →`,
+      seeRemainingMore: ({ remaining }) => `Xem ${remaining} thêm ...`,
     },
     transcludes: {
       transcludeOf: ({ targetSlug }) => `Bao gồm ${targetSlug}`,
@@ -51,10 +51,10 @@ export default {
     },
     search: {
       title: "Tìm Kiếm",
-      searchBarPlaceholder: "Tìm kiếm thông tin",
+      searchBarPlaceholder: "Tìm kiếm từ khóa hoặc #thẻ",
     },
     tableOfContents: {
-      title: "Bảng Nội Dung",
+      title: "Mục lục",
     },
     contentMeta: {
       readingTime: ({ minutes }) => `đọc ${minutes} phút`,
@@ -62,8 +62,8 @@ export default {
   },
   pages: {
     rss: {
-      recentNotes: "Những bài gần đây",
-      lastFewNotes: ({ count }) => `${count} Bài gần đây`,
+      recentNotes: "Các bài viết gần đây",
+      lastFewNotes: ({ count }) => `${count} bài gần đây`,
     },
     error: {
       title: "Không Tìm Thấy",
