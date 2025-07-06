@@ -10,7 +10,7 @@ const config: QuartzConfig = {
   configuration: {
     pageTitle: "PhDoanh",
     pageTitleSuffix: "",
-    description: "Quartz Documentation Page and Demo",
+    description: "A place to record what happened in my brain",
     enableSPA: true,
     enablePopovers: true,
     analytics: {
