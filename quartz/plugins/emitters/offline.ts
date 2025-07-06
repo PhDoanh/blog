@@ -45,8 +45,8 @@ export const Offline: QuartzEmitterPlugin<OfflineOptions> = (usrOpts) => {
 				short_name: cfg.configuration.pageTitle,
 				name: cfg.configuration.pageTitle,
 				description: cfg.configuration.description,
-				background_color: cfg.configuration.theme.colors.lightMode.light,
-				theme_color: cfg.configuration.theme.colors.lightMode.light,
+				background_color: cfg.configuration.theme.colors.darkMode.light,
+				theme_color: cfg.configuration.theme.colors.darkMode.light,
 				display: "minimal-ui",
 				icons: [
 					{
