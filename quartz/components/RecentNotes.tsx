@@ -13,7 +13,7 @@ interface Options {
   limit: number
   linkToMore: SimpleSlug | false
   showTags: boolean
-  filter: (f: QuartzPluginData) => boolean
+  filter: (f: QuartzPluginData, fileData: QuartzPluginData) => boolean
   sort: (f1: QuartzPluginData, f2: QuartzPluginData) => number
 }
 
@@ -33,8 +33,9 @@ export default ((userOpts?: Partial<Options>) => {
     cfg,
   }: QuartzComponentProps) => {
     const opts = { ...defaultOptions(cfg), ...userOpts }
-    const pages = allFiles.filter(opts.filter).sort(opts.sort)
+    const pages = allFiles.filter(f => opts.filter(f, fileData)).sort(opts.sort)
     const remaining = Math.max(0, pages.length - opts.limit)
+    const parDir = fileData.slug!.split("/").slice(0, -1).join("/") as SimpleSlug
     return (
       <div class={classNames(displayClass, "recent-notes")}>
         <h3>{opts.title ?? i18n(cfg.locale).components.recentNotes.title}</h3>
@@ -77,9 +78,9 @@ export default ((userOpts?: Partial<Options>) => {
             )
           })}
         </ul>
-        {opts.linkToMore && remaining > 0 && (
+        {(opts.linkToMore || parDir) && remaining > 0 && (
           <p>
-            <a href={resolveRelative(fileData.slug!, opts.linkToMore)}>
+            <a href={resolveRelative(fileData.slug!, opts.linkToMore || parDir)}>
               {i18n(cfg.locale).components.recentNotes.seeRemainingMore({ remaining })}
             </a>
           </p>

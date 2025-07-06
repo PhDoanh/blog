@@ -48,7 +48,7 @@
 	cursor: pointer;
 	border: none;
 	background: none;
-	width: 100%;
+	width: -webkit-fill-available;
 	text-align: left;
 	font-size: 14px;
 	transition: background-color 0.2s;

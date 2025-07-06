@@ -1,6 +1,5 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
-import { SimpleSlug } from "./quartz/util/path"
 
 const left = [
   Component.PageTitle(),
@@ -63,9 +62,11 @@ export const sharedPageComponents: SharedLayout = {
       title: "Recent Articles",
       showTags: false,
       limit: 5,
-      // filter: (f) =>
-      //   f.slug!.startsWith("news/") && f.slug! !== "news/index" && !f.frontmatter?.noindex,
-      linkToMore: "tags/" as SimpleSlug,
+      filter: (f, fileData) => {
+        const currentDir = fileData.slug?.split("/").slice(0, -1).join("/");
+        const fileDir = f.slug?.split("/").slice(0, -1).join("/");
+        return fileDir === currentDir && f.slug !== fileData.slug;
+      },
     }),
     Component.Comments({
       provider: 'giscus',
