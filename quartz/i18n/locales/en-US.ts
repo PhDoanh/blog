@@ -25,12 +25,27 @@ export default {
       title: "Backlinks",
       noBacklinksFound: "No backlinks found",
     },
+    bookmark: {
+      title: "Bookmark",
+      tooltip: "",
+    },
+    mediaShare: {
+      title: "Share",
+      tooltip: "",
+      copyLink: "Copy Link",
+      linkCopied: "Link copied!",
+    },
+    editThisPage: {
+      title: "Edit this page",
+      tooltip: "",
+    },
     themeToggle: {
       lightMode: "Light mode",
       darkMode: "Dark mode",
     },
     readerMode: {
       title: "Reader mode",
+      tooltip: "",
     },
     explorer: {
       title: "Explorer",
@@ -40,6 +55,7 @@ export default {
     },
     graph: {
       title: "Graph View",
+      tooltip: "",
     },
     recentNotes: {
       title: "Recent Notes",
