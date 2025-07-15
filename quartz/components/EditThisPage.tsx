@@ -19,8 +19,8 @@ export default ((opts: Options) => {
 				class="edit-page-btn"
 				target="_blank"
 				rel="noopener noreferrer"
-				title={i18n(cfg.locale).components.editThisPage.tooltip}
-				aria-label={i18n(cfg.locale).components.editThisPage.title}
+				title={i18n(cfg.locale).components.editThisPage?.tooltip ?? ""}
+				aria-label={i18n(cfg.locale).components.editThisPage?.title ?? "Edit this page"}
 			>
 				<svg
 					class="edit-icon"
@@ -36,7 +36,7 @@ export default ((opts: Options) => {
 					<path d="M12 20h9" />
 					<path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" />
 				</svg>
-				<span class="edit-text">{i18n(cfg.locale).components.editThisPage.title}</span>
+				<span class="edit-text">{i18n(cfg.locale).components.editThisPage?.title ?? "Edit this page"}</span>
 			</a>
 		);
 	}

@@ -12,8 +12,8 @@ export default (() => {
 				id="bookmark-btn"
 				class="bookmark-btn"
 				data-slug={slug}
-				title={i18n(cfg.locale).components.bookmark.tooltip}
-				aria-label={i18n(cfg.locale).components.bookmark.title}
+				title={i18n(cfg.locale).components.bookmark?.tooltip ?? ""}
+				aria-label={i18n(cfg.locale).components.bookmark?.title ?? "Bookmark"}
 			>
 				<svg
 					class="bookmark-icon"
@@ -28,7 +28,7 @@ export default (() => {
 				>
 					<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
 				</svg>
-				<span class="bookmark-text">{i18n(cfg.locale).components.bookmark.title}</span>
+				<span class="bookmark-text">{i18n(cfg.locale).components.bookmark?.title ?? "Bookmark"}</span>
 			</button>
 		)
 	}

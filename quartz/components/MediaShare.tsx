@@ -36,11 +36,11 @@ export default ((opts?: Partial<MediaShareOptions>) => {
 
 		return (
 			<div className="media-share">
-				<button className="share-button" id="share-button" aria-label={i18n(props.cfg.locale).components.mediaShare.title} title={i18n(props.cfg.locale).components.mediaShare.tooltip}>
+				<button className="share-button" id="share-button" aria-label={i18n(props.cfg.locale).components.mediaShare?.title ?? "Share"} title={i18n(props.cfg.locale).components.mediaShare?.tooltip ?? ""}>
 					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-share2-icon lucide-share-2">
 						<circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" x2="15.42" y1="13.51" y2="17.49" /><line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
 					</svg>
-					<span className="share-text">{i18n(props.cfg.locale).components.mediaShare.title}</span>
+					<span className="share-text">{i18n(props.cfg.locale).components.mediaShare?.title ?? "Share"}</span>
 				</button>
 				<div className="share-dropdown" id="share-dropdown">
 					{options.platforms.facebook && (
@@ -115,7 +115,7 @@ export default ((opts?: Partial<MediaShareOptions>) => {
 							<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
 							<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
 						</svg>
-						<span>{i18n(props.cfg.locale).components.mediaShare.copyLink}</span>
+						<span>{i18n(props.cfg.locale).components.mediaShare?.copyLink ?? "Copy Link"}</span>
 					</button>
 				</div>
 			</div>
