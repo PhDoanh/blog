@@ -28,6 +28,7 @@ import Graph2 from "./Graph2"
 import MediaShare from "./MediaShare"
 import EditThisPage from "./EditThisPage"
 import Bookmark from "./Bookmark"
+import GitHubContributors from "./GitHubContributors"
 
 export {
   ArticleTitle,
@@ -60,4 +61,5 @@ export {
   MediaShare,
   EditThisPage,
   Bookmark,
+  GitHubContributors,
 }
