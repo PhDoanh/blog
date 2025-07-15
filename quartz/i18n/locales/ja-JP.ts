@@ -25,12 +25,27 @@ export default {
       title: "バックリンク",
       noBacklinksFound: "バックリンクはありません",
     },
+    bookmark: {
+      title: "ブックマーク",
+      tooltip: "",
+    },
+    mediaShare: {
+      title: "共有",
+      tooltip: "",
+      copyLink: "リンクをコピー",
+      linkCopied: "コピーしました!",
+    },
+    editThisPage: {
+      title: "編集",
+      tooltip: "",
+    },
     themeToggle: {
       lightMode: "ライトモード",
       darkMode: "ダークモード",
     },
     readerMode: {
       title: "リーダーモード",
+      tooltip: "",
     },
     explorer: {
       title: "エクスプローラー",
@@ -40,6 +55,7 @@ export default {
     },
     graph: {
       title: "グラフビュー",
+      tooltip: "",
     },
     recentNotes: {
       title: "最近の記事",
