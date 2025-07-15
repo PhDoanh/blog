@@ -2,13 +2,14 @@
 	background: transparent;
 	border: none;
 	cursor: pointer;
-	padding: 0;
+	padding: 0.69rem;
 	border-radius: 4px;
 	transition: background-color 0.2s;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	color: var(--darkgray);
+	gap: 5px;
 }
 
 .bookmark-btn svg {
@@ -16,11 +17,22 @@
 	height: 20px;
 }
 
+.bookmark-btn:hover {
+	background-color: var(--lightgray);
+}
+
+.bookmark-text {
+	font-size: 1rem;
+	font-weight: 500;
+}
 .bookmark-btn.active .bookmark-icon {
 	fill: var(--secondary);
 	stroke: var(--secondary);
 }
 
+.bookmark-btn.active .bookmark-text {
+	color: var(--secondary);
+}
 .bookmark-modal,
 .bookmark-modal-overlay {
 	position: fixed;
