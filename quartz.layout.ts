@@ -30,32 +30,42 @@ const sharedFlex = Component.Flex({
       Component: Component.ContentMeta(),
       grow: true,
     },
-    { Component: Component.Bookmark() },
-    { Component: Component.MediaShare() },
     {
-      Component: Component.Graph2(
-        {
-          config: {
-            scale: 1.5,
-            linkDistance: 50,
-            fontSize: 0.6,
-            opacityScale: 1,
-            showTags: true,
-            removeTags: ["explorable"],
-            focusOnHover: true,
-          },
-        }
-      )
+      Component: Component.DesktopOnly(Component.GitHubContributors({
+        owner: "PhDoanh",
+        repo: "content",
+        title: "",
+        limit: 5,
+      })),
     },
-    { Component: Component.ReaderMode() },
-    { Component: Component.EditThisPage() },
   ],
 })
 
 // components shared across all pages
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
-  header: [],
+  header: [
+    Component.Bookmark(),
+    Component.MediaShare(),
+    Component.Graph2(
+      {
+        config: {
+          scale: 1.5,
+          linkDistance: 50,
+          fontSize: 0.6,
+          opacityScale: 1,
+          showTags: true,
+          removeTags: ["explorable"],
+          focusOnHover: true,
+        },
+      }
+    ),
+    Component.ReaderMode(),
+    Component.EditThisPage({
+      owner: "PhDoanh",
+      repo: "content",
+    }),
+  ],
   afterBody: [
     Component.MobileOnly(Component.Backlinks()),
     Component.RecentNotes({
@@ -85,7 +95,7 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       Email: "mailto:phdoanh285@gmail.com",
-      Community: "facebook group link",
+      Community: "https://www.facebook.com/phdcreator",
       Donate: "https://ko-fi.com/pgdoanh",
       "Bug report": "https://github.com/PhDoanh/blog/issues/new?template=bug_report.md",
       "Feature request": "https://github.com/PhDoanh/blog/issues/new?template=feature_request.md",
@@ -103,6 +113,12 @@ export const defaultContentPageLayout: PageLayout = {
     Component.ArticleTitle(),
     Component.TagList(),
     sharedFlex,
+    Component.MobileOnly(Component.GitHubContributors({
+      owner: "PhDoanh",
+      repo: "content",
+      title: "",
+      limit: 20,
+    })),
     Component.MobileOnly(Component.TableOfContents()),
   ],
   left,

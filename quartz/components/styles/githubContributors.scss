@@ -1,0 +1,53 @@
+@use "../../styles/variables.scss" as *;
+
+.contributors {
+	margin: 1rem 0;
+}
+
+.contributors-container {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+	margin-top: 0.5rem;
+}
+
+.contributors-container .contributor {
+	display: inline-block;
+}
+
+.contributors-container .contributor img {
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	transition: transform 0.2s ease;
+	margin: 0;
+}
+
+.contributors-container .contributor:hover img {
+	transform: scale(1.1);
+}
+
+.contributors-container .contributor-total {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background-color: var(--lightgray);
+	color: var(--darkgray);
+	font-size: 0.75rem;
+	font-weight: bold;
+	text-decoration: none;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
+}
+
+body[data-theme="dark"] .contributors-container .contributor-total {
+	background-color: var(--secondary);
+	color: var(--dark);
+}
+
+.contributor-icon {
+	width: 18px;
+	height: 18px;
+}

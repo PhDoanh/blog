@@ -1,3 +1,8 @@
+import { i18n } from "../../i18n"
+import { QuartzComponentProps } from "../types"
+
+var props: QuartzComponentProps
+
 // Định nghĩa callback ở scope module để giữ tham chiếu cố định
 let toggleDropdown: ((e: MouseEvent) => void) | null = null;
 let closeDropdownOutside: ((e: MouseEvent) => void) | null = null;
@@ -44,7 +49,7 @@ function setupMediaShareEvents() {
 			document.querySelectorAll('.copy-feedback').forEach(fb => fb.remove());
 			const feedback = document.createElement('div');
 			feedback.className = 'copy-feedback';
-			feedback.textContent = 'Link copied!';
+			feedback.textContent = `${i18n(props.cfg.locale).components.mediaShare?.linkCopied ?? "Link copied!"}`;
 			document.querySelector('.media-share')?.appendChild(feedback);
 
 			setTimeout(() => {

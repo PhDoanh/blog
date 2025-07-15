@@ -2,13 +2,59 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
-.readermode svg {
-	fill: none;
+/* Định nghĩa scrollbar toàn cục */
+/* Cho Webkit (Chrome, Safari, Edge mới) */
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+	background: var(--gray);
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+	background: var(--darkgray);
+}
+
+/* Cho Firefox */
+html,
+body {
+	scrollbar-width: thin;
+	scrollbar-color: var(--gray) transparent;
+}
+
+header {
+	margin: 0;
+	gap: 0.5rem;
+	overflow-x: auto;
+	overflow-y: hidden;
+	white-space: nowrap;
+}
+
+.contributors,
+.contributors h3,
+.contributors-container {
+	margin: 0;
 }
 
 @media all and ($mobile) {
 
-	// Thêm style cho mobile view
+	.page>#quartz-body .sidebar.left:has(.explorer) {
+			margin: 0 -1rem;
+			padding: 1rem;
+		}
+	
+		.explorer-content ul {
+			padding: 0 1rem;
+		}
+	
+		.contributors-container {
+			margin-bottom: 1rem;
+		}
 	.toc {
 		min-height: auto;
 		margin-bottom: 1.5rem;
@@ -53,6 +99,328 @@
 			align-items: center;
 		}
 	}
+}
 
+// dappled light
+#dappled-light {
+	animation-duration: 0s;
+	animation-fill-mode: forwards;
+	animation-timing-function: linear;
+	pointer-events: none;
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	isolation: isolate;
+	z-index: -1;
 
+	--day: #fffdfa;
+	--evening: #fccc83;
+	--dusk: #db7a2a;
+	--night: #0a0f0a;
+	--dawn: #132b1d;
+	--morning: #9fb3bf;
+
+	--shadow: #1a1917;
+	--bounce-light: #fffffc;
+	--timing-fn: cubic-bezier(0.455, 0.19, 0, 0.985);
+
+	body.animation-ready & {
+		animation-play-state: running;
+		animation-duration: 1s;
+		animation-name: sunrise;
+	}
+
+	[saved-theme="dark"] body.animation-ready & {
+		animation-duration: 1.7s;
+		animation-name: sunset;
+	}
+
+	[saved-theme="dark"] & {
+		--shadow: #030704;
+		--bounce-light: #2b3f1b;
+	}
+
+	&>#progressive-blur {
+		position: absolute;
+		height: 100%;
+		width: 100%;
+
+		&>div {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			backdrop-filter: blur(var(--blur-amount));
+			mask-image: linear-gradient(252deg,
+					transparent,
+					transparent var(--stop1),
+					black var(--stop2),
+					black);
+
+			&:nth-child(1) {
+				--blur-amount: 6px;
+				--stop1: 0%;
+				--stop2: 0%;
+			}
+
+			&:nth-child(2) {
+				--blur-amount: 12px;
+				--stop1: 40%;
+				--stop2: 80%;
+			}
+
+			&:nth-child(3) {
+				--blur-amount: 48px;
+				--stop1: 40%;
+				--stop2: 70%;
+			}
+
+			&:nth-child(4) {
+				--blur-amount: 96px;
+				--stop1: 70%;
+				--stop2: 80%;
+			}
+		}
+	}
+
+	#glow {
+		position: absolute;
+		background: linear-gradient(309deg, var(--bounce-light), var(--bounce-light) 20%, transparent);
+		transition: background 1s var(--timing-fn);
+		height: 100%;
+		width: 100%;
+		opacity: 0.5;
+	}
+
+	#glow-bounce {
+		content: "";
+		position: absolute;
+		background: linear-gradient(355deg, var(--bounce-light) 0%, transparent 30%, transparent 100%);
+		transition: background 1s var(--timing-fn);
+		opacity: 0.5;
+		height: 100%;
+		width: 100%;
+		bottom: 0;
+	}
+
+	&>.perspective {
+		position: absolute;
+		transition:
+			transform 1.7s var(--timing-fn),
+			opacity 4s ease;
+		top: -30vh;
+		right: 0;
+		width: 80vw;
+		height: 130vh;
+		opacity: 0.07;
+		background-blend-mode: darken;
+		transform-origin: top right;
+		transform-style: preserve-3d;
+		transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+
+		[saved-theme="dark"] & {
+			opacity: 0.3;
+			transform: matrix3d(0.8333, 0.0833, 0, 0.0003, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		}
+	}
+
+		#leaves {
+			position: absolute;
+			background-size: cover;
+			background-repeat: no-repeat;
+			bottom: -20px;
+			right: -700px;
+			width: 1600px;
+			height: 1400px;
+			background-image: url("/static/leaves.png");
+			filter: url(#wind);
+			perspective: 400px;
+			animation: billow 8s ease-in-out infinite;
+		}
+	
+		#blinds {
+			position: relative;
+			width: 100%;
+	
+			& .shutter,
+			& .bar {
+				background-color: var(--shadow);
+			}
+	
+			& .shutter {
+				width: 100%;
+				height: 40px;
+				transition: height 1s var(--timing-fn);
+	
+				[saved-theme="dark"] & {
+					height: 80px;
+				}
+			}
+	
+			& .shutters {
+				display: flex;
+				flex-direction: column;
+				align-items: end;
+				gap: 60px;
+				transition: gap 1s var(--timing-fn);
+	
+				[saved-theme="dark"] & {
+					gap: 20px;
+				}
+			}
+	
+			&>.vertical {
+				top: 0;
+				position: absolute;
+				height: 100%;
+				width: 100%;
+				display: flex;
+				justify-content: space-around;
+	
+				&>.bar {
+					width: 5;
+					height: 100%;
+				}
+			}
+		}
+		}
+	
+		@keyframes sunrise {
+			0% {
+				background-color: var(--night);
+			}
+	
+			10% {
+				background-color: var(--dawn);
+			}
+	
+			35% {
+				background-color: var(--morning);
+			}
+
+		100% {
+			background-color: var(--day);
+		}
+		}
+	
+		@keyframes sunset {
+			0% {
+				background-color: var(--day);
+			}
+	
+			30% {
+				background-color: var(--evening);
+			}
+	
+			60% {
+				background-color: var(--dusk);
+			}
+	
+			90% {
+				background-color: var(--dawn);
+			}
+	
+			100% {
+				background-color: var(--night);
+			}
+		}
+	
+		@keyframes billow {
+			0% {
+				transform: rotateX(0deg) rotateY(0deg) scale(1);
+			}
+	
+			25% {
+				transform: rotateX(1deg) rotateY(2deg) scale(1.03);
+			}
+	
+			50% {
+				transform: rotateX(-4deg) rotateY(-2deg) scale(0.96);
+			}
+	
+			75% {
+				transform: rotateX(3deg) rotateY(-1deg) scale(1.04);
+			}
+	
+			100% {
+				transform: rotateX(0deg) rotateY(0deg) scale(1);
+			}
+		}
+	
+@media all and ($desktop) {
+
+	/* Định nghĩa scrollbar cho các khối code */
+	pre,
+	code {
+
+		/* Ẩn thanh cuộn mặc định */
+		&::-webkit-scrollbar {
+			width: 8px;
+			height: 8px;
+		}
+
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+
+		&::-webkit-scrollbar-thumb {
+			background: var(--gray);
+			border-radius: 4px;
+			opacity: 0;
+			transition: opacity 0.1s
+		}
+
+		/* Hiển thị thanh cuộn khi hover với hiệu ứng fade in */
+		&:hover::-webkit-scrollbar-thumb {
+			opacity: 0.6;
+		}
+
+		/* Hiệu ứng khi hover vào thanh cuộn */
+		&::-webkit-scrollbar-thumb:hover {
+			background: var(--darkgray);
+			opacity: 0.8;
+		}
+
+		/* Cho Firefox */
+		scrollbar-width: thin;
+		scrollbar-color: transparent transparent;
+		transition: scrollbar-color 0.1s;
+
+		&:hover {
+			scrollbar-color: var(--gray) transparent;
+		}
+	}
+
+	header {
+		scrollbar-width: thin;
+		scrollbar-color: transparent transparent;
+		transition: scrollbar-color 0.1s;
+	
+		&::-webkit-scrollbar {
+			height: 8px;
+		}
+	
+		&::-webkit-scrollbar-track {
+			background: transparent;
+		}
+	
+		&::-webkit-scrollbar-thumb {
+			background: var(--gray);
+			border-radius: 4px;
+			opacity: 0;
+			transition: opacity 0.1s;
+		}
+	
+		&:hover::-webkit-scrollbar-thumb {
+			opacity: 0.6;
+		}
+	
+		&::-webkit-scrollbar-thumb:hover {
+			background: var(--darkgray);
+			opacity: 0.8;
+		}
+	
+		&:hover {
+			scrollbar-color: var(--gray) transparent;
+		}
+	}
 }

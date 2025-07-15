@@ -29,10 +29,6 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
     if (text) {
       const segments: (string | JSX.Element)[] = []
 
-      if (fileData.dates) {
-        segments.push(<Date date={getDate(cfg, fileData)!} locale={cfg.locale} />)
-      }
-
       // Display reading time if enabled
       if (options.showReadingTime) {
         const { minutes, words: _words } = readingTime(text)
@@ -41,6 +37,12 @@ export default ((opts?: Partial<ContentMetaOptions>) => {
         })
         segments.push(<span>{displayedTime}</span>)
       }
+
+      if (fileData.dates) {
+        segments.push(<span>last updated on <Date date={getDate(cfg, fileData)!} locale={cfg.locale} /></span>)
+      }
+
+      segments.push(<span>by author(s): </span>)
 
       return (
         <p show-comma={options.showComma} class={classNames(displayClass, "content-meta")}>

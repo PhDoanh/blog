@@ -25,12 +25,27 @@ export default {
       title: "Liên Kết Ngược",
       noBacklinksFound: "Không có liên kết ngược được tìm thấy",
     },
+    bookmark: {
+      title: "Sao lưu",
+      tooltip: "",
+    },
+    mediaShare: {
+      title: "Chia sẻ",
+      tooltip: "",
+      copyLink: "Sao chép link",
+      linkCopied: "Đã sao chép!",
+    },
+    editThisPage: {
+      title: "Sửa trang này",
+      tooltip: "",
+    },
     themeToggle: {
       lightMode: "Sáng",
       darkMode: "Tối",
     },
     readerMode: {
       title: "Chế độ đọc",
+      tooltip: "",
     },
     explorer: {
       title: "Khám phá",
@@ -40,6 +55,7 @@ export default {
     },
     graph: {
       title: "Biểu Đồ",
+      tooltip: "",
     },
     recentNotes: {
       title: "Bài viết gần đây",
