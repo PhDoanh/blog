@@ -1,52 +1,75 @@
-import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-import Link from "./Link"
+import { QuartzComponentConstructor, QuartzComponentProps } from "./types";
+import { i18n } from "../i18n";
 
-export default (() => {
-	const GitHubEditLink: QuartzComponent = (props: QuartzComponentProps) => {
-		const fileRelativePath = props.fileData.relativePath
-		const editUrl = `https://github.com/PhDoanh/content/edit/main/${fileRelativePath}`
+interface Options {
+	// GitHub repository details
+	owner: string
+	repo: string
+}
 
-		// Sử dụng component Link đã có sẵn với URL động
-		const LinkComponent = Link({
-			to: editUrl,
-			icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pen-line-icon lucide-pen-line"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg>',
-			description: "Edit this page",
-			iconSize: "1.2em",
-		})
+export default ((opts: Options) => {
 
-		return <LinkComponent {...props} />
+	function EditThisPage({ fileData, cfg }: QuartzComponentProps) {
+		const fileRelativePath = fileData.relativePath;
+		const editUrl = `https://github.com/${opts.owner}/${opts.repo}/edit/main/${fileRelativePath}`;
+
+		return (
+			<a
+				href={editUrl}
+				class="edit-page-btn"
+				target="_blank"
+				rel="noopener noreferrer"
+				title={i18n(cfg.locale).components.editThisPage.tooltip}
+				aria-label={i18n(cfg.locale).components.editThisPage.title}
+			>
+				<svg
+					class="edit-icon"
+					width="24"
+					height="24"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path d="M12 20h9" />
+					<path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z" />
+				</svg>
+				<span class="edit-text">{i18n(cfg.locale).components.editThisPage.title}</span>
+			</a>
+		);
 	}
 
-	// Sao chép CSS từ Link component
-	GitHubEditLink.css = `
-		.quartz-link {
-			text-decoration: none;
-			color: var(--darkgray);
-			display: inline-flex;
-			align-items: center;
-		}
-		
-		.quartz-link:hover {
-			color: currentColor;
-			text-decoration: none;
-		}
-		
-		.quartz-link .link-icon {
-			font-size: var(--icon-size, 1em);
-			line-height: 1;
-			display: inline-flex;
-			align-items: center;
-		}
-		
-		.quartz-link .link-icon svg {
-			width: 1em;
-			height: 1em;
-		}
-		
-		.quartz-link .link-icon + .link-label {
-			margin-left: 0.5rem;
-		}
-	`
+	EditThisPage.css = `
+    .edit-page-btn {
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		padding: 0.69rem;
+		border-radius: 4px;
+		transition: background-color 0.2s;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--darkgray);
+		gap: 5px;
+    }
 
-	return GitHubEditLink
-}) satisfies QuartzComponentConstructor
+    .edit-page-btn svg {
+		width: 20px;
+		height: 20px;
+    }
+
+    .edit-page-btn:hover {
+		background-color: var(--lightgray);
+		color: var(--darkgray);
+    }
+
+    .edit-text {
+		font-size: 1rem;
+		font-weight: 500;
+    }`;
+
+	return EditThisPage;
+}) satisfies QuartzComponentConstructor<Options>;
