@@ -2,17 +2,18 @@
 import script from "./scripts/bookmark.inline"
 import style from "./styles/bookmark.scss"
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
+import { i18n } from "../i18n"
 
 export default (() => {
-	function Bookmark({ fileData }: QuartzComponentProps) {
+	function Bookmark({ fileData, cfg }: QuartzComponentProps) {
 		const slug = fileData.slug
 		return (
 			<button
 				id="bookmark-btn"
 				class="bookmark-btn"
 				data-slug={slug}
-				title="Save for offline"
-				aria-label="Bookmark"
+				title={i18n(cfg.locale).components.bookmark.tooltip}
+				aria-label={i18n(cfg.locale).components.bookmark.title}
 			>
 				<svg
 					class="bookmark-icon"
@@ -27,6 +28,7 @@ export default (() => {
 				>
 					<path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
 				</svg>
+				<span class="bookmark-text">{i18n(cfg.locale).components.bookmark.title}</span>
 			</button>
 		)
 	}
