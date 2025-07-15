@@ -27,12 +27,27 @@ export interface Translation {
       title: string
       noBacklinksFound: string
     }
+    bookmark: {
+      title: string
+      tooltip: string
+    }
+    mediaShare: {
+      title: string
+      tooltip: string
+      copyLink: string
+      linkCopied: string
+    }
+    editThisPage: {
+      title: string
+      tooltip: string
+    }
     themeToggle: {
       lightMode: string
       darkMode: string
     }
     readerMode: {
       title: string
+      tooltip: string
     }
     explorer: {
       title: string
@@ -42,6 +57,7 @@ export interface Translation {
     }
     graph: {
       title: string
+      tooltip: string
     }
     recentNotes: {
       title: string
