@@ -7,12 +7,23 @@
 	background: none;
 	border: none;
 	cursor: pointer;
-	padding: 0;
+	padding: 0.69rem;
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	color: var(--darkgray);
 	transition: background-color 0.3s;
+	border-radius: 4px;
+		gap: 5px;
+	}
+	
+	.share-button:hover {
+		background-color: var(--lightgray);
+	}
+	
+	.share-text {
+		font-size: 1rem;
+		font-weight: 500;
 }
 
 .share-dropdown {
@@ -54,6 +65,9 @@
 	transition: background-color 0.2s;
 }
 
+.share-option:hover {
+	background-color: var(--lightgray);
+}
 .share-option svg {
 	margin-right: 10px;
 	width: 20px;
