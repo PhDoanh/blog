@@ -276,7 +276,7 @@ export function renderPage(
 
 function DappledLight() {
   return (
-    <div id="dappled-light">
+    <div id="dappled-light" class="desktop-only">
       <div id="glow"></div>
       <div id="glow-bounce"></div>
       <div class="perspective">

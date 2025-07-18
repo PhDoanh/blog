@@ -99,5 +99,5 @@ async function fetchContributors() {
 	}
 }
 
-// Call the function when DOM is loaded
 fetchContributors();
+document.addEventListener('nav', fetchContributors);
