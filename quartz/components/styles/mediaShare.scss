@@ -18,7 +18,7 @@
 	}
 	
 	.share-button:hover {
-		background-color: var(--lightgray);
+		background-color: var(--header-btn-bg, --lightgray);
 	}
 	
 	.share-text {
@@ -26,15 +26,14 @@
 		font-weight: 500;
 }
 
+/* Styles for dropdown that will be created via JavaScript */
 .share-dropdown {
-	position: absolute;
-	right: 0;
-	top: 100%;
+	position: fixed;
 	background-color: var(--light);
 	border: none;
 	border-radius: 6px;
 	width: 150px;
-	box-shadow: 0 4px 12px #00000044;
+	box-shadow: 0 4px 12px var(--box-shadow);
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(-10px);
