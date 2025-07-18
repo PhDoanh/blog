@@ -62,7 +62,7 @@ export default ((opts: Options) => {
     }
 
     .edit-page-btn:hover {
-		background-color: var(--lightgray);
+		background-color: var(--header-btn-bg, --lightgray);
 		color: var(--darkgray);
     }
 
