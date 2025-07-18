@@ -4,15 +4,15 @@ on:
   push:
     branches:
       - v4
-    paths:
-      - 'content/**'
-      - '!content/.github/**'
-      - '!content/.obsidian/**'
-      - '!content/media/**'
-      - '!content/templates/**'
-      - '!content/.gitignore'
-      - '!content/LICENSE.md'
-      - '!content/README.md'
+    # paths:
+    #   - 'content/**'
+    #   - '!content/.github/**'
+    #   - '!content/.obsidian/**'
+    #   - '!content/media/**'
+    #   - '!content/templates/**'
+    #   - '!content/.gitignore'
+    #   - '!content/LICENSE.md'
+    #   - '!content/README.md'
 
 permissions:
   contents: read
