@@ -1,12 +1,5 @@
 @use "../../styles/variables.scss" as *;
 
-:root[saved-theme="light"] {
-	--graph-bg-alpha: 0;
-}
-
-:root[saved-theme="dark"] {
-	--graph-bg-alpha: 0.7;
-}
 .graph {
 	position: relative;
 	display: inline-block;
@@ -25,7 +18,7 @@
 		border: none;
 		
 		&:hover {
-			background-color: var(--lightgray);
+			background-color: var(--header-btn-bg, --lightgray);
 		}
 		
 		.graph-text {
