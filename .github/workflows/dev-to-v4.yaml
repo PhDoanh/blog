@@ -1,0 +1,82 @@
+name: Sync Dev to V4 Branch
+
+on:
+  schedule:
+    # Kích hoạt workflow mỗi 24h (0:00 UTC)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Cho phép kích hoạt thủ công
+
+permissions:
+  contents: write
+
+jobs:
+  sync_branches:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          token: ${{ secrets.PAT_FOR_PUSH }}
+          ref: v4
+
+      - name: Setup Git
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Check for changes from dev branch
+        id: check_changes
+        run: |
+          git fetch origin dev
+          DIFF=$(git diff --name-only v4..origin/dev)
+          
+          if [ -n "$DIFF" ]; then
+            echo "Changes detected between dev and v4 branches:"
+            echo "$DIFF"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "No changes detected between dev and v4 branches"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Try automatic merge from dev to v4
+        if: steps.check_changes.outputs.has_changes == 'true'
+        id: try_merge
+        continue-on-error: true
+        run: |
+          # Thử merge tự động
+          git merge origin/dev -m "chore: sync changes from dev to v4 branch [skip ci]"
+          
+          # Kiểm tra xem merge có thành công không
+          if [ $? -eq 0 ]; then
+            echo "Automatic merge successful"
+            echo "merge_success=true" >> $GITHUB_OUTPUT
+          else
+            echo "Merge conflict detected, aborting merge"
+            git merge --abort
+            echo "merge_success=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create PR for manual merge if conflict
+        if: steps.check_changes.outputs.has_changes == 'true' && steps.try_merge.outputs.merge_success != 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PAT_FOR_PUSH }}
+          commit-message: "chore: sync changes from dev to v4 branch"
+          title: "Sync changes from dev to v4"
+          body: |
+            This PR was automatically created to sync changes from dev to v4 branch.
+            Automatic merge failed due to conflicts that need manual resolution.
+            
+            Please review and merge manually.
+          base: v4
+          branch: auto-sync-dev-to-v4
+          delete-branch: true
+
+      - name: Push changes if automatic merge successful
+        if: steps.try_merge.outputs.merge_success == 'true'
+        run: |
+          # Push thay đổi lên v4
+          git push origin v4
