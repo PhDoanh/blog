@@ -2,9 +2,19 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+:root[saved-theme="light"] {
+	--graph-bg-alpha: 0;
+	--header-btn-bg: var(--gray);
+	--box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+:root[saved-theme="dark"] {
+	--graph-bg-alpha: 0.7;
+	--header-btn-bg: var(--lightgray);
+	--box-shadow: rgba(255, 255, 255, 0.1);
+}
 /* Định nghĩa scrollbar toàn cục */
 /* Cho Webkit (Chrome, Safari, Edge mới) */
-
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
 	background: transparent;
