@@ -212,7 +212,7 @@ function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentReso
 
   componentResources.afterDOMLoaded.push(`
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js');
+      navigator.serviceWorker.register('./sw.js');
     }`)
 }
 
