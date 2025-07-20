@@ -49,13 +49,13 @@
 
 .bookmark-modal {
 	background: var(--light);
-	max-width: 350px;
+	max-width: calc(100% - 80px);
+	width: 400px;
 	height: fit-content;
-	margin: auto;
 	padding: 1.5rem;
-	left: 0;
-	right: 0;
-	top: 0;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	bottom: 0;
 	border-radius: 8px;
 	box-shadow: 0 4px 12px var(--box-shadow);
