@@ -12,11 +12,11 @@ import { StaticResources } from "../../util/resources"
 import { ProcessedContent } from "../vfile"
 import { write } from "./helpers"
 
-interface OfflineOptions {
+interface Options {
 	precachePages?: string[]
 }
 
-export const Offline: QuartzEmitterPlugin<OfflineOptions> = (usrOpts) => {
+export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 	const opts: FullPageLayout = {
 		...sharedPageComponents,
 		pageBody: OfflineFallbackPage(),
@@ -29,7 +29,7 @@ export const Offline: QuartzEmitterPlugin<OfflineOptions> = (usrOpts) => {
 	const Body = BodyConstructor()
 
 	const precachePages = Array.from(new Set([
-		"/offline.html",
+		"./offline.html",
 		...(usrOpts?.precachePages ?? [])
 	]))
 
@@ -50,26 +50,27 @@ export const Offline: QuartzEmitterPlugin<OfflineOptions> = (usrOpts) => {
 				display: "minimal-ui",
 				icons: [
 					{
-						src: "/static/icon.png",
+						src: "./static/icon.png",
 						sizes: "any",
 						purpose: "maskable",
 					},
 					{
-						src: "/static/icon.png",
+						src: "./static/icon.png",
 						sizes: "any",
 						purpose: "any",
 					},
 				],
-				start_url: "/",
+				start_url: "./",
 			}
 
-			const offlineHtmlSlug = "offline.html" as FullSlug;
+			const slug = "offline" as FullSlug;
 
-			// const url = new URL(`https://${cfg.configuration.baseUrl ?? "example.com"}`)
-			// const path = url.pathname as FullSlug
-			const externalResources = pageResources(offlineHtmlSlug, resources)
+			const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost";
+			const url = new URL(isLocalhost ? "http://localhost:8080" : `https://${cfg.configuration.baseUrl}`);
+			const path = url.pathname as FullSlug
+			const externalResources = pageResources(path, resources)
 			const [tree, vfile] = defaultProcessedContent({
-				slug: offlineHtmlSlug,
+				slug,
 				text: "Offline",
 				description: "This page isn't offline available yet.",
 				frontmatter: { title: "Offline", tags: [] },
@@ -87,62 +88,89 @@ export const Offline: QuartzEmitterPlugin<OfflineOptions> = (usrOpts) => {
 
 			// Service worker script: chỉ cache các trang được yêu cầu qua postMessage
 			const serviceWorker = `
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
-const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
-staticResourceCache();
-googleFontsCache();
-imageCache();
-offlineFallback({ pageFallback: '/offline.html' });
+			importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
+			const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
 
-const CACHE_NAME = 'quartz-bookmark-cache-v1';
+			staticResourceCache();
+			googleFontsCache();
+			imageCache();
+			offlineFallback({ pageFallback: './offline.html' });
 
-// Precache các trang chỉ định
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(${JSON.stringify(precachePages)}))
-  );
-});
+			const CACHE_NAME = 'quartz-bookmark-cache-v1';
 
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'CACHE_PAGE') {
-    const url = event.data.url;
-    caches.open(CACHE_NAME).then(cache => {
-      fetch(url).then(response => {
-        if (response.ok) {
-          cache.put(url, response);
-        }
-      });
-    });
-  } else if (event.data && event.data.type === 'REMOVE_PAGE') {
-    const url = event.data.url;
-    caches.open(CACHE_NAME).then(cache => {
-      cache.delete(url);
-    });
-  }
-});
+			const validateUrls = async (urls) => {
+				const validUrls = [];
+				for (const url of urls) {
+					try {
+						const response = await fetch(url, { method: 'HEAD' });
+						if (response.ok) {
+							validUrls.push(url);
+						} else {
+							console.warn(\`Invalid URL: ${url}\`);
+						}
+					} catch (error) {
+						console.error(\`Error validating URL ${url}:\`, error);
+					}
+				}
+				return validUrls;
+			};
 
-self.addEventListener('fetch', event => {
-  const url = new URL(event.request.url);
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      caches.open(CACHE_NAME).then(cache =>
-        cache.match(url.pathname).then(response => {
-          if (response) return response;
-          return fetch(event.request)
-            .then(networkResponse => {
-              // Nếu fetch trả về 404, fallback về offline.html
-              if (!networkResponse || networkResponse.status === 404) {
-                return cache.match('/offline.html');
-              }
-              return networkResponse;
-            })
-            .catch(() => cache.match('/offline.html'));
-        })
-      )
-    );
-  }
-});
-`;
+			self.addEventListener('install', event => {
+				event.waitUntil(
+					validateUrls(${ JSON.stringify(precachePages) }).then(validUrls =>
+						caches.open(CACHE_NAME).then(cache => cache.addAll(validUrls))
+					)
+				);
+			});
+
+			self.addEventListener('message', event => {
+				if (event.data && event.data.type === 'CACHE_PAGE') {
+					const url = event.data.url;
+					caches.open(CACHE_NAME).then(cache => {
+						fetch(url).then(response => {
+							if (response.ok) {
+								cache.put(url, response);
+							}
+						});
+					});
+				} else if (event.data && event.data.type === 'REMOVE_PAGE') {
+					const url = event.data.url;
+					caches.open(CACHE_NAME).then(cache => {
+						cache.delete(url);
+					});
+				}
+			});
+
+			self.addEventListener('fetch', (event) => {
+				const url = new URL(event.request.url);
+
+				if (event.request.mode === 'navigate') {
+					event.respondWith(
+						caches.open(CACHE_NAME).then(async (cache) => {
+							const cachedResponse = await cache.match(url.pathname);
+
+							try {
+								const networkResponse = await fetch(event.request);
+								if (networkResponse && networkResponse.ok) {
+									const networkETag = networkResponse.headers.get('ETag');
+									const cachedETag = cachedResponse?.headers.get('ETag');
+
+									if (!cachedETag || networkETag !== cachedETag) {
+										// Chỉ cập nhật cache nếu ETag khác nhau
+										cache.put(url.pathname, networkResponse.clone());
+									}
+									return networkResponse;
+								}
+							} catch (error) {
+								console.warn(\`Network request failed for ${url.pathname}:\`, error);
+							}
+
+							return cachedResponse || cache.match('./offline.html');
+						})
+					);
+				}
+			});
+			`;
 
 			yield write({
 				ctx,
@@ -160,11 +188,12 @@ self.addEventListener('fetch', event => {
 
 			yield write({
 				ctx,
-				content: renderPage(cfg.configuration, offlineHtmlSlug, componentData, opts, externalResources),
-				slug: offlineHtmlSlug,
-				ext: "",
+				content: renderPage(cfg.configuration, slug, componentData, opts, externalResources),
+				slug,
+				ext: ".html",
 			})
 		},
 		async *partialEmit() { },
 	}
 }
+
