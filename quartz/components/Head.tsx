@@ -26,6 +26,7 @@ export default (() => {
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
     const iconPath = joinSegments(baseDir, "static/icon.png")
+    const manifestPath = joinSegments(baseDir, "manifest.json")
 
     // Url of current page
     const socialUrl =
@@ -84,7 +85,7 @@ export default (() => {
 
         <meta name="theme-color" content="#faf8f8" />
         <link rel="icon" href={iconPath} />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="manifest" href={manifestPath} />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
 
