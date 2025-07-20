@@ -47,7 +47,7 @@ jobs:
         continue-on-error: true
         run: |
           # Thử merge tự động
-          git merge origin/dev -m "chore: sync changes from dev to v4 branch [skip ci]"
+          git merge origin/dev -m "chore: sync changes from dev to v4 branch"
           
           # Kiểm tra xem merge có thành công không
           if [ $? -eq 0 ]; then
