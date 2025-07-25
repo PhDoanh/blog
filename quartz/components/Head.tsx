@@ -19,7 +19,8 @@ export default (() => {
       fileData.frontmatter?.socialDescription ??
       fileData.frontmatter?.description ??
       unescapeHTML(fileData.description?.trim() ?? i18n(cfg.locale).propertyDefaults.description)
-
+    const tags = fileData.frontmatter?.tags?.join(",") ?? ""
+    
     const { css, js, additionalHead } = externalResources
 
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
@@ -83,11 +84,12 @@ export default (() => {
           </>
         )}
 
-        <meta name="theme-color" content="#faf8f8" />
         <link rel="icon" href={iconPath} />
         <link rel="manifest" href={manifestPath} />
+        <meta name="theme-color" content="#faf8f8" />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
+        <meta name="tags" content={tags} />
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js
