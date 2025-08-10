@@ -19,7 +19,7 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
-    ignorePatterns: ["private", "templates", ".obsidian", "README.md", "LICENSE.md"],
+    ignorePatterns: ["unpublished", "templates", ".obsidian", "README.md", "LICENSE.md"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -84,6 +84,7 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
+      Plugin.NoTranslationPage(),
       // Comment out CustomOgImages to speed up build time
       Plugin.CustomOgImages(),
       Plugin.Offline({ precachePages: ["./"] }),

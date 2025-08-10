@@ -35,6 +35,10 @@ export default {
       copyLink: "Copy Link",
       linkCopied: "Link copied!",
     },
+    translate: {
+      title: "Translate",
+      tooltip: "",
+    },
     editThisPage: {
       title: "Edit this page",
       tooltip: "",
@@ -85,6 +89,12 @@ export default {
       title: "Not Found",
       notFound: "Either this page is private or doesn't exist.",
       home: "Return to Homepage",
+    },
+    translation: {
+      title: "Translation Not Available",
+      translationRequest: "The page you requested is not yet available in this language. Can you help me complete the translation?",
+      acceptResponse: "Yes, but please guide me on how to contribute!",
+      declineResponse: "Sorry, just take me back to the original content.",
     },
     folderContent: {
       folder: "Folder",

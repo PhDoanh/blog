@@ -2,6 +2,7 @@ import Content from "./pages/Content"
 import TagContent from "./pages/TagContent"
 import FolderContent from "./pages/FolderContent"
 import NotFound from "./pages/404"
+import NoTranslation from "./pages/NoTranslation"
 import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
 import ReaderMode from "./ReaderMode"
@@ -29,6 +30,7 @@ import MediaShare from "./MediaShare"
 import EditThisPage from "./EditThisPage"
 import Bookmark from "./Bookmark"
 import GitHubContributors from "./GitHubContributors"
+import Translate from "./Translate"
 
 export {
   ArticleTitle,
@@ -52,6 +54,7 @@ export {
   MobileOnly,
   RecentNotes,
   NotFound,
+  NoTranslation,
   Breadcrumbs,
   Comments,
   Flex,
@@ -62,4 +65,5 @@ export {
   EditThisPage,
   Bookmark,
   GitHubContributors,
+  Translate,
 }
