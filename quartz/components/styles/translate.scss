@@ -1,0 +1,83 @@
+.language-switcher {
+	position: relative;
+	display: inline-block;
+}
+
+.language-button {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 0.69rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--darkgray);
+	transition: background-color 0.3s;
+	border-radius: 4px;
+	gap: 5px;
+}
+
+.language-button:hover {
+	background-color: var(--header-btn-bg, --lightgray);
+}
+
+.language-text {
+	font-size: 1rem;
+	font-weight: 500;
+}
+
+/* Styles for dropdown that will be created via JavaScript */
+.language-dropdown {
+	position: fixed;
+	background-color: var(--light);
+	border: none;
+	border-radius: 6px;
+	width: 150px;
+	box-shadow: 0 4px 12px var(--box-shadow);
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-10px);
+	transition: opacity 0.3s, transform 0.3s, visibility 0s 0.3s;
+	z-index: 1;
+	margin-top: 10px;
+}
+
+.language-dropdown.active {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+	transition: opacity 0.3s, transform 0.3s;
+}
+
+.language-option {
+	display: flex;
+	align-items: center;
+	padding: 10px 15px;
+	color: var(--darkgray);
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	background: none;
+	width: -webkit-fill-available;
+	text-align: left;
+	font-size: 14px;
+	transition: background-color 0.2s;
+}
+
+.language-option:hover {
+	background-color: var(--lightgray);
+}
+
+.language-option span.language-flag {
+	margin-right: 10px;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.language-option span.language-name {
+	font-size: 14px;
+}
+
+.language-option.active {
+	background-color: var(--lightgray);
+}
