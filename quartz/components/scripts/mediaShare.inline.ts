@@ -223,7 +223,6 @@ function setupMediaShareEvents() {
 
 				// Gán vị trí cho feedback dựa trên vị trí button
 				const buttonRect = shareButton.getBoundingClientRect();
-				feedback.style.position = 'fixed';
 				feedback.style.top = `${buttonRect.top - 40}px`;
 				feedback.style.left = `${buttonRect.left}px`;
 

@@ -1,4 +1,4 @@
-import { joinSegments, isFolderPath } from "../../util/path"
+import { joinSegments, isFolderPath, resolveRelative, FullSlug, SimpleSlug } from "../../util/path"
 
 // Define callbacks at module scope to maintain fixed references
 let toggleDropdown: ((e: MouseEvent) => void) | null = null;
@@ -28,7 +28,7 @@ const languageNames: Record<string, string> = {
 function navigateToPath(path: string): void {
 	const url = new URL(path, window.location.toString());
 
-	if (path.includes('/no-translation-available')) {
+	if (path.includes('no-translation-available')) {
 		window.location.href = path;
 		return;
 	}
@@ -116,23 +116,26 @@ function checkContentExists(path: string): Promise<{ exists: boolean, originalPa
 // Function to create language path using Quartz utilities
 function createLanguagePath(lang: string, currentLanguage: string, pathParts: string[], defaultLanguage: string, currentPath: string): string {
 	// Build the target path based on language
+	const currentPathSlug = currentPath as FullSlug;
 	let targetPath: string;
 
 	if (lang === defaultLanguage) {
 		// For default language, remove any language prefix
 		if (currentLanguage && pathParts.length > 1) {
 			// Use joinSegments to properly create the path
-			targetPath = joinSegments('/', ...pathParts.slice(1));
+			targetPath = resolveRelative(currentPathSlug, pathParts.slice(1).join('/') as SimpleSlug);
 		} else {
-			targetPath = joinSegments('/', currentPath);
+			targetPath = resolveRelative(currentPathSlug, currentPath as SimpleSlug);
 		}
 	} else {
 		if (currentLanguage) {
 			// Replace current language with new language
-			targetPath = joinSegments('/', lang, ...pathParts.slice(1));
+			const targetSlug = joinSegments(lang, ...pathParts.slice(1)) as SimpleSlug;
+			targetPath = resolveRelative(currentPathSlug, targetSlug);
 		} else {
 			// Add language prefix
-			targetPath = joinSegments('/', lang, currentPath);
+			const targetSlug = joinSegments(lang, currentPath) as SimpleSlug;
+			targetPath = resolveRelative(currentPathSlug, targetSlug);
 		}
 	}
 
@@ -180,7 +183,10 @@ function redirectToUserLanguage() {
 				// Calculate original path (in default language)
 				const originalPath = currentPath;
 				// Generate path to no-translation page with query parameters
-				const noTranslationPath = `/no-translation-available?originalPath=${encodeURIComponent(originalPath)}`;
+				const noTranslationPath = resolveRelative(
+					currentPath as FullSlug,
+					"no-translation-available" as SimpleSlug
+				) + `?originalPath=${encodeURIComponent(originalPath)}`;
 				// Redirect to the no-translation page
 				navigateToPath(noTranslationPath);
 			}
@@ -259,13 +265,18 @@ function createLanguageDropdown(): HTMLElement | null {
 							if (currentLanguage && currentLanguage !== defaultLanguage) {
 								// If we're on a non-default language page, use path without language prefix
 								originalPath = '/' + pathParts.slice(1).join('/');
+								originalPath = resolveRelative(currentPath as FullSlug, pathParts.slice(1).join('/') as SimpleSlug);
+
 							} else {
 								// If we're on the default language, use current path
 								originalPath = currentPath;
 							}
 
 							// Generate path to no-translation page with query parameters
-							const noTranslationPath = `/no-translation-available?originalPath=${encodeURIComponent(originalPath)}`;
+							const noTranslationPath = resolveRelative(
+								currentPath as FullSlug,
+								"no-translation-available" as SimpleSlug
+							) + `?originalPath=${encodeURIComponent(originalPath)}`;
 							// Redirect to the no-translation page
 							navigateToPath(noTranslationPath);
 						}

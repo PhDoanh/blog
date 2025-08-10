@@ -74,9 +74,8 @@
 }
 
 .copy-feedback {
+	z-index: 2;
 	position: absolute;
-	bottom: 100%;
-	right: 0;
 	background-color: var(--light);
 	color: var(--dark);
 	padding: 6px 12px;
