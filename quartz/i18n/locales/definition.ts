@@ -37,6 +37,10 @@ export interface Translation {
       copyLink: string
       linkCopied: string
     }
+    translate: {
+      title: string
+      tooltip: string
+    }
     editThisPage: {
       title: string
       tooltip: string
@@ -87,6 +91,16 @@ export interface Translation {
       title: string
       notFound: string
       home: string
+    }
+    translation?: {
+      title: string
+      notAvailable: string
+      contributeTitle: string
+      contributeText: string
+      step1: string
+      step2: string
+      step3: string
+      returnToOriginal: string
     }
     folderContent: {
       folder: string
