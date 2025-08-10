@@ -161,6 +161,9 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 									}
 									return networkResponse;
 								}
+								if (networkResponse && networkResponse.status === 404) {
+									return networkResponse;
+								}
 							} catch (error) {
 								console.warn(\`Network request failed for ${url.pathname}:\`, error);
 							}
