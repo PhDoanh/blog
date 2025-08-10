@@ -34,8 +34,8 @@ export const NoTranslationPage: QuartzEmitterPlugin = () => {
 			const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
 			const path = url.pathname as FullSlug
 			const title = i18n(cfg.locale).pages.translation?.title || "Translation Not Available"
-			const description = i18n(cfg.locale).pages.translation?.notAvailable ||
-				"The page you requested is not yet available in this language."
+			const description = i18n(cfg.locale).pages.translation?.translationRequest ||
+				"The page you requested is not yet available in this language. Can you help me complete the translation?"
 
 			const [tree, vfile] = defaultProcessedContent({
 				slug,
