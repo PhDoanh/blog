@@ -60,6 +60,7 @@ export const sharedPageComponents: SharedLayout = {
         },
       }
     ),
+    Component.Translate(),
     Component.ReaderMode(),
     Component.EditThisPage({
       owner: "PhDoanh",
