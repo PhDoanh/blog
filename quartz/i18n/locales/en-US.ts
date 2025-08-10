@@ -92,13 +92,9 @@ export default {
     },
     translation: {
       title: "Translation Not Available",
-      notAvailable: "The page you requested is not yet available in this language.",
-      contributeTitle: "Want to help?",
-      contributeText: "We welcome contributions from our community. If you'd like to help translate this content:",
-      step1: "Fork our GitHub repository",
-      step2: "Create the missing translation file",
-      step3: "Submit a pull request",
-      returnToOriginal: "Return to Original Content"
+      translationRequest: "The page you requested is not yet available in this language. Can you help me complete the translation?",
+      acceptResponse: "Yes, but please guide me on how to contribute!",
+      declineResponse: "Sorry, just take me back to the original content.",
     },
     folderContent: {
       folder: "Folder",

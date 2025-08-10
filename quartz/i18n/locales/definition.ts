@@ -94,13 +94,9 @@ export interface Translation {
     }
     translation?: {
       title: string
-      notAvailable: string
-      contributeTitle: string
-      contributeText: string
-      step1: string
-      step2: string
-      step3: string
-      returnToOriginal: string
+      translationRequest: string
+      acceptResponse: string
+      declineResponse: string
     }
     folderContent: {
       folder: string
