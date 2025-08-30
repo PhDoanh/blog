@@ -96,15 +96,17 @@ let scrollToTop = () => {
 };
 
 // Đăng ký sự kiện
-document.addEventListener("DOMContentLoaded", () => {
+let setupBackToTop = () => {
 	const scrollProgress = document.getElementById("progress");
 	if (scrollProgress) {
 		scrollProgress.addEventListener("click", scrollToTop);
 	}
-});
+	window.onscroll = calcScrollValue;
+	calcScrollValue();
+};
 
-window.onscroll = calcScrollValue;
-window.onload = calcScrollValue;
+document.addEventListener("DOMContentLoaded", setupBackToTop);
+document.addEventListener("nav", setupBackToTop);
 
 // Cleanup khi component unmount
 window.addCleanup?.(() => {
