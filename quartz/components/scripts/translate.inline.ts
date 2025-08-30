@@ -264,9 +264,7 @@ function createLanguageDropdown(): HTMLElement | null {
 							let originalPath;
 							if (currentLanguage && currentLanguage !== defaultLanguage) {
 								// If we're on a non-default language page, use path without language prefix
-								originalPath = '/' + pathParts.slice(1).join('/');
-								originalPath = resolveRelative(currentPath as FullSlug, pathParts.slice(1).join('/') as SimpleSlug);
-
+								originalPath = joinSegments('/blog/', ...pathParts.slice(1));
 							} else {
 								// If we're on the default language, use current path
 								originalPath = currentPath;
