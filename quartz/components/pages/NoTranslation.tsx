@@ -1,21 +1,22 @@
 import { i18n } from "../../i18n"
+import { joinSegments } from "../../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "../types"
 
 const NoTranslation: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 	const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
-	const baseDir = url.pathname
+	const baseDir = url.pathname + "/"
 
 	return (
 		<article className="popover-hint no-translation-page">
 			<h1>{i18n(cfg.locale).pages.translation?.title || "Translation Not Available"}</h1>
 			<p>{i18n(cfg.locale).pages.translation?.translationRequest || "The page you requested is not yet available in this language. Can you help me complete the translation?"}</p>
 
-			<a href={baseDir + "/article-contribution-guide"}>
-				{i18n(cfg.locale).pages.translation?.acceptResponse || "Return to Original Content"}
+			<a href={joinSegments(baseDir, "article-contribution-guide")}>
+				{i18n(cfg.locale).pages.translation?.acceptResponse || "Yes, but please guide me on how to contribute!"}
 			</a>
 			<br />
-			<a href="#" id="original-link">
-				{i18n(cfg.locale).pages.translation?.declineResponse || "Return to Original Content"}
+			<a href={baseDir} id="original-link">
+				{i18n(cfg.locale).pages.translation?.declineResponse || "Sorry, just take me back to the original content."}
 			</a>
 
 			<script dangerouslySetInnerHTML={{
