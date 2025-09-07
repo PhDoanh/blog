@@ -28,6 +28,7 @@ export default (() => {
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
     const iconPath = joinSegments(baseDir, "static/icon.png")
     const manifestPath = joinSegments(baseDir, "manifest.json")
+    const fontStylePath = joinSegments(baseDir, "static/fonts/font-style.css")
 
     // Url of current page
     const socialUrl =
@@ -90,6 +91,7 @@ export default (() => {
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
         <meta name="tags" content={tags} />
+        <link href={fontStylePath} rel="stylesheet" type="text/css" spa-preserve />
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js
