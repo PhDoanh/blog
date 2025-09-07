@@ -1,5 +1,7 @@
 @use "./base.scss";
 @use "./variables.scss" as *;
+@use "../../content/.obsidian/snippets/handwriting.css" as *;
+@use "../../content/.obsidian/snippets/img.css" as *;
 
 // put your custom CSS here!
 :root[saved-theme="light"] {
@@ -12,6 +14,24 @@
 	--graph-bg-alpha: 0.7;
 	--header-btn-bg: var(--lightgray);
 	--box-shadow: rgba(255, 255, 255, 0.1);
+}
+// Customize the audio player controls
+audio::-webkit-media-controls-panel {
+	background-color: var(--lightgray);
+}
+
+pre.poetry {
+	font-size: large;
+	font-family: Yomogi;
+	border: none;
+	padding: 0;
+	position: unset;
+}
+
+.meta,
+.content-meta {
+	font-family: Yomogi, var(--bodyFont);
+	font-size: large;
 }
 /* Định nghĩa scrollbar toàn cục */
 /* Cho Webkit (Chrome, Safari, Edge mới) */
