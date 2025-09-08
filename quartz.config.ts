@@ -31,8 +31,8 @@ const config: QuartzConfig = {
       },
       colors: {
         lightMode: {
-          light: "#ffffff",
-          lightgray: "#f0f0f0",
+          light: "#fffdfa",
+          lightgray: "#e3ded4",
           gray: "#c9c9c9",
           darkgray: "#4a4a4a",
           dark: "#202020",
@@ -68,6 +68,7 @@ const config: QuartzConfig = {
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest", lazyLoad: true }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.Poetry(),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
