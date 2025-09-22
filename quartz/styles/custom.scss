@@ -15,6 +15,67 @@
 	--header-btn-bg: var(--lightgray);
 	--box-shadow: rgba(255, 255, 255, 0.1);
 }
+
+// Increase spacing between list items
+article ol li,
+article ul li {
+	margin-bottom: 1rem;
+}
+
+// Custom callout styles
+.callout {
+	--callout-icon-bell: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZy1pY29uIGx1Y2lkZS1iZWxsLXJpbmciPjxwYXRoIGQ9Ik0xMC4yNjggMjFhMiAyIDAgMCAwIDMuNDY0IDAiLz48cGF0aCBkPSJNMjIgOGMwLTIuMy0uOC00LjMtMi02Ii8+PHBhdGggZD0iTTMuMjYyIDE1LjMyNkExIDEgMCAwIDAgNCAxN2gxNmExIDEgMCAwIDAgLjc0LTEuNjczQzE5LjQxIDEzLjk1NiAxOCAxMi40OTkgMTggOEE2IDYgMCAwIDAgNiA4YzAgNC40OTktMS40MTEgNS45NTYtMi43MzggNy4zMjYiLz48cGF0aCBkPSJNNCAyQzIuOCAzLjcgMiA1LjcgMiA4Ii8+PC9zdmc+');
+	--closed-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1vZmYtaWNvbiBsdWNpZGUtZXllLW9mZiI+PHBhdGggZD0iTTEwLjczMyA1LjA3NmExMC43NDQgMTAuNzQ0IDAgMCAxIDExLjIwNSA2LjU3NSAxIDEgMCAwIDEgMCAuNjk2IDEwLjc0NyAxMC43NDcgMCAwIDEtMS40NDQgMi40OSIvPjxwYXRoIGQ9Ik0xNC4wODQgMTQuMTU4YTMgMyAwIDAgMS00LjI0Mi00LjI0MiIvPjxwYXRoIGQ9Ik0xNy40NzkgMTcuNDk5YTEwLjc1IDEwLjc1IDAgMCAxLTE1LjQxNy01LjE1MSAxIDEgMCAwIDEgMC0uNjk2IDEwLjc1IDEwLjc1IDAgMCAxIDQuNDQ2LTUuMTQzIi8+PHBhdGggZD0ibTIgMiAyMCAyMCIvPjwvc3ZnPg==');
+	--opened-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1pY29uIGx1Y2lkZS1leWUiPjxwYXRoIGQ9Ik0yLjA2MiAxMi4zNDhhMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSAxOS44NzYgMCAxIDEgMCAwIDEgMCAuNjk2IDEwLjc1IDEwLjc1IDAgMCAxLTE5Ljg3NiAwIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMyIvPjwvc3ZnPg==');
+
+	&[data-callout="bell"] {
+		--color: #db8942;
+		--border: #db894244;
+		--bg: #db894210;
+		--callout-icon: var(--callout-icon-bell);
+	}
+
+	&[data-callout="clear"] {
+		background-color: transparent;
+		border: none;
+		box-shadow: none;
+		padding: 0;
+		width: fit-content;
+
+		&>.callout-title {
+			padding: 0;
+			margin: 0;
+
+			&>.callout-icon {
+				display: none;
+			}
+
+			&>.callout-title-inner {
+				font-weight: inherit;
+				&>p {
+						color: var(--darkgray);
+				}
+			}
+
+			&>.fold-callout-icon {
+				transform: none;
+				margin-left: 0.25rem;
+				mask-image: var(--opened-eye-icon);
+				background-color: var(--darkgray);
+				mask-size: contain;
+				mask-repeat: no-repeat;
+				width: 1rem;
+				height: 1rem;
+				cursor: pointer;
+				pointer-events: auto;
+			}
+		}
+
+		&.is-collapsed>.callout-title>.fold-callout-icon {
+			mask-image: var(--closed-eye-icon);
+		}
+	}
+}
 // Customize the audio player controls
 audio::-webkit-media-controls-panel {
 	background-color: var(--lightgray);
@@ -245,7 +306,7 @@ header {
 		background-blend-mode: darken;
 		transform-origin: top right;
 		transform-style: preserve-3d;
-		transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+		transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 		[saved-theme="dark"] & {
 			opacity: 0.3;
