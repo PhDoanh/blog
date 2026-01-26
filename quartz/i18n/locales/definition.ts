@@ -95,8 +95,16 @@ export interface Translation {
     translation?: {
       title: string
       translationRequest: string
-      acceptResponse: string
-      declineResponse: string
+      seeGuide: string
+      preTranslation: string
+    }
+    offlineFallback?: {
+      title: string
+      description: string
+      home: string
+    }
+    bookmarks?: {
+      title: string
     }
     folderContent: {
       folder: string

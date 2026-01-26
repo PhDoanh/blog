@@ -27,7 +27,7 @@ BackToTop.css = `
 	left: 50%;
 	transform: translateX(-50%) translateY(20px);
 	display: none;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 	transition: all 200ms ease;
 	opacity: 0;
 	visibility: hidden;
@@ -42,7 +42,7 @@ BackToTop.css = `
 
 #progress:hover {
 	transform: translateX(-50%) translateY(-2px);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.31);
 }
 
 #progress-value {
@@ -84,7 +84,7 @@ let calcScrollValue = () => {
 	lastScrollPosition = pos;
 	
 	// Cập nhật hiệu ứng tiến trình
-	scrollProgress.style.background = \`conic-gradient(var(--secondary) \${scrollValue}%, var(--darkgray) \${scrollValue}%)\`;
+	scrollProgress.style.background = \`conic-gradient(var(--secondary) \${scrollValue}%, var(--gray) \${scrollValue}%)\`;
 };
 
 // Xử lý sự kiện click để cuộn lên đầu trang
