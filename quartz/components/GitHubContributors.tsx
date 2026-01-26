@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error importing SCSS and inline scripts
 import script from "./scripts/githubContributors.inline"
 import styles from "./styles/githubContributors.scss"
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"

@@ -37,6 +37,7 @@ export default ((opts: Options) => {
 
     return (
       <div
+        id="comment-box"
         class={classNames(displayClass, "giscus")}
         data-repo={opts.options.repo}
         data-repo-id={opts.options.repoId}

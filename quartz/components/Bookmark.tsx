@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error TS1208
 import script from "./scripts/bookmark.inline"
 import style from "./styles/bookmark.scss"
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"

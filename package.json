@@ -99,6 +99,7 @@
     "yargs": "^18.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/d3": "^7.4.3",
     "@types/hast": "^3.0.4",
     "@types/js-yaml": "^4.0.9",
@@ -107,9 +108,15 @@
     "@types/source-map-support": "^0.5.10",
     "@types/ws": "^8.18.1",
     "@types/yargs": "^17.0.33",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
     "esbuild": "^0.25.5",
+    "eslint": "^9.39.2",
+    "globals": "^17.1.0",
+    "jiti": "^2.6.1",
     "prettier": "^3.5.3",
     "tsx": "^4.19.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.53.1"
   }
 }
