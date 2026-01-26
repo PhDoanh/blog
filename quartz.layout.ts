@@ -1,7 +1,7 @@
 import { PageLayout, SharedLayout } from "./quartz/cfg"
 import * as Component from "./quartz/components"
 
-const left = [
+export const left = [
   Component.PageTitle(),
   Component.MobileOnly(Component.Spacer()),
   Component.Flex({
@@ -87,8 +87,8 @@ export const sharedPageComponents: SharedLayout = {
         category: 'Announcements',
         categoryId: 'DIC_kwDOPFpROc4CsZgE',
         inputPosition: "top",
-        lightTheme: "light_tritanopia",
-        darkTheme: "dark_tritanopia",
+        lightTheme: "light",
+        darkTheme: "dark",
       }
     }),
     Component.BackToTop(),

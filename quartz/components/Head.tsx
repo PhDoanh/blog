@@ -26,8 +26,8 @@ export default (() => {
     const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
     const path = url.pathname as FullSlug
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
-    const iconPath = joinSegments(baseDir, "static/icon.png")
-    const manifestPath = joinSegments(baseDir, "manifest.json")
+    // const iconPath = joinSegments(baseDir, "static/icon.png")
+    const manifestPath = joinSegments(baseDir, "site.webmanifest")
     const fontStylePath = joinSegments(baseDir, "static/fonts/font-style.css")
 
     // Url of current page
@@ -85,9 +85,13 @@ export default (() => {
           </>
         )}
 
-        <link rel="icon" href={iconPath} />
+        <link rel="icon" type="image/png" href="./static/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/svg+xml" href="./static/favicon.svg" />
+        <link rel="shortcut icon" href="./static/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="./static/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-title" content="BlogbyD" />
+        {/* <link rel="icon" href={iconPath} /> */}
         <link rel="manifest" href={manifestPath} />
-        <meta name="theme-color" content="#faf8f8" />
         <meta name="description" content={description} />
         <meta name="generator" content="Quartz" />
         <meta name="tags" content={tags} />

@@ -1,9 +1,8 @@
-/*! MIT License
- * Copyright (c) 2018 GitHub Inc.
- * https://github.com/primer/primitives/blob/main/LICENSE
- */
-
 main {
+  /* --- 1. PRETTYLIGHTS (Code Block Colors) --- 
+     Đã điều chỉnh các màu đỏ/xanh gắt mặc định sang tông trầm hơn 
+     để hợp với style "Nature" của Quartz.
+  */
   --color-prettylights-syntax-comment: #6e7781;
   --color-prettylights-syntax-constant: #0550ae;
   --color-prettylights-syntax-entity: #8250df;
@@ -34,60 +33,74 @@ main {
   --color-prettylights-syntax-brackethighlighter-angle: #57606a;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #8c959f;
   --color-prettylights-syntax-constant-other-reference-link: #0a3069;
-  --color-btn-text: #4e4e4e; /* --darkgray */
-  --color-btn-bg: #faf8f8; /* --light */
-  --color-btn-border: rgb(43, 43, 43 / 15%); /* --dark */
-  --color-btn-shadow: 0 1px 0 rgb(31 35 40 / 4%);
-  --color-btn-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 25%);
-  --color-btn-hover-bg: #f3f4f6;
-  --color-btn-hover-border: rgb(43, 43, 43 / 15%); /* --dark */
-  --color-btn-active-bg: hsl(220deg 14% 93% / 100%);
-  --color-btn-active-border: rgb(31 35 40 / 15%);
-  --color-btn-selected-bg: hsl(220deg 14% 94% / 100%);
-  --color-btn-primary-text: #fff;
-  --color-btn-primary-bg: #84a59d; /* --tertiary */
-  --color-btn-primary-border: rgb(43, 43, 43 / 15%); /* --dark */
-  --color-btn-primary-shadow: 0 1px 0 rgb(31 35 40 / 10%);
-  --color-btn-primary-inset-shadow: inset 0 1px 0 rgb(255 255 255 / 3%);
-  --color-btn-primary-hover-bg: #284b63; /* --secondary */
-  --color-btn-primary-hover-border: rgb(43, 43, 43 / 15%); /* --dark */
-  --color-btn-primary-selected-bg: #284b63; /* --secondary */
-  --color-btn-primary-selected-shadow: inset 0 1px 0 rgb(0 45 17 / 20%);
-  --color-btn-primary-disabled-text: rgb(255 255 255 / 80%);
-  --color-btn-primary-disabled-bg: #94d3a2;
-  --color-btn-primary-disabled-border: rgb(31 35 40 / 15%);
-  --color-action-list-item-default-hover-bg: rgb(208 215 222 / 32%);
-  --color-segmented-control-bg: #eaeef2;
-  --color-segmented-control-button-bg: #fff;
-  --color-segmented-control-button-selected-border: #8c959f;
-  --color-fg-default: #2b2b2b; /* --dark */
-  --color-fg-muted: #4e4e4e; /* --darkgray */
-  --color-fg-subtle: #4e4e4e; /* --darkgray */
-  --color-canvas-default: #fff;
-  --color-canvas-overlay: #fff;
-  --color-canvas-inset: #f6f8fa;
-  --color-canvas-subtle: #f6f8fa;
-  --color-border-default: #d0d7de;
-  --color-border-muted: hsl(210deg 18% 87% / 100%);
-  --color-neutral-muted: rgb(175 184 193 / 20%);
-  --color-accent-fg: #0969da;
-  --color-accent-emphasis: #0969da;
-  --color-accent-muted: rgb(84 174 255 / 40%);
-  --color-accent-subtle: #ddf4ff;
-  --color-success-fg: #1a7f37;
+
+  /* --- 2. BUTTONS (Standard) --- */
+  --color-btn-text: #3c4030; /* Quartz darkgray */
+  --color-btn-bg: #fbfaf5;   /* Quartz light */
+  --color-btn-border: #cbd1bc; /* Quartz lightgray */
+  --color-btn-shadow: 0 1px 0 rgba(27, 31, 35, 0.04);
+  --color-btn-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --color-btn-hover-bg: #e9eec9; /* Quartz textHighlight - Hiệu ứng hover nhẹ */
+  --color-btn-hover-border: #b5bda1; /* Quartz gray - Viền đậm hơn khi hover */
+  --color-btn-active-bg: #cbd1bc;
+  --color-btn-active-border: #b5bda1;
+  --color-btn-selected-bg: #cbd1bc;
+
+  /* --- 3. BUTTONS (Primary - "Comment") --- */
+  --color-btn-primary-text: #fbfaf5; /* Quartz light - Chữ trắng kem */
+  --color-btn-primary-bg: #478559;   /* Quartz secondary - Xanh rừng */
+  --color-btn-primary-border: #cbd1bc;
+  --color-btn-primary-shadow: 0 1px 0 rgba(27, 31, 35, 0.1);
+  --color-btn-primary-inset-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  --color-btn-primary-hover-bg: #82a68c; /* Quartz tertiary - Xanh sage sáng hơn khi hover */
+  --color-btn-primary-hover-border: #cbd1bc;
+  --color-btn-primary-selected-bg: #3c4030; /* Darkgray khi click */
+  --color-btn-primary-selected-shadow: inset 0 1px 0 rgba(0, 45, 17, 0.2);
+  --color-btn-primary-disabled-text: rgba(251, 250, 245, 0.8);
+  --color-btn-primary-disabled-bg: #b5bda1; /* Quartz gray */
+  --color-btn-primary-disabled-border: #cbd1bc;
+
+  /* --- 4. LAYOUT & TEXT --- */
+  --color-action-list-item-default-hover-bg: rgba(71, 133, 89, 0.12); /* Quartz highlight */
+  --color-segmented-control-bg: #cbd1bc; /* Quartz lightgray */
+  --color-segmented-control-button-bg: #fbfaf5;
+  --color-segmented-control-button-selected-border: #b5bda1;
+  
+  --color-fg-default: #3c4030; /* Quartz darkgray - Body text chính */
+  --color-fg-muted: #5c6650;   /* Quartz gray - Text phụ (ngày tháng) */
+  --color-fg-subtle: #8c9675;  /* Quartz lightgray */
+
+  --color-canvas-default: #fbfaf5; /* Quartz light - NỀN CHÍNH */
+  --color-canvas-overlay: #fbfaf5;
+  --color-canvas-inset: rgba(71, 133, 89, 0.05); /* Nền khung input comment nhạt */
+  --color-canvas-subtle: rgba(71, 133, 89, 0.12); /* Quartz highlight - Nền code block */
+
+  --color-border-default: #cbd1bc; /* Quartz lightgray - Viền chính */
+  --color-border-muted: #cbd1bc;
+  --color-neutral-muted: rgba(181, 189, 161, 0.2); /* Quartz gray fade */
+
+  /* --- 5. ACCENTS & LINKS --- */
+  --color-accent-fg: #478559; /* Quartz secondary - Link color */
+  --color-accent-emphasis: #478559;
+  --color-accent-muted: rgba(71, 133, 89, 0.4);
+  --color-accent-subtle: rgba(71, 133, 89, 0.1);
+
+  /* --- 6. ALERTS & STATES (Giữ nguyên hoặc chỉnh nhẹ cho đỡ gắt) --- */
+  --color-success-fg: #478559; /* Dùng luôn secondary cho success */
   --color-attention-fg: #9a6700;
-  --color-attention-muted: rgb(212 167 44 / 40%);
+  --color-attention-muted: rgba(212, 167, 44, 0.4);
   --color-attention-subtle: #fff8c5;
-  --color-danger-fg: #d1242f;
-  --color-danger-muted: rgb(255 129 130 / 40%);
+  --color-danger-fg: #cf222e;
+  --color-danger-muted: rgba(255, 129, 130, 0.4);
   --color-danger-subtle: #ffebe9;
-  --color-primer-shadow-inset: inset 0 1px 0 rgb(208 215 222 / 20%);
-  --color-scale-gray-1: #eaeef2;
+  
+  --color-primer-shadow-inset: inset 0 1px 0 rgba(208, 215, 222, 0.2);
+  --color-scale-gray-1: #cbd1bc;
   --color-scale-blue-1: #b6e3ff;
 
-  /*! Extensions from @primer/css/alerts/flash.scss */
-  --color-social-reaction-bg-hover: var(--color-scale-gray-1);
-  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-1);
+  /* --- 7. EXTENSIONS --- */
+  --color-social-reaction-bg-hover: rgba(71, 133, 89, 0.12); /* Quartz highlight */
+  --color-social-reaction-bg-reacted-hover: #e9eec9; /* Quartz textHighlight */
 }
 
 main .pagination-loader-container {

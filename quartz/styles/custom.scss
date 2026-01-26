@@ -1,12 +1,11 @@
 @use "./base.scss";
 @use "./variables.scss" as *;
-@use "../../content/.obsidian/snippets/handwriting.css" as *;
 @use "../../content/.obsidian/snippets/img.css" as *;
 
 // put your custom CSS here!
 :root[saved-theme="light"] {
 	--graph-bg-alpha: 0;
-	--header-btn-bg: var(--gray);
+	--header-btn-bg: var(--lightgray);
 	--box-shadow: rgba(0, 0, 0, 0.1);
 }
 
@@ -16,14 +15,19 @@
 	--box-shadow: rgba(255, 255, 255, 0.1);
 }
 
+// Adjust font size in folder container - Explorer Component
+.folder-container div>a {
+	font-size: 1rem;
+}
 // Increase spacing between list items
 article ol li,
 article ul li {
-	margin-bottom: 1rem;
+	margin-bottom: 0.5rem;
 }
 
 // Custom callout styles
 .callout {
+	--callout-icon-challenge: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJyYWluLWljb24gbHVjaWRlLWJyYWluIj48cGF0aCBkPSJNMTIgMThWNSIvPjxwYXRoIGQ9Ik0xNSAxM2E0LjE3IDQuMTcgMCAwIDEtMy00IDQuMTcgNC4xNyAwIDAgMS0zIDQiLz48cGF0aCBkPSJNMTcuNTk4IDYuNUEzIDMgMCAxIDAgMTIgNWEzIDMgMCAxIDAtNS41OTggMS41Ii8+PHBhdGggZD0iTTE3Ljk5NyA1LjEyNWE0IDQgMCAwIDEgMi41MjYgNS43NyIvPjxwYXRoIGQ9Ik0xOCAxOGE0IDQgMCAwIDAgMi03LjQ2NCIvPjxwYXRoIGQ9Ik0xOS45NjcgMTcuNDgzQTQgNCAwIDEgMSAxMiAxOGE0IDQgMCAxIDEtNy45NjctLjUxNyIvPjxwYXRoIGQ9Ik02IDE4YTQgNCAwIDAgMS0yLTcuNDY0Ii8+PHBhdGggZD0iTTYuMDAzIDUuMTI1YTQgNCAwIDAgMC0yLjUyNiA1Ljc3Ii8+PC9zdmc+');
 	--callout-icon-bell: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZy1pY29uIGx1Y2lkZS1iZWxsLXJpbmciPjxwYXRoIGQ9Ik0xMC4yNjggMjFhMiAyIDAgMCAwIDMuNDY0IDAiLz48cGF0aCBkPSJNMjIgOGMwLTIuMy0uOC00LjMtMi02Ii8+PHBhdGggZD0iTTMuMjYyIDE1LjMyNkExIDEgMCAwIDAgNCAxN2gxNmExIDEgMCAwIDAgLjc0LTEuNjczQzE5LjQxIDEzLjk1NiAxOCAxMi40OTkgMTggOEE2IDYgMCAwIDAgNiA4YzAgNC40OTktMS40MTEgNS45NTYtMi43MzggNy4zMjYiLz48cGF0aCBkPSJNNCAyQzIuOCAzLjcgMiA1LjcgMiA4Ii8+PC9zdmc+');
 	--closed-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1vZmYtaWNvbiBsdWNpZGUtZXllLW9mZiI+PHBhdGggZD0iTTEwLjczMyA1LjA3NmExMC43NDQgMTAuNzQ0IDAgMCAxIDExLjIwNSA2LjU3NSAxIDEgMCAwIDEgMCAuNjk2IDEwLjc0NyAxMC43NDcgMCAwIDEtMS40NDQgMi40OSIvPjxwYXRoIGQ9Ik0xNC4wODQgMTQuMTU4YTMgMyAwIDAgMS00LjI0Mi00LjI0MiIvPjxwYXRoIGQ9Ik0xNy40NzkgMTcuNDk5YTEwLjc1IDEwLjc1IDAgMCAxLTE1LjQxNy01LjE1MSAxIDEgMCAwIDEgMC0uNjk2IDEwLjc1IDEwLjc1IDAgMCAxIDQuNDQ2LTUuMTQzIi8+PHBhdGggZD0ibTIgMiAyMCAyMCIvPjwvc3ZnPg==');
 	--opened-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1pY29uIGx1Y2lkZS1leWUiPjxwYXRoIGQ9Ik0yLjA2MiAxMi4zNDhhMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSAxOS44NzYgMCAxIDEgMCAwIDEgMCAuNjk2IDEwLjc1IDEwLjc1IDAgMCAxLTE5Ljg3NiAwIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMyIvPjwvc3ZnPg==');
@@ -35,6 +39,12 @@ article ul li {
 		--callout-icon: var(--callout-icon-bell);
 	}
 
+		&[data-callout="challenge"] {
+			--color: #db8942;
+			--border: #db894244;
+			--bg: #db894210;
+			--callout-icon: var(--callout-icon-challenge);
+		}
 	&[data-callout="clear"] {
 		background-color: transparent;
 		border: none;
@@ -81,9 +91,9 @@ audio::-webkit-media-controls-panel {
 	background-color: var(--lightgray);
 }
 
-pre.poetry {
+pre.handtext {
 	font-size: large;
-	font-family: Yomogi;
+	font-family: 'Grape Nuts';
 	border: none;
 	padding: 0;
 	position: unset;
@@ -91,8 +101,8 @@ pre.poetry {
 
 .meta,
 .content-meta {
-	font-family: Yomogi, var(--bodyFont);
-	font-size: large;
+	font-family: 'Grape Nuts', var(--bodyFont);
+	font-size: medium;
 }
 /* Định nghĩa scrollbar toàn cục */
 /* Cho Webkit (Chrome, Safari, Edge mới) */
@@ -322,7 +332,7 @@ header {
 			right: -700px;
 			width: 1600px;
 			height: 1400px;
-			background-image: url("./static/leaves.png");
+			background-image: url("./static/leaves.webp");
 			filter: url(#wind);
 			perspective: 400px;
 			animation: billow 8s ease-in-out infinite;
