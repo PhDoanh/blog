@@ -12,11 +12,11 @@ const NoTranslation: QuartzComponent = ({ cfg }: QuartzComponentProps) => {
 			<p>{i18n(cfg.locale).pages.translation?.translationRequest || "The page you requested is not yet available in this language. Can you help me complete the translation?"}</p>
 
 			<a href={joinSegments(baseDir, "article-contribution-guide")}>
-				{i18n(cfg.locale).pages.translation?.acceptResponse || "Yes, but please guide me on how to contribute!"}
+				{i18n(cfg.locale).pages.translation?.seeGuide || "Yes, but please guide me on how to contribute!"}
 			</a>
 			<br />
 			<a href={baseDir} id="original-link">
-				{i18n(cfg.locale).pages.translation?.declineResponse || "Sorry, just take me back to the original content."}
+				{i18n(cfg.locale).pages.translation?.preTranslation || "Sorry, just take me back to the original content."}
 			</a>
 
 			<script dangerouslySetInnerHTML={{

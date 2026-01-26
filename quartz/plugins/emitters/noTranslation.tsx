@@ -29,13 +29,13 @@ export const NoTranslationPage: QuartzEmitterPlugin = () => {
 		},
 		async *emit(ctx, _content, resources) {
 			const cfg = ctx.cfg.configuration
-			const slug = "no-translation-available" as FullSlug
+			const slug = "translation-not-available" as FullSlug
 
 			const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
 			const path = url.pathname as FullSlug
-			const title = i18n(cfg.locale).pages.translation?.title || "Translation Not Available"
+			const title = i18n(cfg.locale).pages.translation?.title || "Translation Not Available!"
 			const description = i18n(cfg.locale).pages.translation?.translationRequest ||
-				"The page you requested is not yet available in this language. Can you help me complete the translation?"
+				"Feel free to contribute translations if you'd like."
 
 			const [tree, vfile] = defaultProcessedContent({
 				slug,
