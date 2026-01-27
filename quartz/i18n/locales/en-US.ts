@@ -86,15 +86,23 @@ export default {
       lastFewNotes: ({ count }) => `Last ${count} notes`,
     },
     error: {
-      title: "Not Found",
+      title: "Page Not Found!",
       notFound: "Either this page is private or doesn't exist.",
       home: "Return to Homepage",
     },
     translation: {
-      title: "Translation Not Available",
-      translationRequest: "The page you requested is not yet available in this language. Can you help me complete the translation?",
-      acceptResponse: "Yes, but please guide me on how to contribute!",
-      declineResponse: "Sorry, just take me back to the original content.",
+      title: "Translation Not Available!",
+      translationRequest: "Feel free to contribute translations if you'd like.",
+      seeGuide: "See the Contribution Guide.",
+      preTranslation: "Back to previous translation.",
+    },
+    offlineFallback: {
+      title: "Internet Disconnected!",
+      description: "Check your connection and try again. Or read pages you've bookmarked while offline.",
+      home: "Return to Homepage",
+    },
+    bookmarks: {
+      title: "Bookmarks",
     },
     folderContent: {
       folder: "Folder",

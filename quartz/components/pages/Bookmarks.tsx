@@ -1,11 +1,8 @@
-import { QuartzComponentConstructor } from "../types"
+import { QuartzComponent, QuartzComponentConstructor } from "../types"
 
-function OfflineFallbackPage() {
+const Bookmarks: QuartzComponent = () => {
 	return (
 		<article class="popover-hint">
-			<h1>Offline</h1>
-			<p>This page isn't offline available yet.</p>
-			<h2>Your bookmarks</h2>
 			<ul id="bookmark-list">
 				<li>Đang tải danh sách...</li>
 			</ul>
@@ -35,4 +32,4 @@ function OfflineFallbackPage() {
 	)
 }
 
-export default (() => OfflineFallbackPage) satisfies QuartzComponentConstructor
+export default (() => Bookmarks) satisfies QuartzComponentConstructor

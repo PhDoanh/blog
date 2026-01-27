@@ -77,7 +77,7 @@ async function fetchContributors() {
 				.slice(0, displayCount)
 				.map((contributor: Contributor) =>
 					`<a class="contributor" href="${contributor.link}" target="_blank" title="${contributor.name}">
-						<img src="${contributor.avatar}" alt="${contributor.name}" loading="lazy" />
+						<img src="${contributor.avatar}&s=32" alt="${contributor.name}" loading="lazy" />
 					</a>`
 				)
 				.join('');

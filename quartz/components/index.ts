@@ -3,6 +3,7 @@ import TagContent from "./pages/TagContent"
 import FolderContent from "./pages/FolderContent"
 import NotFound from "./pages/404"
 import NoTranslation from "./pages/NoTranslation"
+import Bookmarks from "./pages/Bookmarks"
 import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
 import ReaderMode from "./ReaderMode"
@@ -55,6 +56,7 @@ export {
   RecentNotes,
   NotFound,
   NoTranslation,
+  Bookmarks,
   Breadcrumbs,
   Comments,
   Flex,

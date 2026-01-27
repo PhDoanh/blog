@@ -4,43 +4,44 @@ import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
 import { FullSlug } from "../../util/path"
-import { sharedPageComponents } from "../../../quartz.layout"
-import { NoTranslation } from "../../components"
+import { sharedPageComponents, left } from "../../../quartz.layout"
+import { Bookmarks } from "../../components"
 import { defaultProcessedContent } from "../vfile"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
 
-export const NoTranslationPage: QuartzEmitterPlugin = () => {
+export const BookmarksPage: QuartzEmitterPlugin = () => {
 	const opts: FullPageLayout = {
-		...sharedPageComponents,
-		pageBody: NoTranslation(),
+		head: sharedPageComponents.head,
+		header: [],
 		beforeBody: [],
-		left: [],
+		pageBody: Bookmarks(),
+		afterBody: [],
+		left: left,
 		right: [],
+		footer: sharedPageComponents.footer,
 	}
 
 	const { head: Head, pageBody, footer: Footer } = opts
 	const Body = BodyConstructor()
 
 	return {
-		name: "NoTranslationPage",
+		name: "BookmarksPage",
 		getQuartzComponents() {
 			return [Head, Body, pageBody, Footer]
 		},
 		async *emit(ctx, _content, resources) {
 			const cfg = ctx.cfg.configuration
-			const slug = "translation-not-available" as FullSlug
+			const slug = "bookmarks" as FullSlug
 
 			const url = new URL(`https://${cfg.baseUrl ?? "example.com"}`)
 			const path = url.pathname as FullSlug
-			const title = i18n(cfg.locale).pages.translation?.title || "Translation Not Available!"
-			const description = i18n(cfg.locale).pages.translation?.translationRequest ||
-				"Feel free to contribute translations if you'd like."
+			const title = i18n(cfg.locale).pages.bookmarks?.title || "Bookmarks"
 
 			const [tree, vfile] = defaultProcessedContent({
 				slug,
 				text: title,
-				description,
+				title,
 				frontmatter: { title, tags: [] },
 			})
 

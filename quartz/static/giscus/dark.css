@@ -1,9 +1,7 @@
-/*! MIT License
- * Copyright (c) 2018 GitHub Inc.
- * https://github.com/primer/primitives/blob/main/LICENSE
- */
-
 main {
+  /* --- 1. PRETTYLIGHTS (Code Block Colors - Dark Mode) --- 
+     Code cần nổi bật trên nền đen. Sử dụng secondary và tertiary làm chủ đạo.
+  */
   --color-prettylights-syntax-comment: #8b949e;
   --color-prettylights-syntax-constant: #79c0ff;
   --color-prettylights-syntax-entity: #d2a8ff;
@@ -34,60 +32,74 @@ main {
   --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
   --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
   --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
-  --color-btn-text: #d4d4d4; /* --darkgray */
-  --color-btn-bg: #161618; /* --light */
-  --color-btn-border: rgb(240, 246, 252 / 10%); /* --dark */
+
+  /* --- 2. BUTTONS (Standard - Dark Mode) --- */
+  --color-btn-text: #d1dcc7; /* Quartz darkgray (Text sáng) */
+  --color-btn-bg: #2d362a;   /* Quartz lightgray (Nền nút tối) */
+  --color-btn-border: #4a5743; /* Quartz gray (Viền rõ hơn nền một chút) */
   --color-btn-shadow: 0 0 transparent;
   --color-btn-inset-shadow: 0 0 transparent;
-  --color-btn-hover-bg: #30363d;
-  --color-btn-hover-border: #8b949e;
-  --color-btn-active-bg: hsl(212deg 12% 18% / 100%);
-  --color-btn-active-border: #6e7681;
-  --color-btn-selected-bg: #161b22;
-  --color-btn-primary-text: #fff;
-  --color-btn-primary-bg: #84a59d; /* --tertiary */
-  --color-btn-primary-border: rgb(240, 246, 252 / 10%); /* --dark */
+  --color-btn-hover-bg: #4a5743; /* Quartz gray (Sáng hơn khi hover) */
+  --color-btn-hover-border: #7db582; /* Viền xanh khi hover */
+  --color-btn-active-bg: #3e3525; /* Quartz textHighlight */
+  --color-btn-active-border: #7db582;
+  --color-btn-selected-bg: #2d362a;
+
+  /* --- 3. BUTTONS (Primary - "Comment" - Dark Mode) --- */
+  --color-btn-primary-text: #161b14; /* Quartz light (Chữ tối trên nền sáng) */
+  --color-btn-primary-bg: #7db582;   /* Quartz secondary (Nền xanh sáng) */
+  --color-btn-primary-border: #7db582;
   --color-btn-primary-shadow: 0 0 transparent;
   --color-btn-primary-inset-shadow: 0 0 transparent;
-  --color-btn-primary-hover-bg: #7b97aa; /* --secondary */
-  --color-btn-primary-hover-border: rgb(240, 246, 252 / 10%); /* --dark */
-  --color-btn-primary-selected-bg: #7b97aa; /* --secondary */
+  --color-btn-primary-hover-bg: #a3c9a8; /* Quartz tertiary (Sáng hơn nữa khi hover) */
+  --color-btn-primary-hover-border: #a3c9a8;
+  --color-btn-primary-selected-bg: #a3c9a8;
   --color-btn-primary-selected-shadow: 0 0 transparent;
-  --color-btn-primary-disabled-text: rgba(33, 32, 32, 0.5);
-  --color-btn-primary-disabled-bg: rgb(35 134 54 / 60%);
-  --color-btn-primary-disabled-border: rgb(240 246 252 / 10%);
-  --color-action-list-item-default-hover-bg: rgb(177 186 196 / 12%);
-  --color-segmented-control-bg: rgb(110 118 129 / 10%);
-  --color-segmented-control-button-bg: #0d1117;
-  --color-segmented-control-button-selected-border: #6e7681;
-  --color-fg-default: #ebebec; /* --dark */
-  --color-fg-muted: #d4d4d4; /* --darkgray */
-  --color-fg-subtle: #d4d4d4; /* --darkgray */
-  --color-canvas-default: #0d1117;
-  --color-canvas-overlay: #161b22;
-  --color-canvas-inset: #010409;
-  --color-canvas-subtle: #161b22;
-  --color-border-default: #30363d;
-  --color-border-muted: #21262d;
-  --color-neutral-muted: rgb(110 118 129 / 40%);
-  --color-accent-fg: #2f81f7;
-  --color-accent-emphasis: #1f6feb;
-  --color-accent-muted: rgb(56 139 253 / 40%);
-  --color-accent-subtle: rgb(56 139 253 / 10%);
-  --color-success-fg: #3fb950;
-  --color-attention-fg: #d29922;
-  --color-attention-muted: rgb(187 128 9 / 40%);
-  --color-attention-subtle: rgb(187 128 9 / 15%);
-  --color-danger-fg: #f85149;
-  --color-danger-muted: rgb(248 81 73 / 40%);
-  --color-danger-subtle: rgb(248 81 73 / 10%);
-  --color-primer-shadow-inset: 0 0 transparent;
-  --color-scale-gray-7: #21262d;
-  --color-scale-blue-8: #0c2d6b;
+  --color-btn-primary-disabled-text: rgba(22, 27, 20, 0.5);
+  --color-btn-primary-disabled-bg: rgba(125, 181, 130, 0.4);
+  --color-btn-primary-disabled-border: transparent;
 
-  /*! Extensions from @primer/css/alerts/flash.scss */
-  --color-social-reaction-bg-hover: var(--color-scale-gray-7);
-  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-8);
+  /* --- 4. LAYOUT & TEXT (Dark Mode) --- */
+  --color-action-list-item-default-hover-bg: rgba(125, 181, 130, 0.15); /* Quartz highlight */
+  --color-segmented-control-bg: #2d362a; /* Quartz lightgray */
+  --color-segmented-control-button-bg: #161b14;
+  --color-segmented-control-button-selected-border: #4a5743;
+  
+  --color-fg-default: #d1dcc7; /* Quartz darkgray - Body text sáng */
+  --color-fg-muted: #a3c9a8;   /* Quartz gray - Text phụ tối hơn */
+  --color-fg-subtle: #8da38d;  
+
+  --color-canvas-default: #161b14; /* Quartz light - NỀN TỐI CHÍNH */
+  --color-canvas-overlay: #161b14;
+  --color-canvas-inset: #0d110c;   /* Đen hơn nền chính một chút cho input */
+  --color-canvas-subtle: rgba(125, 181, 130, 0.15); /* Quartz highlight - Nền code block */
+
+  --color-border-default: #2d362a; /* Quartz lightgray - Viền tối */
+  --color-border-muted: #2d362a;
+  --color-neutral-muted: rgba(125, 181, 130, 0.15); /* Quartz highlight */
+
+  /* --- 5. ACCENTS & LINKS (Dark Mode) --- */
+  --color-accent-fg: #7db582; /* Quartz secondary */
+  --color-accent-emphasis: #7db582;
+  --color-accent-muted: rgba(125, 181, 130, 0.4);
+  --color-accent-subtle: rgba(125, 181, 130, 0.15);
+
+  /* --- 6. ALERTS & STATES --- */
+  --color-success-fg: #7db582; 
+  --color-attention-fg: #d29922;
+  --color-attention-muted: rgba(210, 153, 34, 0.4);
+  --color-attention-subtle: rgba(210, 153, 34, 0.15);
+  --color-danger-fg: #f85149;
+  --color-danger-muted: rgba(248, 81, 73, 0.4);
+  --color-danger-subtle: rgba(248, 81, 73, 0.15);
+  
+  --color-primer-shadow-inset: 0 0 transparent;
+  --color-scale-gray-1: #2d362a;
+  --color-scale-blue-1: #a3c9a8;
+
+  /* --- 7. EXTENSIONS --- */
+  --color-social-reaction-bg-hover: rgba(125, 181, 130, 0.15); /* Quartz highlight */
+  --color-social-reaction-bg-reacted-hover: #3e3525; /* Quartz textHighlight */
 }
 
 main .pagination-loader-container {

@@ -2,7 +2,7 @@ import { QuartzEmitterPlugin } from "../types"
 import { FullSlug } from "../../util/path"
 import { FullPageLayout } from "../../cfg"
 import { sharedPageComponents } from "../../../quartz.layout"
-import OfflineFallbackPage from "../../components/pages/OfflineFallbackPage"
+import OfflineFallback from "../../components/pages/OfflineFallback"
 import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { defaultProcessedContent } from "../vfile"
@@ -11,6 +11,7 @@ import { BuildCtx } from "../../util/ctx"
 import { StaticResources } from "../../util/resources"
 import { ProcessedContent } from "../vfile"
 import { write } from "./helpers"
+import { i18n } from "../../i18n"
 
 interface Options {
 	precachePages?: string[]
@@ -19,8 +20,10 @@ interface Options {
 export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 	const opts: FullPageLayout = {
 		...sharedPageComponents,
-		pageBody: OfflineFallbackPage(),
+		header: [],
 		beforeBody: [],
+		pageBody: OfflineFallback(),
+		afterBody: [],
 		left: [],
 		right: [],
 	}
@@ -42,25 +45,40 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 			const { cfg } = ctx
 
 			const manifest = {
-				short_name: cfg.configuration.pageTitle,
-				name: cfg.configuration.pageTitle,
-				description: cfg.configuration.description,
-				background_color: cfg.configuration.theme.colors.darkMode.light,
-				theme_color: cfg.configuration.theme.colors.darkMode.light,
-				display: "minimal-ui",
+				name: cfg.configuration.webAppTitle || cfg.configuration.pageTitle,
+				short_name: cfg.configuration.webAppTitle || cfg.configuration.pageTitle,
+				description: cfg.configuration.description || "",
+				theme_color: cfg.configuration.theme.colors.lightMode.lightgray,
+				background_color: cfg.configuration.theme.colors.lightMode.lightgray,
+				display: "standalone",
+				start_url: "./",
 				icons: [
 					{
-						src: "./static/icon.png",
-						sizes: "any",
-						purpose: "maskable",
+						"src": "./static/web-app-manifest-192x192.png",
+						"sizes": "192x192",
+						"type": "image/png",
+						"purpose": "any"
 					},
 					{
-						src: "./static/icon.png",
-						sizes: "any",
-						purpose: "any",
-					},
+						"src": "./static/web-app-manifest-512x512.png",
+						"sizes": "512x512",
+						"type": "image/png",
+						"purpose": "any maskable"
+					}
 				],
-				start_url: "./",
+				screenshots: [
+					{
+						"src": "./static/screenshot-desktop.png",
+						"sizes": "1280x720",
+						"type": "image/png",
+						"form_factor": "wide"
+					},
+					{
+						"src": "./static/screenshot-mobile.png",
+						"sizes": "640x1136",
+						"type": "image/png"
+					}
+				]
 			}
 
 			const slug = "offline" as FullSlug;
@@ -69,11 +87,12 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 			const url = new URL(isLocalhost ? "http://localhost:8080" : `https://${cfg.configuration.baseUrl}`);
 			const path = url.pathname as FullSlug
 			const externalResources = pageResources(path, resources)
+			const noConnection = i18n(cfg.configuration.locale).pages.offlineFallback?.title || "Internet Disconnected!"
 			const [tree, vfile] = defaultProcessedContent({
 				slug,
-				text: "Offline",
-				description: "This page isn't offline available yet.",
-				frontmatter: { title: "Offline", tags: [] },
+				text: noConnection,
+				description: noConnection,
+				frontmatter: { title: noConnection, tags: [] },
 			})
 
 			const componentData: QuartzComponentProps = {
@@ -86,100 +105,190 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 				allFiles: [],
 			}
 
-			// Service worker script: chỉ cache các trang được yêu cầu qua postMessage
+			// Service worker script: optimized version with better error handling and performance
 			const serviceWorker = `
-			importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
-			const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
+		importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
+		const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
 
-			staticResourceCache();
-			googleFontsCache();
-			imageCache();
-			offlineFallback({ pageFallback: './offline.html' });
+		staticResourceCache();
+		googleFontsCache();
+		imageCache();
+		offlineFallback({ pageFallback: './offline.html' });
 
-			const CACHE_NAME = 'quartz-bookmark-cache-v1';
+		const CACHE_NAME = 'quartz-bookmark-cache-v2';
+		const OLD_CACHE_NAME = 'quartz-bookmark-cache-v1';
+		const MAX_CACHE_SIZE = 50; // Giới hạn số trang cache
+		const NETWORK_TIMEOUT = 3000; // 3 giây timeout cho network request
 
-			const validateUrls = async (urls) => {
-				const validUrls = [];
-				for (const url of urls) {
-					try {
-						const response = await fetch(url, { method: 'HEAD' });
-						if (response.ok) {
-							validUrls.push(url);
-						} else {
-							console.warn(\`Invalid URL: ${url}\`);
-						}
-					} catch (error) {
-						console.error(\`Error validating URL ${url}:\`, error);
+		// Utility: Normalize URL để tránh duplicate cache entries
+		const normalizeUrl = (url) => {
+			const normalized = new URL(url, self.location.origin);
+			normalized.hash = ''; // Bỏ hash
+			return normalized.pathname; // Chỉ lấy pathname, bỏ query params nếu cần
+		};
+
+		// Utility: Trim cache to max size using LRU strategy
+		const trimCache = async (cacheName, maxSize) => {
+			const cache = await caches.open(cacheName);
+			const keys = await cache.keys();
+			if (keys.length > maxSize) {
+				// Xóa các entries cũ nhất (giả định keys được sắp xếp theo thứ tự thêm vào)
+				const keysToDelete = keys.slice(0, keys.length - maxSize);
+				await Promise.all(keysToDelete.map(key => cache.delete(key)));
+			}
+		};
+
+		// Install event: Precache essential pages (không validate để tăng tốc độ)
+		self.addEventListener('install', event => {
+			console.log('[SW] Installing service worker v2');
+			event.waitUntil(
+				caches.open(CACHE_NAME)
+					.then(cache => {
+						// Cache precache pages, bỏ qua lỗi để không block install
+						return cache.addAll(${ JSON.stringify(precachePages)}).catch(err => {
+							console.warn('[SW] Failed to precache some pages:', err);
+							// Thử cache từng page riêng lẻ
+							return Promise.allSettled(
+								${JSON.stringify(precachePages) }.map(url => 
+									cache.add(url).catch(e => console.warn(\`[SW] Failed to cache \${url}:\`, e))
+								)
+							);
+						});
+					})
+					.then(() => self.skipWaiting()) // Activate ngay lập tức
+			);
+		});
+
+		// Activate event: Clean up old caches
+		self.addEventListener('activate', event => {
+			console.log('[SW] Activating service worker v2');
+			event.waitUntil(
+				caches.keys()
+					.then(cacheNames => {
+						return Promise.all(
+							cacheNames
+								.filter(name => name !== CACHE_NAME && name.startsWith('quartz-bookmark-cache'))
+								.map(name => {
+									console.log('[SW] Deleting old cache:', name);
+									return caches.delete(name);
+								})
+						);
+					})
+					.then(() => self.clients.claim()) // Take control of all pages
+			);
+		});
+
+		// Message event: Handle cache/remove requests from client
+		self.addEventListener('message', event => {
+			const handleMessage = async () => {
+				try {
+					if (!event.data || !event.data.type) {
+						return;
 					}
+
+					const { type, url } = event.data;
+					const cache = await caches.open(CACHE_NAME);
+
+					if (type === 'CACHE_PAGE') {
+						const normalizedUrl = normalizeUrl(url);
+						const response = await fetch(url);
+
+						if (response && response.ok) {
+							await cache.put(normalizedUrl, response.clone());
+							await trimCache(CACHE_NAME, MAX_CACHE_SIZE);
+
+							// Gửi phản hồi về client
+							event.ports[0]?.postMessage({ success: true, url });
+							console.log('[SW] Cached page:', normalizedUrl);
+						} else {
+							event.ports[0]?.postMessage({ success: false, url, error: 'Response not OK' });
+						}
+					} else if (type === 'REMOVE_PAGE') {
+						const normalizedUrl = normalizeUrl(url);
+						const deleted = await cache.delete(normalizedUrl);
+
+						event.ports[0]?.postMessage({ success: deleted, url });
+						console.log('[SW] Removed page from cache:', normalizedUrl);
+					}
+				} catch (error) {
+					console.error('[SW] Error handling message:', error);
+					event.ports[0]?.postMessage({ success: false, error: error.message });
 				}
-				return validUrls;
 			};
 
-			self.addEventListener('install', event => {
-				event.waitUntil(
-					validateUrls(${ JSON.stringify(precachePages) }).then(validUrls =>
-						caches.open(CACHE_NAME).then(cache => cache.addAll(validUrls))
-					)
-				);
-			});
+			event.waitUntil(handleMessage());
+		});
 
-			self.addEventListener('message', event => {
-				if (event.data && event.data.type === 'CACHE_PAGE') {
-					const url = event.data.url;
-					caches.open(CACHE_NAME).then(cache => {
-						fetch(url).then(response => {
-							if (response.ok) {
-								cache.put(url, response);
-							}
+		// Fetch event: Network-first with timeout, fallback to cache
+		self.addEventListener('fetch', event => {
+			const url = new URL(event.request.url);
+
+			// Chỉ handle navigation requests
+			if (event.request.mode !== 'navigate') {
+				return;
+			}
+
+			event.respondWith(
+				(async () => {
+					const cache = await caches.open(CACHE_NAME);
+					const normalizedPath = normalizeUrl(event.request.url);
+
+					// Network-first với timeout
+					const networkPromise = fetch(event.request).then(async response => {
+						if (response && response.ok) {
+							// Cập nhật cache trong background (không chặn response)
+							const responseClone = response.clone();
+							cache.put(normalizedPath, responseClone).then(() => {
+								trimCache(CACHE_NAME, MAX_CACHE_SIZE);
+							}).catch(err => console.warn('[SW] Cache update failed:', err));
+
+							return response;
+						}
+
+						// Nếu là 404, return luôn (không fallback to cache)
+						if (response && response.status === 404) {
+							return response;
+						}
+
+						// Các status code khác, throw để fallback to cache
+						throw new Error('Response not OK');
+					});
+
+					// Tạo timeout promise
+					const timeoutPromise = new Promise((_, reject) => {
+						setTimeout(() => reject(new Error('Network timeout')), NETWORK_TIMEOUT);
+					});
+
+					try {
+						// Race giữa network và timeout
+						return await Promise.race([networkPromise, timeoutPromise]);
+					} catch (error) {
+						console.warn(\`[SW] Network failed for \${normalizedPath}, using cache:\`, error.message);
+
+						// Fallback to cache
+						const cachedResponse = await cache.match(normalizedPath);
+						if (cachedResponse) {
+							return cachedResponse;
+						}
+
+						// Cuối cùng fallback to offline page
+						return cache.match('./offline.html') || new Response('Offline', {
+							status: 503,
+							statusText: 'Service Unavailable'
 						});
-					});
-				} else if (event.data && event.data.type === 'REMOVE_PAGE') {
-					const url = event.data.url;
-					caches.open(CACHE_NAME).then(cache => {
-						cache.delete(url);
-					});
-				}
-			});
+					}
+				})()
+			);
+		});
 
-			self.addEventListener('fetch', (event) => {
-				const url = new URL(event.request.url);
-
-				if (event.request.mode === 'navigate') {
-					event.respondWith(
-						caches.open(CACHE_NAME).then(async (cache) => {
-							const cachedResponse = await cache.match(url.pathname);
-
-							try {
-								const networkResponse = await fetch(event.request);
-								if (networkResponse && networkResponse.ok) {
-									const networkETag = networkResponse.headers.get('ETag');
-									const cachedETag = cachedResponse?.headers.get('ETag');
-
-									if (!cachedETag || networkETag !== cachedETag) {
-										// Chỉ cập nhật cache nếu ETag khác nhau
-										cache.put(url.pathname, networkResponse.clone());
-									}
-									return networkResponse;
-								}
-								if (networkResponse && networkResponse.status === 404) {
-									return networkResponse;
-								}
-							} catch (error) {
-								console.warn(\`Network request failed for ${url.pathname}:\`, error);
-							}
-
-							return cachedResponse || cache.match('./offline.html');
-						})
-					);
-				}
-			});
+		console.log('[SW] Service Worker v2 loaded');
 			`;
 
 			yield write({
 				ctx,
 				content: JSON.stringify(manifest),
-				slug: "manifest" as FullSlug,
-				ext: ".json",
+				slug: "site" as FullSlug,
+				ext: ".webmanifest",
 			})
 
 			yield write({

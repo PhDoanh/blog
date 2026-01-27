@@ -1,7 +1,7 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import style from "./styles/explorer.scss"
 
-// @ts-ignore
+// @ts-expect-error importing inline script
 import script from "./scripts/explorer.inline"
 import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
@@ -116,8 +116,8 @@ export default ((userOpts?: Partial<Options>) => {
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
         </button>
-        <div class="explorer-content" aria-expanded={false}>
-          <OverflowList class="explorer-ul" />
+        <div class="explorer-content" aria-expanded={false} aria-controls="explorer-items" role="button">
+          <OverflowList class="explorer-ul" id="explorer-items" />
         </div>
         <template id="template-file">
           <li>

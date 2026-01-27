@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error TS1208
 import script from "./scripts/translate.inline"
 import style from "./styles/translate.scss"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
