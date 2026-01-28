@@ -37,10 +37,6 @@ export interface Translation {
       copyLink: string
       linkCopied: string
     }
-    translate: {
-      title: string
-      tooltip: string
-    }
     editThisPage: {
       title: string
       tooltip: string
@@ -91,12 +87,6 @@ export interface Translation {
       title: string
       notFound: string
       home: string
-    }
-    translation?: {
-      title: string
-      translationRequest: string
-      seeGuide: string
-      preTranslation: string
     }
     offlineFallback?: {
       title: string

@@ -60,7 +60,6 @@ export const sharedPageComponents: SharedLayout = {
         },
       }
     ),
-    Component.Translate(),
     Component.ReaderMode(),
     Component.EditThisPage({
       owner: "PhDoanh",
@@ -68,7 +67,6 @@ export const sharedPageComponents: SharedLayout = {
     }),
   ],
   afterBody: [
-    Component.MobileOnly(Component.Backlinks()),
     Component.RecentNotes({
       title: "Recent Articles",
       showTags: false,
@@ -79,6 +77,7 @@ export const sharedPageComponents: SharedLayout = {
         return fileDir === currentDir && f.slug !== fileData.slug;
       },
     }),
+    // YourGarden component, mobile only
     Component.Comments({
       provider: 'giscus',
       options: {
@@ -96,7 +95,7 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       Email: "mailto:phdoanh285@gmail.com",
-      Community: "https://www.facebook.com/phdcreator",
+      Community: "https://www.facebook.com/techiesGarden",
       Donate: "https://ko-fi.com/pgdoanh",
       "Bug report": "https://github.com/PhDoanh/blog/issues/new?template=bug_report.md",
       "Feature request": "https://github.com/PhDoanh/blog/issues/new?template=feature_request.md",
@@ -124,8 +123,8 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left,
   right: [
+    // YourGarden component, desktop only
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.DesktopOnly(Component.Backlinks()),
   ],
 }
 
@@ -138,7 +137,7 @@ export const defaultListPageLayout: PageLayout = {
   ],
   left,
   right: [
+    // YourGarden component, desktop only
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.DesktopOnly(Component.Backlinks()),
   ],
 }

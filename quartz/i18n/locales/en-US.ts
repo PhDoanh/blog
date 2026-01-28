@@ -35,10 +35,6 @@ export default {
       copyLink: "Copy Link",
       linkCopied: "Link copied!",
     },
-    translate: {
-      title: "Translate",
-      tooltip: "",
-    },
     editThisPage: {
       title: "Edit this page",
       tooltip: "",
@@ -89,12 +85,6 @@ export default {
       title: "Page Not Found!",
       notFound: "Either this page is private or doesn't exist.",
       home: "Return to Homepage",
-    },
-    translation: {
-      title: "Translation Not Available!",
-      translationRequest: "Feel free to contribute translations if you'd like.",
-      seeGuide: "See the Contribution Guide.",
-      preTranslation: "Back to previous translation.",
     },
     offlineFallback: {
       title: "Internet Disconnected!",

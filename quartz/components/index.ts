@@ -2,7 +2,6 @@ import Content from "./pages/Content"
 import TagContent from "./pages/TagContent"
 import FolderContent from "./pages/FolderContent"
 import NotFound from "./pages/404"
-import NoTranslation from "./pages/NoTranslation"
 import Bookmarks from "./pages/Bookmarks"
 import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
@@ -31,7 +30,6 @@ import MediaShare from "./MediaShare"
 import EditThisPage from "./EditThisPage"
 import Bookmark from "./Bookmark"
 import GitHubContributors from "./GitHubContributors"
-import Translate from "./Translate"
 
 export {
   ArticleTitle,
@@ -55,7 +53,6 @@ export {
   MobileOnly,
   RecentNotes,
   NotFound,
-  NoTranslation,
   Bookmarks,
   Breadcrumbs,
   Comments,
@@ -67,5 +64,4 @@ export {
   EditThisPage,
   Bookmark,
   GitHubContributors,
-  Translate,
 }
