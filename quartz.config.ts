@@ -19,7 +19,7 @@ const config: QuartzConfig = {
       tagId: "G-59D57MVJSQ",
     },
     locale: "en-US",
-    baseUrl: "blogbyd.pages.dev",
+    baseUrl: "phdoanh.github.io/blog",
     ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md"],
     defaultDateType: "modified",
     theme: {
