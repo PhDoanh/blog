@@ -26,8 +26,8 @@ export default {
       noBacklinksFound: "No backlinks found",
     },
     bookmark: {
-      title: "Bookmark",
-      tooltip: "",
+      title: "Plant",
+      tooltip: "Save offline",
     },
     mediaShare: {
       title: "Share",
@@ -36,15 +36,15 @@ export default {
       linkCopied: "Link copied!",
     },
     editThisPage: {
-      title: "Edit this page",
+      title: "Edit",
       tooltip: "",
     },
     themeToggle: {
-      lightMode: "Light mode",
-      darkMode: "Dark mode",
+      lightMode: "Day mode",
+      darkMode: "Night mode",
     },
     readerMode: {
-      title: "Reader mode",
+      title: "Reading view",
       tooltip: "",
     },
     explorer: {
@@ -54,7 +54,7 @@ export default {
       createdWith: "Created with",
     },
     graph: {
-      title: "Graph View",
+      title: "Article Links",
       tooltip: "",
     },
     recentNotes: {
@@ -88,11 +88,11 @@ export default {
     },
     offlineFallback: {
       title: "Internet Disconnected!",
-      description: "Check your connection and try again. Or read pages you've bookmarked while offline.",
+      description: "Check your connection and try again. Or check your garden to read articles you've marked as plant while offline.",
       home: "Return to Homepage",
     },
     bookmarks: {
-      title: "Bookmarks",
+      title: "Your Garden",
     },
     folderContent: {
       folder: "Folder",

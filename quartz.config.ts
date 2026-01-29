@@ -9,9 +9,9 @@ import * as Plugin from "./quartz/plugins"
 const config: QuartzConfig = {
   configuration: {
     pageTitle: "ɓlog×ɗoanh",
-    pageTitleSuffix: " by Doanh",
+    pageTitleSuffix: "",
     webAppTitle: "BlogbyD",
-    description: "Technology blog by Doanh - Software Engineer",
+    description: "Vườn công nghệ số được trồng và chăm sóc bởi Doanh",
     enableSPA: true,
     enablePopovers: true,
     analytics: {
@@ -74,7 +74,6 @@ const config: QuartzConfig = {
       }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
-      Plugin.HandText(),
     ],
     filters: [Plugin.RemoveDrafts()],
     emitters: [
@@ -86,13 +85,18 @@ const config: QuartzConfig = {
       Plugin.ContentIndex({
         enableSiteMap: true,
         enableRSS: true,
+        rssLimit: 30,
+        rssFullHtml: true,
+        includeEmptyFiles: false,
       }),
       Plugin.Assets(),
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
       // Comment out CustomOgImages to speed up build time
-      Plugin.CustomOgImages(),
+      Plugin.CustomOgImages({
+        excludeRoot: true,
+      }),
       Plugin.Offline({ precachePages: ["./"] }),
     ],
   },
