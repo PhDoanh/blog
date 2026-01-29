@@ -27,17 +27,23 @@ export interface Translation {
       title: string
       noBacklinksFound: string
     }
-    bookmark: {
+    bookmark?: {
       title: string
       tooltip: string
+      addModalTitle: string
+      addModalDescription: string
+      removeModalTitle: string
+      removeModalDescription: string
+      modalCancelButton: string
+      modalConfirmButton: string
     }
-    mediaShare: {
+    mediaShare?: {
       title: string
       tooltip: string
       copyLink: string
       linkCopied: string
     }
-    editThisPage: {
+    editThisPage?: {
       title: string
       tooltip: string
     }
@@ -47,7 +53,7 @@ export interface Translation {
     }
     readerMode: {
       title: string
-      tooltip: string
+      tooltip?: string
     }
     explorer: {
       title: string
@@ -57,7 +63,7 @@ export interface Translation {
     }
     graph: {
       title: string
-      tooltip: string
+      tooltip?: string
     }
     recentNotes: {
       title: string

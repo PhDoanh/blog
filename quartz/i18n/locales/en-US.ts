@@ -28,6 +28,12 @@ export default {
     bookmark: {
       title: "Plant",
       tooltip: "Save offline",
+      addModalTitle: "Plant this article in your garden?",
+      addModalDescription: "This article will be downloaded to your device for offline reading.",
+      removeModalTitle: "Uproot this article from your garden?",
+      removeModalDescription: "This article will no longer be available offline.",
+      modalCancelButton: "Cancel",
+      modalConfirmButton: "Confirm",
     },
     mediaShare: {
       title: "Share",
