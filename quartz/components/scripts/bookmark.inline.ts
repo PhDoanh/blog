@@ -121,6 +121,12 @@ function showBookmarkModal(slug: string, isRemoving: boolean, props?: QuartzComp
 			}
 			saveBookmarks(bookmarks);
 			updateBookmarkBtns();
+
+			// Dispatch custom event for same-tab updates (e.g., graph re-render)
+			document.dispatchEvent(new CustomEvent('bookmarkchange', {
+				detail: { slug, isRemoving }
+			}));
+
 			document.body.removeChild(overlay);
 			document.body.removeChild(modal);
 		};

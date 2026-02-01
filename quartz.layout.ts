@@ -47,9 +47,13 @@ export const sharedPageComponents: SharedLayout = {
   header: [
     Component.Bookmark(),
     Component.MediaShare(),
-    Component.Graph2(
+    Component.EditThisPage({
+      owner: "PhDoanh",
+      repo: "content",
+    }),
+    Component.ArticleLinksGraph(
       {
-        config: {
+        localGraph: {
           scale: 1.5,
           linkDistance: 50,
           fontSize: 0.6,
@@ -57,14 +61,11 @@ export const sharedPageComponents: SharedLayout = {
           showTags: true,
           removeTags: ["explorable"],
           focusOnHover: true,
+          enableRadial: true,
         },
       }
     ),
     Component.ReaderMode(),
-    Component.EditThisPage({
-      owner: "PhDoanh",
-      repo: "content",
-    }),
   ],
   afterBody: [
     Component.RecentNotes({
@@ -78,6 +79,7 @@ export const sharedPageComponents: SharedLayout = {
       },
     }),
     // YourGarden component, mobile only
+    Component.MobileOnly(Component.BookmarksGraph()),
     Component.Comments({
       provider: 'giscus',
       options: {
@@ -124,6 +126,7 @@ export const defaultContentPageLayout: PageLayout = {
   left,
   right: [
     // YourGarden component, desktop only
+    Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
   ],
 }
@@ -138,6 +141,7 @@ export const defaultListPageLayout: PageLayout = {
   left,
   right: [
     // YourGarden component, desktop only
+    Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
   ],
 }

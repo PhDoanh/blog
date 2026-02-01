@@ -1,5 +1,5 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-// @ts-ignore
+// @ts-expect-error importing inline script
 import script from "./scripts/graph2.inline"
 import style from "./styles/graph2.scss"
 import { classNames } from "../util/lang"
@@ -49,12 +49,19 @@ export default ((opts?: Partial<GraphOptions>) => {
 		return (
 			<div class={classNames(displayClass, "graph")}>
 				<button class="graph-trigger-button" aria-label={i18n(cfg.locale).components.graph.title} title={i18n(cfg.locale).components.graph.tooltip}>
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork-icon lucide-git-fork">
-						<circle cx="12" cy="18" r="3" />
-						<circle cx="6" cy="6" r="3" />
-						<circle cx="18" cy="6" r="3" />
-						<path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9" />
-						<path d="M12 12v3" />
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-link-icon lucide-link">
+						<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+						<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
 					</svg>
 					<span class="graph-text">{i18n(cfg.locale).components.graph.title}</span>
 				</button>

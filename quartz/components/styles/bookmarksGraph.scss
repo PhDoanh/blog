@@ -1,0 +1,40 @@
+@use "../../styles/variables.scss" as *;
+
+.graph {
+  & > h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  & > .graph-outer {
+    border-radius: 5px;
+    border: 1px solid var(--header-btn-bg, --lightgray);
+    box-sizing: border-box;
+    height: 250px;
+    margin: 0.5em 0;
+    position: relative;
+    overflow: hidden;
+
+    & > .graph-icon {
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: var(--darkgray);
+      opacity: 0.5;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      padding: 0.2rem;
+      margin: 0.3rem;
+      top: 0;
+      right: 0;
+      border-radius: 4px;
+      background-color: transparent;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+      &:hover {
+        background-color: var(--lightgray);
+      }
+    }
+  }
+}
