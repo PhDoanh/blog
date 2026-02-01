@@ -60,8 +60,15 @@ export default {
       createdWith: "Created with",
     },
     graph: {
-      title: "Article Links",
+      title: "Graph View",
+    },
+    articleLinksGraph: {
+      title: "See links",
       tooltip: "",
+    },
+    bookmarksGraph: {
+      title: "Your Garden Graph",
+      openBookmarksPage: "Open Garden Page",
     },
     recentNotes: {
       title: "Recent Notes",
@@ -99,6 +106,9 @@ export default {
     },
     bookmarks: {
       title: "Your Garden",
+      description: "Your Garden is private and offline. Thus, feel free to read articles anytime!",
+      itemsUnderBookmarks: ({ count }) =>
+        count === 0 ? "There are no articles in your garden yet." : `${count} article(s) in your garden.`,
     },
     folderContent: {
       folder: "Folder",

@@ -2,7 +2,7 @@ import Content from "./pages/Content"
 import TagContent from "./pages/TagContent"
 import FolderContent from "./pages/FolderContent"
 import NotFound from "./pages/404"
-import Bookmarks from "./pages/Bookmarks"
+import BookmarksContent from "./pages/BookmarksContent"
 import ArticleTitle from "./ArticleTitle"
 import Darkmode from "./Darkmode"
 import ReaderMode from "./ReaderMode"
@@ -25,11 +25,12 @@ import Comments from "./Comments"
 import Flex from "./Flex"
 import ConditionalRender from "./ConditionalRender"
 import BackToTop from "./BackToTop"
-import Graph2 from "./Graph2"
+import ArticleLinksGraph from "./ArticleLinksGraph"
 import MediaShare from "./MediaShare"
 import EditThisPage from "./EditThisPage"
 import Bookmark from "./Bookmark"
 import GitHubContributors from "./GitHubContributors"
+import BookmarksGraph from "./BookmarksGraph"
 
 export {
   ArticleTitle,
@@ -53,15 +54,16 @@ export {
   MobileOnly,
   RecentNotes,
   NotFound,
-  Bookmarks,
+  BookmarksContent,
   Breadcrumbs,
   Comments,
   Flex,
   ConditionalRender,
   BackToTop,
-  Graph2,
+  ArticleLinksGraph,
   MediaShare,
   EditThisPage,
   Bookmark,
   GitHubContributors,
+  BookmarksGraph,
 }

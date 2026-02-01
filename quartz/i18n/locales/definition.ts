@@ -63,7 +63,14 @@ export interface Translation {
     }
     graph: {
       title: string
-      tooltip?: string
+    }
+    articleLinksGraph?: {
+      title: string
+      tooltip: string
+    }
+    bookmarksGraph?: {
+      title: string
+      openBookmarksPage: string
     }
     recentNotes: {
       title: string
@@ -101,6 +108,8 @@ export interface Translation {
     }
     bookmarks?: {
       title: string
+      description: string
+      itemsUnderBookmarks: (variables: { count: number }) => string
     }
     folderContent: {
       folder: string
