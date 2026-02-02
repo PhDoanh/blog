@@ -120,14 +120,31 @@ function clearActivePopover() {
   allPopoverElements.forEach((popoverElement) => popoverElement.classList.remove("active-popover"))
 }
 
-document.addEventListener("nav", () => {
-  const links = [...document.querySelectorAll("a.internal")] as HTMLAnchorElement[]
+function attachPopoverListeners(container: Element | Document = document) {
+  const links = [...container.querySelectorAll("a.internal")] as HTMLAnchorElement[]
   for (const link of links) {
+    // Remove existing listeners to avoid duplicates
+    link.removeEventListener("mouseenter", mouseEnterHandler)
+    link.removeEventListener("mouseleave", clearActivePopover)
+
+    // Add new listeners
     link.addEventListener("mouseenter", mouseEnterHandler)
     link.addEventListener("mouseleave", clearActivePopover)
     window.addCleanup(() => {
       link.removeEventListener("mouseenter", mouseEnterHandler)
       link.removeEventListener("mouseleave", clearActivePopover)
     })
+  }
+}
+
+document.addEventListener("nav", () => {
+  attachPopoverListeners()
+})
+
+// Listen for custom setup-popover events for dynamically created content
+document.addEventListener("setup-popover", (event) => {
+  const customEvent = event as CustomEvent
+  if (customEvent.detail?.container) {
+    attachPopoverListeners(customEvent.detail.container)
   }
 })
