@@ -25,31 +25,12 @@ export default {
       title: "Liên Kết Ngược",
       noBacklinksFound: "Không có liên kết ngược được tìm thấy",
     },
-    bookmark: {
-      title: "Đánh dấu trang",
-      tooltip: "",
-    },
-    mediaShare: {
-      title: "Chia sẻ",
-      tooltip: "",
-      copyLink: "Sao chép link",
-      linkCopied: "Đã sao chép!",
-    },
-    translate: {
-      title: "Dịch thuật",
-      tooltip: "",
-    },
-    editThisPage: {
-      title: "Sửa bài viết",
-      tooltip: "",
-    },
     themeToggle: {
       lightMode: "Sáng",
       darkMode: "Tối",
     },
     readerMode: {
       title: "Chế độ đọc",
-      tooltip: "",
     },
     explorer: {
       title: "Khám phá",
@@ -59,7 +40,6 @@ export default {
     },
     graph: {
       title: "Biểu Đồ",
-      tooltip: "",
     },
     recentNotes: {
       title: "Bài viết gần đây",
@@ -89,20 +69,6 @@ export default {
       title: "Không tìm thấy trang!",
       notFound: "Trang này được bảo mật hoặc không tồn tại.",
       home: "Trở về trang chủ",
-    },
-    translation: {
-      title: "Bản dịch không có sẵn!",
-      translationRequest: "Nếu muốn, bạn có thể tham gia đóng góp bản dịch.",
-      seeGuide: "Xem hướng dẫn đóng góp",
-      preTranslation: "Quay lại bản dịch trước đó.",
-    },
-    offlineFallback: {
-      title: "Không có Internet!",
-      description: "Vui lòng kiểm tra kết nối mạng và thử lại. Hoặc đọc các trang đã đánh dấu trong lúc ngoại tuyến.",
-      home: "Trở về trang chủ",
-    },
-    bookmarks: {
-      title: "Các trang được đánh dấu",
     },
     folderContent: {
       folder: "Thư Mục",

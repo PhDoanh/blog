@@ -4,8 +4,8 @@ import BodyConstructor from "../../components/Body"
 import { pageResources, renderPage } from "../../components/renderPage"
 import { FullPageLayout } from "../../cfg"
 import { FullSlug } from "../../util/path"
-import { sharedPageComponents, left } from "../../../quartz.layout"
-import { Bookmarks } from "../../components"
+import { left, sharedPageComponents } from "../../../quartz.layout"
+import { BookmarksContent, BackToTop, Breadcrumbs, ArticleTitle } from "../../components"
 import { defaultProcessedContent } from "../vfile"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
@@ -14,21 +14,26 @@ export const BookmarksPage: QuartzEmitterPlugin = () => {
 	const opts: FullPageLayout = {
 		head: sharedPageComponents.head,
 		header: [],
-		beforeBody: [],
-		pageBody: Bookmarks(),
-		afterBody: [],
+		beforeBody: [
+			Breadcrumbs(),
+			ArticleTitle(),
+		],
+		pageBody: BookmarksContent(),
+		afterBody: [
+			BackToTop(),
+		],
 		left: left,
 		right: [],
 		footer: sharedPageComponents.footer,
 	}
 
-	const { head: Head, pageBody, footer: Footer } = opts
+	const { head: Header, pageBody, footer: Footer } = opts
 	const Body = BodyConstructor()
 
 	return {
 		name: "BookmarksPage",
 		getQuartzComponents() {
-			return [Head, Body, pageBody, Footer]
+			return [Header, Body, pageBody, Footer]
 		},
 		async *emit(ctx, _content, resources) {
 			const cfg = ctx.cfg.configuration

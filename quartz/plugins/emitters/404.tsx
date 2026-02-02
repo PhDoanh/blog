@@ -12,11 +12,14 @@ import { i18n } from "../../i18n"
 
 export const NotFoundPage: QuartzEmitterPlugin = () => {
   const opts: FullPageLayout = {
-    ...sharedPageComponents,
-    pageBody: NotFound(),
+    head: sharedPageComponents.head,
+    header: [],
     beforeBody: [],
+    pageBody: NotFound(),
+    afterBody: [],
     left: [],
     right: [],
+    footer: sharedPageComponents.footer,
   }
 
   const { head: Head, pageBody, footer: Footer } = opts

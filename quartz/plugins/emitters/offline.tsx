@@ -19,13 +19,14 @@ interface Options {
 
 export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 	const opts: FullPageLayout = {
-		...sharedPageComponents,
+		head: sharedPageComponents.head,
 		header: [],
 		beforeBody: [],
 		pageBody: OfflineFallback(),
 		afterBody: [],
 		left: [],
 		right: [],
+		footer: sharedPageComponents.footer,
 	}
 
 	const { head: Head, pageBody, footer: Footer } = opts
@@ -83,8 +84,7 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 
 			const slug = "offline" as FullSlug;
 
-			const isLocalhost = typeof window !== "undefined" && window.location.hostname === "localhost";
-			const url = new URL(isLocalhost ? "http://localhost:8080" : `https://${cfg.configuration.baseUrl}`);
+			const url = new URL(`https://${cfg.configuration.baseUrl ?? "example.com"}`);
 			const path = url.pathname as FullSlug
 			const externalResources = pageResources(path, resources)
 			const noConnection = i18n(cfg.configuration.locale).pages.offlineFallback?.title || "Internet Disconnected!"
@@ -145,11 +145,11 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 				caches.open(CACHE_NAME)
 					.then(cache => {
 						// Cache precache pages, bỏ qua lỗi để không block install
-						return cache.addAll(${ JSON.stringify(precachePages)}).catch(err => {
+						return cache.addAll(${JSON.stringify(precachePages)}).catch(err => {
 							console.warn('[SW] Failed to precache some pages:', err);
 							// Thử cache từng page riêng lẻ
 							return Promise.allSettled(
-								${JSON.stringify(precachePages) }.map(url => 
+								${JSON.stringify(precachePages)}.map(url => 
 									cache.add(url).catch(e => console.warn(\`[SW] Failed to cache \${url}:\`, e))
 								)
 							);
