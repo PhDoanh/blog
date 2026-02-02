@@ -46,7 +46,7 @@ const defaultOptions: GraphOptions = {
 export default ((opts?: Partial<GraphOptions>) => {
   const BookmarksGraph: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
     const globalGraph = { ...defaultOptions.globalGraph, ...opts?.globalGraph }
-    const openBookmarksPage = i18n(cfg.locale).components.bookmarksGraph?.openBookmarksPage || "Open Garden Page"
+    const openBookmarksPage = i18n(cfg.locale).components.bookmarksGraph?.openBookmarksPage || "Open Garden"
     return (
       <div class={classNames(displayClass, "graph")}>
         <h3>{i18n(cfg.locale).components.bookmarksGraph?.title}</h3>

@@ -20,6 +20,7 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
+    // baseUrl: "localhost:8080",
     ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md"],
     defaultDateType: "modified",
     theme: {
@@ -93,6 +94,7 @@ const config: QuartzConfig = {
       Plugin.Static(),
       Plugin.Favicon(),
       Plugin.NotFoundPage(),
+      Plugin.BookmarksPage(),
       // Comment out CustomOgImages to speed up build time
       Plugin.CustomOgImages({
         excludeRoot: true,

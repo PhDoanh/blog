@@ -68,7 +68,7 @@ export default {
     },
     bookmarksGraph: {
       title: "Your Garden Graph",
-      openBookmarksPage: "Open Garden Page",
+      openBookmarksPage: "Open Garden",
     },
     recentNotes: {
       title: "Recent Notes",
