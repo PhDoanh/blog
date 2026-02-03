@@ -47,9 +47,13 @@ export const sharedPageComponents: SharedLayout = {
   header: [
     Component.Bookmark(),
     Component.MediaShare(),
-    Component.Graph2(
+    Component.EditThisPage({
+      owner: "PhDoanh",
+      repo: "content",
+    }),
+    Component.ArticleLinksGraph(
       {
-        config: {
+        localGraph: {
           scale: 1.5,
           linkDistance: 50,
           fontSize: 0.6,
@@ -57,18 +61,13 @@ export const sharedPageComponents: SharedLayout = {
           showTags: true,
           removeTags: ["explorable"],
           focusOnHover: true,
+          enableRadial: true,
         },
       }
     ),
-    Component.Translate(),
     Component.ReaderMode(),
-    Component.EditThisPage({
-      owner: "PhDoanh",
-      repo: "content",
-    }),
   ],
   afterBody: [
-    Component.MobileOnly(Component.Backlinks()),
     Component.RecentNotes({
       title: "Recent Articles",
       showTags: false,
@@ -79,6 +78,8 @@ export const sharedPageComponents: SharedLayout = {
         return fileDir === currentDir && f.slug !== fileData.slug;
       },
     }),
+    // YourGarden component, mobile only
+    Component.MobileOnly(Component.BookmarksGraph()),
     Component.Comments({
       provider: 'giscus',
       options: {
@@ -96,7 +97,7 @@ export const sharedPageComponents: SharedLayout = {
   footer: Component.Footer({
     links: {
       Email: "mailto:phdoanh285@gmail.com",
-      Community: "https://www.facebook.com/phdcreator",
+      Community: "https://www.facebook.com/techiesGarden",
       Donate: "https://ko-fi.com/pgdoanh",
       "Bug report": "https://github.com/PhDoanh/blog/issues/new?template=bug_report.md",
       "Feature request": "https://github.com/PhDoanh/blog/issues/new?template=feature_request.md",
@@ -124,8 +125,9 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left,
   right: [
+    // YourGarden component, desktop only
+    Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.DesktopOnly(Component.Backlinks()),
   ],
 }
 
@@ -138,7 +140,8 @@ export const defaultListPageLayout: PageLayout = {
   ],
   left,
   right: [
+    // YourGarden component, desktop only
+    Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
-    Component.DesktopOnly(Component.Backlinks()),
   ],
 }

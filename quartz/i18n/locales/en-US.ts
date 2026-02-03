@@ -26,8 +26,14 @@ export default {
       noBacklinksFound: "No backlinks found",
     },
     bookmark: {
-      title: "Bookmark",
-      tooltip: "",
+      title: "Plant",
+      tooltip: "Save offline",
+      addModalTitle: "Plant this article in your garden?",
+      addModalDescription: "This article will be downloaded to your device for offline reading.",
+      removeModalTitle: "Uproot this article from your garden?",
+      removeModalDescription: "This article will no longer be available offline.",
+      modalCancelButton: "Cancel",
+      modalConfirmButton: "Confirm",
     },
     mediaShare: {
       title: "Share",
@@ -35,20 +41,16 @@ export default {
       copyLink: "Copy Link",
       linkCopied: "Link copied!",
     },
-    translate: {
-      title: "Translate",
-      tooltip: "",
-    },
     editThisPage: {
-      title: "Edit this page",
+      title: "Edit",
       tooltip: "",
     },
     themeToggle: {
-      lightMode: "Light mode",
-      darkMode: "Dark mode",
+      lightMode: "Day mode",
+      darkMode: "Night mode",
     },
     readerMode: {
-      title: "Reader mode",
+      title: "Reading view",
       tooltip: "",
     },
     explorer: {
@@ -59,7 +61,14 @@ export default {
     },
     graph: {
       title: "Graph View",
+    },
+    articleLinksGraph: {
+      title: "See links",
       tooltip: "",
+    },
+    bookmarksGraph: {
+      title: "Your Garden Graph",
+      openBookmarksPage: "Open Garden",
     },
     recentNotes: {
       title: "Recent Notes",
@@ -90,19 +99,16 @@ export default {
       notFound: "Either this page is private or doesn't exist.",
       home: "Return to Homepage",
     },
-    translation: {
-      title: "Translation Not Available!",
-      translationRequest: "Feel free to contribute translations if you'd like.",
-      seeGuide: "See the Contribution Guide.",
-      preTranslation: "Back to previous translation.",
-    },
     offlineFallback: {
       title: "Internet Disconnected!",
-      description: "Check your connection and try again. Or read pages you've bookmarked while offline.",
+      description: "Check your connection and try again. Or check your garden to read articles you've marked as plant while offline.",
       home: "Return to Homepage",
     },
     bookmarks: {
-      title: "Bookmarks",
+      title: "Your Garden",
+      description: "Your Garden is private and offline. Thus, feel free to read articles anytime!",
+      itemsUnderBookmarks: ({ count }) =>
+        count === 0 ? "There are no articles in your garden yet." : `${count} article(s) in your garden.`,
     },
     folderContent: {
       folder: "Folder",

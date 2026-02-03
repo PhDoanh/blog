@@ -27,21 +27,23 @@ export interface Translation {
       title: string
       noBacklinksFound: string
     }
-    bookmark: {
+    bookmark?: {
       title: string
       tooltip: string
+      addModalTitle: string
+      addModalDescription: string
+      removeModalTitle: string
+      removeModalDescription: string
+      modalCancelButton: string
+      modalConfirmButton: string
     }
-    mediaShare: {
+    mediaShare?: {
       title: string
       tooltip: string
       copyLink: string
       linkCopied: string
     }
-    translate: {
-      title: string
-      tooltip: string
-    }
-    editThisPage: {
+    editThisPage?: {
       title: string
       tooltip: string
     }
@@ -51,7 +53,7 @@ export interface Translation {
     }
     readerMode: {
       title: string
-      tooltip: string
+      tooltip?: string
     }
     explorer: {
       title: string
@@ -61,7 +63,14 @@ export interface Translation {
     }
     graph: {
       title: string
+    }
+    articleLinksGraph?: {
+      title: string
       tooltip: string
+    }
+    bookmarksGraph?: {
+      title: string
+      openBookmarksPage: string
     }
     recentNotes: {
       title: string
@@ -92,12 +101,6 @@ export interface Translation {
       notFound: string
       home: string
     }
-    translation?: {
-      title: string
-      translationRequest: string
-      seeGuide: string
-      preTranslation: string
-    }
     offlineFallback?: {
       title: string
       description: string
@@ -105,6 +108,8 @@ export interface Translation {
     }
     bookmarks?: {
       title: string
+      description: string
+      itemsUnderBookmarks: (variables: { count: number }) => string
     }
     folderContent: {
       folder: string

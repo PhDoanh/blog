@@ -33,6 +33,39 @@ export default (() => {
     // Url of current page
     const socialUrl =
       fileData.slug === "404" ? url.toString() : joinSegments(url.toString(), fileData.slug!)
+    const canonicalUrl = socialUrl
+
+
+
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "@id": canonicalUrl,
+      url: canonicalUrl,
+      name: title,
+      description: description,
+      headline: title,
+      inLanguage: fileData.frontmatter?.lang ?? cfg.locale?.split("-")[0] ?? "en",
+      dateModified: fileData.dates?.modified?.toISOString(),
+      datePublished:
+        fileData.dates?.published?.toISOString() || fileData.dates?.created?.toISOString(),
+      author: {
+        "@type": "Person",
+        name: "Doanh",
+      },
+      publisher: {
+        "@type": "Person",
+        name: "Doanh",
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": canonicalUrl,
+      },
+      ...(fileData.frontmatter?.tags &&
+        fileData.frontmatter.tags.length > 0 && {
+        keywords: fileData.frontmatter.tags.join(", "),
+      }),
+    }
 
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
       (e) => e.name === CustomOgImagesEmitterName,
@@ -54,6 +87,7 @@ export default (() => {
           </>
         )}
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
+        <link rel="canonical" href={canonicalUrl} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <meta name="og:site_name" content={cfg.pageTitle}></meta>
@@ -93,8 +127,14 @@ export default (() => {
         {/* <link rel="icon" href={iconPath} /> */}
         <link rel="manifest" href={manifestPath} />
         <meta name="description" content={description} />
+        <meta name="author" content="Doanh" />
         <meta name="generator" content="Quartz" />
         <meta name="tags" content={tags} />
+        <meta
+          name="robots"
+          content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+        />
+
         <link href={fontStylePath} rel="stylesheet" type="text/css" spa-preserve />
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
@@ -108,6 +148,8 @@ export default (() => {
             return resource
           }
         })}
+
+        <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
       </head>
     )
   }

@@ -4,217 +4,270 @@
 
 // put your custom CSS here!
 :root[saved-theme="light"] {
-	--graph-bg-alpha: 0;
-	--header-btn-bg: var(--lightgray);
-	--box-shadow: rgba(0, 0, 0, 0.1);
+  --graph-bg-alpha: 0;
+  --header-btn-bg: var(--lightgray);
+  --box-shadow: rgba(0, 0, 0, 0.1);
 }
 
 :root[saved-theme="dark"] {
-	--graph-bg-alpha: 0.7;
-	--header-btn-bg: var(--lightgray);
-	--box-shadow: rgba(255, 255, 255, 0.1);
+  --graph-bg-alpha: 0.7;
+  --header-btn-bg: var(--lightgray);
+  --box-shadow: rgba(255, 255, 255, 0.1);
 }
 
 // Adjust font size in folder container - Explorer Component
 .folder-container div>a {
-	font-size: 1rem;
+  font-size: 1rem;
 }
+
 // Increase spacing between list items
 article ol li,
 article ul li {
-	margin-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 // Custom callout styles
 .callout {
-	--callout-icon-challenge: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJyYWluLWljb24gbHVjaWRlLWJyYWluIj48cGF0aCBkPSJNMTIgMThWNSIvPjxwYXRoIGQ9Ik0xNSAxM2E0LjE3IDQuMTcgMCAwIDEtMy00IDQuMTcgNC4xNyAwIDAgMS0zIDQiLz48cGF0aCBkPSJNMTcuNTk4IDYuNUEzIDMgMCAxIDAgMTIgNWEzIDMgMCAxIDAtNS41OTggMS41Ii8+PHBhdGggZD0iTTE3Ljk5NyA1LjEyNWE0IDQgMCAwIDEgMi41MjYgNS43NyIvPjxwYXRoIGQ9Ik0xOCAxOGE0IDQgMCAwIDAgMi03LjQ2NCIvPjxwYXRoIGQ9Ik0xOS45NjcgMTcuNDgzQTQgNCAwIDEgMSAxMiAxOGE0IDQgMCAxIDEtNy45NjctLjUxNyIvPjxwYXRoIGQ9Ik02IDE4YTQgNCAwIDAgMS0yLTcuNDY0Ii8+PHBhdGggZD0iTTYuMDAzIDUuMTI1YTQgNCAwIDAgMC0yLjUyNiA1Ljc3Ii8+PC9zdmc+');
-	--callout-icon-bell: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZy1pY29uIGx1Y2lkZS1iZWxsLXJpbmciPjxwYXRoIGQ9Ik0xMC4yNjggMjFhMiAyIDAgMCAwIDMuNDY0IDAiLz48cGF0aCBkPSJNMjIgOGMwLTIuMy0uOC00LjMtMi02Ii8+PHBhdGggZD0iTTMuMjYyIDE1LjMyNkExIDEgMCAwIDAgNCAxN2gxNmExIDEgMCAwIDAgLjc0LTEuNjczQzE5LjQxIDEzLjk1NiAxOCAxMi40OTkgMTggOEE2IDYgMCAwIDAgNiA4YzAgNC40OTktMS40MTEgNS45NTYtMi43MzggNy4zMjYiLz48cGF0aCBkPSJNNCAyQzIuOCAzLjcgMiA1LjcgMiA4Ii8+PC9zdmc+');
-	--closed-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1vZmYtaWNvbiBsdWNpZGUtZXllLW9mZiI+PHBhdGggZD0iTTEwLjczMyA1LjA3NmExMC43NDQgMTAuNzQ0IDAgMCAxIDExLjIwNSA2LjU3NSAxIDEgMCAwIDEgMCAuNjk2IDEwLjc0NyAxMC43NDcgMCAwIDEtMS40NDQgMi40OSIvPjxwYXRoIGQ9Ik0xNC4wODQgMTQuMTU4YTMgMyAwIDAgMS00LjI0Mi00LjI0MiIvPjxwYXRoIGQ9Ik0xNy40NzkgMTcuNDk5YTEwLjc1IDEwLjc1IDAgMCAxLTE1LjQxNy01LjE1MSAxIDEgMCAwIDEgMC0uNjk2IDEwLjc1IDEwLjc1IDAgMCAxIDQuNDQ2LTUuMTQzIi8+PHBhdGggZD0ibTIgMiAyMCAyMCIvPjwvc3ZnPg==');
-	--opened-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1pY29uIGx1Y2lkZS1leWUiPjxwYXRoIGQ9Ik0yLjA2MiAxMi4zNDhhMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSAxOS44NzYgMCAxIDEgMCAwIDEgMCAuNjk2IDEwLjc1IDEwLjc1IDAgMCAxLTE5Ljg3NiAwIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMyIvPjwvc3ZnPg==');
+  --callout-icon-challenge: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJyYWluLWljb24gbHVjaWRlLWJyYWluIj48cGF0aCBkPSJNMTIgMThWNSIvPjxwYXRoIGQ9Ik0xNSAxM2E0LjE3IDQuMTcgMCAwIDEtMy00IDQuMTcgNC4xNyAwIDAgMS0zIDQiLz48cGF0aCBkPSJNMTcuNTk4IDYuNUEzIDMgMCAxIDAgMTIgNWEzIDMgMCAxIDAtNS41OTggMS41Ii8+PHBhdGggZD0iTTE3Ljk5NyA1LjEyNWE0IDQgMCAwIDEgMi41MjYgNS43NyIvPjxwYXRoIGQ9Ik0xOCAxOGE0IDQgMCAwIDAgMi03LjQ2NCIvPjxwYXRoIGQ9Ik0xOS45NjcgMTcuNDgzQTQgNCAwIDEgMSAxMiAxOGE0IDQgMCAxIDEtNy45NjctLjUxNyIvPjxwYXRoIGQ9Ik02IDE4YTQgNCAwIDAgMS0yLTcuNDY0Ii8+PHBhdGggZD0iTTYuMDAzIDUuMTI1YTQgNCAwIDAgMC0yLjUyNiA1Ljc3Ii8+PC9zdmc+');
+  --callout-icon-bell: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZy1pY29uIGx1Y2lkZS1iZWxsLXJpbmciPjxwYXRoIGQ9Ik0xMC4yNjggMjFhMiAyIDAgMCAwIDMuNDY0IDAiLz48cGF0aCBkPSJNMjIgOGMwLTIuMy0uOC00LjMtMi02Ii8+PHBhdGggZD0iTTMuMjYyIDE1LjMyNkExIDEgMCAwIDAgNCAxN2gxNmExIDEgMCAwIDAgLjc0LTEuNjczQzE5LjQxIDEzLjk1NiAxOCAxMi40OTkgMTggOEE2IDYgMCAwIDAgNiA4YzAgNC40OTktMS40MTEgNS45NTYtMi43MzggNy4zMjYiLz48cGF0aCBkPSJNNCAyQzIuOCAzLjcgMiA1LjcgMiA4Ii8+PC9zdmc+');
+  --closed-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1vZmYtaWNvbiBsdWNpZGUtZXllLW9mZiI+PHBhdGggZD0iTTEwLjczMyA1LjA3NmExMC43NDQgMTAuNzQ0IDAgMCAxIDExLjIwNSA2LjU3NSAxIDEgMCAwIDEgMCAuNjk2IDEwLjc0NyAxMC43NDcgMCAwIDEtMS40NDQgMi40OSIvPjxwYXRoIGQ9Ik0xNC4wODQgMTQuMTU4YTMgMyAwIDAgMS00LjI0Mi00LjI0MiIvPjxwYXRoIGQ9Ik0xNy40NzkgMTcuNDk5YTEwLjc1IDEwLjc1IDAgMCAxLTE1LjQxNy01LjE1MSAxIDEgMCAwIDEgMC0uNjk2IDEwLjc1IDEwLjc1IDAgMCAxIDQuNDQ2LTUuMTQzIi8+PHBhdGggZD0ibTIgMiAyMCAyMCIvPjwvc3ZnPg==');
+  --opened-eye-icon: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWV5ZS1pY29uIGx1Y2lkZS1leWUiPjxwYXRoIGQ9Ik0yLjA2MiAxMi4zNDhhMSAxIDAgMCAxIDAtLjY5NiAxMC43NSAxMC43NSAwIDAgMSAxOS44NzYgMCAxIDEgMCAwIDEgMCAuNjk2IDEwLjc1IDEwLjc1IDAgMCAxLTE5Ljg3NiAwIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMyIvPjwvc3ZnPg==');
 
-	&[data-callout="bell"] {
-		--color: #db8942;
-		--border: #db894244;
-		--bg: #db894210;
-		--callout-icon: var(--callout-icon-bell);
-	}
+  &[data-callout="bell"] {
+    --color: #db8942;
+    --border: #db894244;
+    --bg: #db894210;
+    --callout-icon: var(--callout-icon-bell);
+  }
 
-		&[data-callout="challenge"] {
-			--color: #db8942;
-			--border: #db894244;
-			--bg: #db894210;
-			--callout-icon: var(--callout-icon-challenge);
-		}
-	&[data-callout="clear"] {
-		background-color: transparent;
-		border: none;
-		box-shadow: none;
-		padding: 0;
-		width: fit-content;
+  &[data-callout="challenge"] {
+    --color: #db8942;
+    --border: #db894244;
+    --bg: #db894210;
+    --callout-icon: var(--callout-icon-challenge);
+  }
 
-		&>.callout-title {
-			padding: 0;
-			margin: 0;
+  &[data-callout="clear"] {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    width: fit-content;
 
-			&>.callout-icon {
-				display: none;
-			}
+    &>.callout-title {
+      padding: 0;
+      margin: 0;
 
-			&>.callout-title-inner {
-				font-weight: inherit;
-				&>p {
-						color: var(--darkgray);
-				}
-			}
+      &>.callout-icon {
+        display: none;
+      }
 
-			&>.fold-callout-icon {
-				transform: none;
-				margin-left: 0.25rem;
-				mask-image: var(--opened-eye-icon);
-				background-color: var(--darkgray);
-				mask-size: contain;
-				mask-repeat: no-repeat;
-				width: 1rem;
-				height: 1rem;
-				cursor: pointer;
-				pointer-events: auto;
-			}
-		}
+      &>.callout-title-inner {
+        font-weight: inherit;
 
-		&.is-collapsed>.callout-title>.fold-callout-icon {
-			mask-image: var(--closed-eye-icon);
-		}
-	}
+        &>p {
+          color: var(--darkgray);
+        }
+      }
+
+      &>.fold-callout-icon {
+        transform: none;
+        margin-left: 0.25rem;
+        mask-image: var(--opened-eye-icon);
+        background-color: var(--darkgray);
+        mask-size: contain;
+        mask-repeat: no-repeat;
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+        pointer-events: auto;
+      }
+    }
+
+    &.is-collapsed>.callout-title>.fold-callout-icon {
+      mask-image: var(--closed-eye-icon);
+    }
+  }
 }
+
 // Customize the audio player controls
 audio::-webkit-media-controls-panel {
-	background-color: var(--lightgray);
+  background-color: var(--lightgray);
 }
 
-pre.handtext {
-	font-size: large;
-	font-family: 'Grape Nuts';
-	border: none;
-	padding: 0;
-	position: unset;
+b.handtext {
+  font-weight: normal;
+  font-size: large;
+  font-family: 'Grape Nuts';
 }
 
 .meta,
 .content-meta {
-	font-family: 'Grape Nuts', var(--bodyFont);
-	font-size: medium;
+  font-family: 'Grape Nuts', var(--bodyFont);
+  font-size: medium;
 }
+
 /* Định nghĩa scrollbar toàn cục */
 /* Cho Webkit (Chrome, Safari, Edge mới) */
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-	background: transparent;
+  background: transparent;
 }
 
 html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-	background: var(--gray);
+  background: var(--gray);
 }
 
 html::-webkit-scrollbar-thumb:hover,
 body::-webkit-scrollbar-thumb:hover {
-	background: var(--darkgray);
+  background: var(--darkgray);
 }
 
 /* Cho Firefox */
 html,
 body {
-	scrollbar-width: thin;
-	scrollbar-color: var(--gray) transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gray) transparent;
 }
 
 header {
-	margin: 0;
-	gap: 0.5rem;
-	overflow-x: auto;
-	overflow-y: hidden;
-	white-space: nowrap;
+  margin: 0;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .contributors,
 .contributors h3,
 .contributors-container {
-	margin: 0;
+  margin: 0;
+}
+
+ul.toc-content.overflow {
+  max-height: calc(50% - 2rem);
 }
 
 @media all and ($mobile) {
 
-	.page>#quartz-body .sidebar.left:has(.explorer) {
-			margin: 0 -1rem;
-			padding: 1rem;
-		}
-	
-		.explorer-content ul {
-			padding: 0 1rem;
-		}
-	
-		.contributors-container {
-			margin-bottom: 1rem;
-		}
-	.toc {
-		min-height: auto;
-		margin-bottom: 1.5rem;
-	}
+  .page>#quartz-body .sidebar.left:has(.explorer) {
+    margin: 0 -1rem;
+    padding: 1rem;
+  }
 
-	// Giữ mũi tên luôn mở rộng trên mobile
-	button.toc-header {
-		&.collapsed .fold {
-			transform: rotateZ(0deg);
-		}
-	}
+  .explorer-content ul {
+    padding: 0 1rem;
+  }
 
-	// Loại bỏ hiệu ứng mờ dần trên mobile và giữ chúng luôn sáng
-	ul.toc-content.overflow {
-		max-height: none;
+  .contributors-container {
+    margin-bottom: 1rem;
+  }
 
-		&>li>a {
-			opacity: 0.75;
-			transition: none;
+  .toc {
+    min-height: auto;
+    margin-bottom: 1.5rem;
+  }
 
-			&.in-view {
-				opacity: 0.75;
-			}
+  // Giữ mũi tên luôn mở rộng trên mobile
+  button.toc-header {
+    &.collapsed .fold {
+      transform: rotateZ(0deg);
+    }
+  }
 
-			&:hover {
-				opacity: 1;
-			}
-		}
+  // Loại bỏ hiệu ứng mờ dần trên mobile và giữ chúng luôn sáng
+  ul.toc-content.overflow {
+    max-height: none;
 
-		// Hiển thị nội dung TOC ngay cả khi đang ở trạng thái collapsed
-		&.collapsed {
-			display: block !important;
-		}
-	}
+    &>li>a {
+      opacity: 0.75;
+      transition: none;
 
-	footer {
-		text-align: center;
+      &.in-view {
+        opacity: 0.75;
+      }
 
-		& ul {
-			flex-direction: column;
-			gap: 0rem;
-			align-items: center;
-		}
-	}
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    // Hiển thị nội dung TOC ngay cả khi đang ở trạng thái collapsed
+    &.collapsed {
+      display: block !important;
+    }
+  }
+
+  footer {
+    text-align: center;
+
+    & ul {
+      flex-direction: column;
+      gap: 0rem;
+      align-items: center;
+    }
+  }
+}
+
+#quartz-root {
+  isolation: isolate;
+}
+
+body.animation-ready #quartz-body {
+  [saved-theme="dark"] & {
+    --animation-name: fade2;
+  }
+
+  [saved-theme="light"] & {
+    --animation-name: fade;
+  }
+
+  @for $i from 1 through 4 {
+    @for $j from 1 through 8 {
+      &>*:nth-child(#{$i})>*:nth-child(#{$j}) {
+        animation: var(--animation-name) 2s ease 1 normal backwards;
+        animation-delay: #{0.1 * $j + 0.4 * $i}s;
+      }
+    }
+  }
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade2 {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 // dappled light
 #dappled-light {
-	animation-duration: 0s;
-	animation-fill-mode: forwards;
-	animation-timing-function: linear;
-	pointer-events: none;
-	position: fixed;
-	height: 100vh;
-	width: 100vw;
-	isolation: isolate;
-	z-index: -1;
+  animation-duration: 0s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+  pointer-events: none;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  isolation: isolate;
+  z-index: -1; // Explicit stacking below content, above base
+  content-visibility: auto; // Allow browser to skip rendering when off-screen
+  contain: layout style paint; // Optimize rendering isolation
 
-	--day: #fffdfa;
+  --day: #fffdfa;
 	--evening: #fccc83;
 	--dusk: #db7a2a;
 	--night: #0a0f0a;
@@ -225,303 +278,295 @@ header {
 	--bounce-light: #fffffc;
 	--timing-fn: cubic-bezier(0.455, 0.19, 0, 0.985);
 
-	body.animation-ready & {
-		animation-play-state: running;
-		animation-duration: 1s;
-		animation-name: sunrise;
-	}
+  body.animation-ready & {
+    animation-play-state: running;
+    animation-duration: 1s;
+    animation-name: sunrise;
+  }
 
-	[saved-theme="dark"] body.animation-ready & {
-		animation-duration: 1.7s;
-		animation-name: sunset;
-	}
+  [saved-theme="dark"] body.animation-ready & {
+    animation-duration: 1.5s;
+    animation-name: sunset;
+  }
 
-	[saved-theme="dark"] & {
-		--shadow: #030704;
-		--bounce-light: #2b3f1b;
-	}
+  [saved-theme="dark"] & {
+    --shadow: #030704;
+    --bounce-light: #2b3f1b;
+  }
 
-	&>#progressive-blur {
-		position: absolute;
-		height: 100%;
-		width: 100%;
+  & > #progressive-blur {
+    position: absolute;
+    height: 100%;
+    width: 100%;
 
-		&>div {
-			position: absolute;
-			height: 100%;
-			width: 100%;
-			backdrop-filter: blur(var(--blur-amount));
-			mask-image: linear-gradient(252deg,
-					transparent,
-					transparent var(--stop1),
-					black var(--stop2),
-					black);
+    & > div {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      backdrop-filter: blur(var(--blur-amount));
+      will-change: backdrop-filter; // GPU acceleration hint
+      mask-image: linear-gradient(
+        252deg,
+        transparent,
+        transparent var(--stop1),
+        black var(--stop2),
+        black
+      );
 
-			&:nth-child(1) {
-				--blur-amount: 6px;
-				--stop1: 0%;
-				--stop2: 0%;
-			}
+      &:nth-child(1) {
+        --blur-amount: 8px;
+        --stop1: 0%;
+        --stop2: 0%;
+      }
 
-			&:nth-child(2) {
-				--blur-amount: 12px;
-				--stop1: 40%;
-				--stop2: 80%;
-			}
+      &:nth-child(2) {
+        --blur-amount: 72px;
+        --stop1: 30%;
+        --stop2: 60%;
+      }
+    }
+  }
 
-			&:nth-child(3) {
-				--blur-amount: 48px;
-				--stop1: 40%;
-				--stop2: 70%;
-			}
+  #glow {
+    position: absolute;
+    background: linear-gradient(309deg, var(--bounce-light), var(--bounce-light) 20%, transparent);
+    transition: background 1s var(--timing-fn);
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+  }
 
-			&:nth-child(4) {
-				--blur-amount: 96px;
-				--stop1: 70%;
-				--stop2: 80%;
-			}
-		}
-	}
+  #glow-bounce {
+    content: "";
+    position: absolute;
+    background: linear-gradient(355deg, var(--bounce-light) 0%, transparent 30%, transparent 100%);
+    transition: background 1s var(--timing-fn);
+    opacity: 0.5;
+    height: 100%;
+    width: 100%;
+    bottom: 0;
+  }
 
-	#glow {
-		position: absolute;
-		background: linear-gradient(309deg, var(--bounce-light), var(--bounce-light) 20%, transparent);
-		transition: background 1s var(--timing-fn);
-		height: 100%;
-		width: 100%;
-		opacity: 0.5;
-	}
+  & > .perspective {
+    position: absolute;
+    transition:
+      transform 1.7s var(--timing-fn),
+      opacity 4s ease;
+    top: -30vh;
+    right: 0;
+    width: 80vw;
+    height: 130vh;
+    opacity: 0.07;
+    background-blend-mode: darken;
+    transform-origin: top right;
+    transform-style: preserve-3d;
+    transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    will-change: transform, opacity; // Pre-allocate GPU layer for smooth transitions
 
-	#glow-bounce {
-		content: "";
-		position: absolute;
-		background: linear-gradient(355deg, var(--bounce-light) 0%, transparent 30%, transparent 100%);
-		transition: background 1s var(--timing-fn);
-		opacity: 0.5;
-		height: 100%;
-		width: 100%;
-		bottom: 0;
-	}
+    [saved-theme="dark"] & {
+      opacity: 0.3;
+      transform: matrix3d(0.8333, 0.0833, 0, 0.0003, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    }
+  }
 
-	&>.perspective {
-		position: absolute;
-		transition:
-			transform 1.7s var(--timing-fn),
-			opacity 4s ease;
-		top: -30vh;
-		right: 0;
-		width: 80vw;
-		height: 130vh;
-		opacity: 0.07;
-		background-blend-mode: darken;
-		transform-origin: top right;
-		transform-style: preserve-3d;
-		transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+  #leaves {
+    position: absolute;
+    background-size: cover;
+    background-repeat: no-repeat;
+    bottom: 0px;
+    right: -600px;
+    width: 1600px;
+    height: 1400px;
+    background-image: url("/static/leaves.webp");
+    perspective: 400px;
+    animation: billow 8s ease-in-out infinite;
+    will-change: transform; // GPU compositing for smooth animation
+  }
 
-		[saved-theme="dark"] & {
-			opacity: 0.3;
-			transform: matrix3d(0.8333, 0.0833, 0, 0.0003, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-		}
-	}
+  #blinds {
+    position: relative;
+    width: 100%;
 
-		#leaves {
-			position: absolute;
-			background-size: cover;
-			background-repeat: no-repeat;
-			bottom: -20px;
-			right: -700px;
-			width: 1600px;
-			height: 1400px;
-			background-image: url("./static/leaves.webp");
-			filter: url(#wind);
-			perspective: 400px;
-			animation: billow 8s ease-in-out infinite;
-		}
-	
-		#blinds {
-			position: relative;
-			width: 100%;
-	
-			& .shutter,
-			& .bar {
-				background-color: var(--shadow);
-			}
-	
-			& .shutter {
-				width: 100%;
-				height: 40px;
-				transition: height 1s var(--timing-fn);
-	
-				[saved-theme="dark"] & {
-					height: 80px;
-				}
-			}
-	
-			& .shutters {
-				display: flex;
-				flex-direction: column;
-				align-items: end;
-				gap: 60px;
-				transition: gap 1s var(--timing-fn);
-	
-				[saved-theme="dark"] & {
-					gap: 20px;
-				}
-			}
-	
-			&>.vertical {
-				top: 0;
-				position: absolute;
-				height: 100%;
-				width: 100%;
-				display: flex;
-				justify-content: space-around;
-	
-				&>.bar {
-					width: 5;
-					height: 100%;
-				}
-			}
-		}
-		}
-	
-		@keyframes sunrise {
-			0% {
-				background-color: var(--night);
-			}
-	
-			10% {
-				background-color: var(--dawn);
-			}
-	
-			35% {
-				background-color: var(--morning);
-			}
+    & .shutter,
+    & .bar {
+      background-color: var(--shadow);
+    }
 
-		100% {
-			background-color: var(--day);
-		}
-		}
-	
-		@keyframes sunset {
-			0% {
-				background-color: var(--day);
-			}
-	
-			30% {
-				background-color: var(--evening);
-			}
-	
-			60% {
-				background-color: var(--dusk);
-			}
-	
-			90% {
-				background-color: var(--dawn);
-			}
-	
-			100% {
-				background-color: var(--night);
-			}
-		}
-	
-		@keyframes billow {
-			0% {
-				transform: rotateX(0deg) rotateY(0deg) scale(1);
-			}
-	
-			25% {
-				transform: rotateX(1deg) rotateY(2deg) scale(1.03);
-			}
-	
-			50% {
-				transform: rotateX(-4deg) rotateY(-2deg) scale(0.96);
-			}
-	
-			75% {
-				transform: rotateX(3deg) rotateY(-1deg) scale(1.04);
-			}
-	
-			100% {
-				transform: rotateX(0deg) rotateY(0deg) scale(1);
-			}
-		}
-	
+    & .shutter {
+      width: 100%;
+      height: 40px;
+      transition: height 1s var(--timing-fn);
+
+      [saved-theme="dark"] & {
+        height: 80px;
+      }
+    }
+
+    & .shutters {
+      display: flex;
+      flex-direction: column;
+      align-items: end;
+      gap: 60px;
+      transition: gap 1s var(--timing-fn);
+
+      [saved-theme="dark"] & {
+        gap: 20px;
+      }
+    }
+
+    & > .vertical {
+      top: 0;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+
+      & > .bar {
+        width: 12px;
+        height: 100%;
+      }
+    }
+  }
+}
+
+@keyframes sunrise {
+  0% {
+    background-color: var(--night);
+  }
+
+  10% {
+    background-color: var(--dawn);
+  }
+
+  35% {
+    background-color: var(--morning);
+  }
+
+  100% {
+    background-color: var(--day);
+  }
+}
+
+@keyframes sunset {
+  0% {
+    background-color: var(--day);
+  }
+
+  30% {
+    background-color: var(--evening);
+  }
+
+  60% {
+    background-color: var(--dusk);
+  }
+
+  90% {
+    background-color: var(--dawn);
+  }
+
+  100% {
+    background-color: var(--night);
+  }
+}
+
+@keyframes billow {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
+  }
+
+  18% {
+    transform: rotateX(1deg) rotateY(2deg) scale(1.03);
+  }
+
+  32% {
+    transform: rotateX(-4deg) rotateY(-2deg) scale(0.96);
+  }
+
+  66% {
+    transform: rotateX(3deg) rotateY(-1deg) scale(1.04);
+  }
+
+  100% {
+    transform: rotateX(0deg) rotateY(0deg) scale(1);
+  }
+}
+
 @media all and ($desktop) {
 
-	/* Định nghĩa scrollbar cho các khối code */
-	pre,
-	code {
+  /* Định nghĩa scrollbar cho các khối code */
+  pre,
+  code {
 
-		/* Ẩn thanh cuộn mặc định */
-		&::-webkit-scrollbar {
-			width: 8px;
-			height: 8px;
-		}
+    /* Ẩn thanh cuộn mặc định */
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
 
-		&::-webkit-scrollbar-track {
-			background: transparent;
-		}
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-		&::-webkit-scrollbar-thumb {
-			background: var(--gray);
-			border-radius: 4px;
-			opacity: 0;
-			transition: opacity 0.1s
-		}
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.1s
+    }
 
-		/* Hiển thị thanh cuộn khi hover với hiệu ứng fade in */
-		&:hover::-webkit-scrollbar-thumb {
-			opacity: 0.6;
-		}
+    /* Hiển thị thanh cuộn khi hover với hiệu ứng fade in */
+    &:hover::-webkit-scrollbar-thumb {
+      opacity: 0.6;
+    }
 
-		/* Hiệu ứng khi hover vào thanh cuộn */
-		&::-webkit-scrollbar-thumb:hover {
-			background: var(--darkgray);
-			opacity: 0.8;
-		}
+    /* Hiệu ứng khi hover vào thanh cuộn */
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--darkgray);
+      opacity: 0.8;
+    }
 
-		/* Cho Firefox */
-		scrollbar-width: thin;
-		scrollbar-color: transparent transparent;
-		transition: scrollbar-color 0.1s;
+    /* Cho Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.1s;
 
-		&:hover {
-			scrollbar-color: var(--gray) transparent;
-		}
-	}
+    &:hover {
+      scrollbar-color: var(--gray) transparent;
+    }
+  }
 
-	header {
-		scrollbar-width: thin;
-		scrollbar-color: transparent transparent;
-		transition: scrollbar-color 0.1s;
-	
-		&::-webkit-scrollbar {
-			height: 8px;
-		}
-	
-		&::-webkit-scrollbar-track {
-			background: transparent;
-		}
-	
-		&::-webkit-scrollbar-thumb {
-			background: var(--gray);
-			border-radius: 4px;
-			opacity: 0;
-			transition: opacity 0.1s;
-		}
-	
-		&:hover::-webkit-scrollbar-thumb {
-			opacity: 0.6;
-		}
-	
-		&::-webkit-scrollbar-thumb:hover {
-			background: var(--darkgray);
-			opacity: 0.8;
-		}
-	
-		&:hover {
-			scrollbar-color: var(--gray) transparent;
-		}
-	}
+  header {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.1s;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      opacity: 0.6;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--darkgray);
+      opacity: 0.8;
+    }
+
+    &:hover {
+      scrollbar-color: var(--gray) transparent;
+    }
+  }
 }

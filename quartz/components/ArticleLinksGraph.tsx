@@ -1,7 +1,7 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
-// @ts-ignore
-import script from "./scripts/graph2.inline"
-import style from "./styles/graph2.scss"
+// @ts-expect-error importing inline script
+import script from "./scripts/articleLinksGraph.inline"
+import style from "./styles/articleLinksGraph.scss"
 import { classNames } from "../util/lang"
 import { i18n } from "../i18n"
 
@@ -22,11 +22,11 @@ export interface D3Config {
 }
 
 interface GraphOptions {
-	config: Partial<D3Config> | undefined
+	localGraph: Partial<D3Config> | undefined
 }
 
 const defaultOptions: GraphOptions = {
-	config: {
+	localGraph: {
 		drag: true,
 		zoom: true,
 		depth: 1,
@@ -44,22 +44,32 @@ const defaultOptions: GraphOptions = {
 }
 
 export default ((opts?: Partial<GraphOptions>) => {
-	const Graph2: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
-		const config = { ...defaultOptions.config, ...opts?.config }
+	const ArticleLinksGraph: QuartzComponent = ({ displayClass, cfg }: QuartzComponentProps) => {
+		const localGraph = { ...defaultOptions.localGraph, ...opts?.localGraph }
 		return (
 			<div class={classNames(displayClass, "graph")}>
-				<button class="graph-trigger-button" aria-label={i18n(cfg.locale).components.graph.title} title={i18n(cfg.locale).components.graph.tooltip}>
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-git-fork-icon lucide-git-fork">
-						<circle cx="12" cy="18" r="3" />
-						<circle cx="6" cy="6" r="3" />
-						<circle cx="18" cy="6" r="3" />
-						<path d="M18 9v2c0 .6-.4 1-1 1H7c-.6 0-1-.4-1-1V9" />
-						<path d="M12 12v3" />
+				<button
+					class="graph-trigger-button"
+					aria-label={i18n(cfg.locale).components.articleLinksGraph?.title || "See links"}
+					title={i18n(cfg.locale).components.articleLinksGraph?.tooltip || ""}>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="20"
+						height="20"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						class="lucide lucide-link-icon lucide-link">
+						<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+						<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
 					</svg>
-					<span class="graph-text">{i18n(cfg.locale).components.graph.title}</span>
+					<span class="graph-text">{i18n(cfg.locale).components.articleLinksGraph?.title || "See links"}</span>
 				</button>
 				<div class="graph-container-outer">
-					<div class="graph-container" data-cfg={JSON.stringify(config)}></div>
+					<div class="graph-container" data-cfg={JSON.stringify(localGraph)}></div>
 					<button class="graph-close-button" aria-label="Close Graph">
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
@@ -81,8 +91,8 @@ export default ((opts?: Partial<GraphOptions>) => {
 		)
 	}
 
-	Graph2.css = style
-	Graph2.afterDOMLoaded = script
+	ArticleLinksGraph.css = style
+	ArticleLinksGraph.afterDOMLoaded = script
 
-	return Graph2
+	return ArticleLinksGraph
 }) satisfies QuartzComponentConstructor
