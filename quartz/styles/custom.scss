@@ -7,12 +7,90 @@
   --graph-bg-alpha: 0;
   --header-btn-bg: var(--lightgray);
   --box-shadow: rgba(0, 0, 0, 0.1);
+
+  --tag-beginner-bg: #e3f0ff;   
+  --tag-beginner-color: #2257a6;
+  --tag-intermediate-bg: #ffe7c2; 
+  --tag-intermediate-color: #b26a00;
+  --tag-advanced-bg: #ffd6d6;
+  --tag-advanced-color: #b22222;
+  --tag-expert-bg: #f0e3ff;
+  --tag-expert-color: #6c2eb7;
 }
 
 :root[saved-theme="dark"] {
   --graph-bg-alpha: 0.7;
   --header-btn-bg: var(--lightgray);
   --box-shadow: rgba(255, 255, 255, 0.1);
+
+  --tag-beginner-bg: #1a2333;
+  --tag-beginner-color: #7db0ff;
+  --tag-intermediate-bg: #3a2a1a;
+  --tag-intermediate-color: #ffb347;
+  --tag-advanced-bg: #3a1a1a;
+  --tag-advanced-color: #ff7b7b;
+  --tag-expert-bg: #2a1a3a;
+  --tag-expert-color: #c299ff;
+}
+
+// Beginner
+a.internal.tag-link[href$="tags/Beginner"] {
+  background: var(--tag-beginner-bg);
+  color: var(--tag-beginner-color);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.1rem;
+}
+a.internal.tag-link[href$="tags/Beginner"]::before {
+  content: "Level: ";
+  color: var(--tag-beginner-color);
+  font-weight: normal;
+}
+
+// Intermediate
+a.internal.tag-link[href$="tags/Intermediate"] {
+  background: var(--tag-intermediate-bg);
+  color: var(--tag-intermediate-color);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.1rem;
+}
+a.internal.tag-link[href$="tags/Intermediate"]::before {
+  content: "Level: ";
+  color: var(--tag-intermediate-color);
+  font-weight: normal;
+}
+
+// Advanced
+a.internal.tag-link[href$="tags/Advanced"] {
+  background: var(--tag-advanced-bg);
+  color: var(--tag-advanced-color);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.1rem;
+}
+a.internal.tag-link[href$="tags/Advanced"]::before {
+  content: "Level: ";
+  color: var(--tag-advanced-color);
+  font-weight: normal;
+}
+
+// Expert
+a.internal.tag-link[href$="tags/Expert"] {
+  background: var(--tag-expert-bg);
+  color: var(--tag-expert-color);
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 0.2rem 0.4rem;
+  margin: 0 0.1rem;
+}
+a.internal.tag-link[href$="tags/Expert"]::before {
+  content: "Level: ";
+  color: var(--tag-expert-color);
+  font-weight: normal;
 }
 
 // Adjust font size in folder container - Explorer Component
@@ -146,7 +224,7 @@ header {
 }
 
 ul.toc-content.overflow {
-  max-height: calc(50% - 2rem);
+  max-height: 250px;
 }
 
 @media all and ($mobile) {
@@ -377,7 +455,7 @@ body.animation-ready #quartz-body {
     right: -600px;
     width: 1600px;
     height: 1400px;
-    background-image: url("/static/leaves.webp");
+    background-image: url("./static/leaves.webp");
     perspective: 400px;
     animation: billow 8s ease-in-out infinite;
     will-change: transform; // GPU compositing for smooth animation
