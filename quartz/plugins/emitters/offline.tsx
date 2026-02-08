@@ -13,11 +13,7 @@ import { ProcessedContent } from "../vfile"
 import { write } from "./helpers"
 import { i18n } from "../../i18n"
 
-interface Options {
-	precachePages?: string[]
-}
-
-export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
+export const Offline: QuartzEmitterPlugin = () => {
 	const opts: FullPageLayout = {
 		head: sharedPageComponents.head,
 		header: [],
@@ -33,8 +29,10 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 	const Body = BodyConstructor()
 
 	const precachePages = Array.from(new Set([
-		"./offline.html",
-		...(usrOpts?.precachePages ?? [])
+		"./", // homepage
+		"./bookmarks",
+		"./offline",
+		"./404",
 	]))
 
 	return {
@@ -115,16 +113,16 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 		imageCache();
 		offlineFallback({ pageFallback: './offline.html' });
 
-		const CACHE_NAME = 'quartz-bookmark-cache-v2';
+		const CACHE_NAME = 'quartz-bookmark-cache-v3';
 		const OLD_CACHE_NAME = 'quartz-bookmark-cache-v1';
-		const MAX_CACHE_SIZE = 50; // Giới hạn số trang cache
-		const NETWORK_TIMEOUT = 3000; // 3 giây timeout cho network request
+		const MAX_CACHE_SIZE = 100;
+		const NETWORK_TIMEOUT = 3000;
 
-		// Utility: Normalize URL để tránh duplicate cache entries
+		// Utility: Normalize URL to avoid duplicate cache entries
 		const normalizeUrl = (url) => {
 			const normalized = new URL(url, self.location.origin);
-			normalized.hash = ''; // Bỏ hash
-			return normalized.pathname; // Chỉ lấy pathname, bỏ query params nếu cần
+			normalized.hash = '';
+			return normalized.pathname;
 		};
 
 		// Utility: Trim cache to max size using LRU strategy
@@ -132,22 +130,22 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 			const cache = await caches.open(cacheName);
 			const keys = await cache.keys();
 			if (keys.length > maxSize) {
-				// Xóa các entries cũ nhất (giả định keys được sắp xếp theo thứ tự thêm vào)
+				// Delete oldest entries (assuming keys are ordered by insertion time)
 				const keysToDelete = keys.slice(0, keys.length - maxSize);
 				await Promise.all(keysToDelete.map(key => cache.delete(key)));
 			}
 		};
 
-		// Install event: Precache essential pages (không validate để tăng tốc độ)
+		// Install event: Precache essential pages
 		self.addEventListener('install', event => {
-			console.log('[SW] Installing service worker v2');
+			console.log('[SW] Installing service worker v3');
 			event.waitUntil(
 				caches.open(CACHE_NAME)
 					.then(cache => {
-						// Cache precache pages, bỏ qua lỗi để không block install
+						// Cache precache pages
 						return cache.addAll(${JSON.stringify(precachePages)}).catch(err => {
 							console.warn('[SW] Failed to precache some pages:', err);
-							// Thử cache từng page riêng lẻ
+							// Try caching pages individually
 							return Promise.allSettled(
 								${JSON.stringify(precachePages)}.map(url => 
 									cache.add(url).catch(e => console.warn(\`[SW] Failed to cache \${url}:\`, e))
@@ -155,13 +153,13 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 							);
 						});
 					})
-					.then(() => self.skipWaiting()) // Activate ngay lập tức
+					.then(() => self.skipWaiting()) // Activate immediately
 			);
 		});
 
 		// Activate event: Clean up old caches
 		self.addEventListener('activate', event => {
-			console.log('[SW] Activating service worker v2');
+			console.log('[SW] Activating service worker v3');
 			event.waitUntil(
 				caches.keys()
 					.then(cacheNames => {
@@ -197,7 +195,7 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 							await cache.put(normalizedUrl, response.clone());
 							await trimCache(CACHE_NAME, MAX_CACHE_SIZE);
 
-							// Gửi phản hồi về client
+							// Send response back to client
 							event.ports[0]?.postMessage({ success: true, url });
 							console.log('[SW] Cached page:', normalizedUrl);
 						} else {
@@ -233,34 +231,28 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 					const cache = await caches.open(CACHE_NAME);
 					const normalizedPath = normalizeUrl(event.request.url);
 
-					// Network-first với timeout
+					// Network-first with timeout
 					const networkPromise = fetch(event.request).then(async response => {
 						if (response && response.ok) {
-							// Cập nhật cache trong background (không chặn response)
-							const responseClone = response.clone();
-							cache.put(normalizedPath, responseClone).then(() => {
-								trimCache(CACHE_NAME, MAX_CACHE_SIZE);
-							}).catch(err => console.warn('[SW] Cache update failed:', err));
-
 							return response;
 						}
 
-						// Nếu là 404, return luôn (không fallback to cache)
+						// If 404, return immediately (do not fallback to cache)
 						if (response && response.status === 404) {
 							return response;
 						}
 
-						// Các status code khác, throw để fallback to cache
+						// Other status codes, throw to fallback to cache
 						throw new Error('Response not OK');
 					});
 
-					// Tạo timeout promise
+					// Create timeout promise
 					const timeoutPromise = new Promise((_, reject) => {
 						setTimeout(() => reject(new Error('Network timeout')), NETWORK_TIMEOUT);
 					});
 
 					try {
-						// Race giữa network và timeout
+						// Race between network and timeout
 						return await Promise.race([networkPromise, timeoutPromise]);
 					} catch (error) {
 						console.warn(\`[SW] Network failed for \${normalizedPath}, using cache:\`, error.message);
@@ -271,7 +263,7 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 							return cachedResponse;
 						}
 
-						// Cuối cùng fallback to offline page
+						// Finally fallback to offline page
 						return cache.match('./offline.html') || new Response('Offline', {
 							status: 503,
 							statusText: 'Service Unavailable'
@@ -281,7 +273,7 @@ export const Offline: QuartzEmitterPlugin<Options> = (usrOpts) => {
 			);
 		});
 
-		console.log('[SW] Service Worker v2 loaded');
+		console.log('[SW] Service Worker v3 loaded');
 			`;
 
 			yield write({
