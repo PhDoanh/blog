@@ -1,17 +1,6 @@
 import { QuartzComponentProps } from "../types"
 import { i18n } from "../../i18n"
 
-function updateOnlineStatus() {
-	if (navigator.onLine) {
-		document.body.classList.remove('offline');
-	} else {
-		document.body.classList.add('offline');
-	}
-}
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
-updateOnlineStatus();
-
 // Bookmark logic
 function getBookmarks() {
 	try {

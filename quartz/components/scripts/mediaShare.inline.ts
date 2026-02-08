@@ -13,16 +13,17 @@ function createShareDropdown() {
 		document.body.removeChild(existingDropdown);
 	}
 
-	const shareButton = document.getElementById('share-button');
-	if (!shareButton) return;
+	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
+	if (!shareButtons.length) return;
 
-	// Lấy dữ liệu từ data attributes
-	const url = shareButton.getAttribute('data-url') || window.location.href;
+	// Lấy dữ liệu từ data attributes của nút đầu tiên
+	const firstButton = shareButtons[0];
+	const url = firstButton.getAttribute('data-url') || window.location.href;
 	const encodedUrl = encodeURIComponent(url);
-	const platformsStr = shareButton.getAttribute('data-platforms');
+	const platformsStr = firstButton.getAttribute('data-platforms');
 	const platforms = platformsStr ? JSON.parse(platformsStr) : ["facebook", "linkedin", "reddit"];
-	const showCopy = shareButton.getAttribute('data-show-copy') !== 'false';
-	const locale = shareButton.getAttribute('data-locale') || 'en-US';
+	const showCopy = firstButton.getAttribute('data-show-copy') !== 'false';
+	const locale = firstButton.getAttribute('data-locale') || 'en-US';
 
 	// Tạo dropdown
 	const dropdown = document.createElement('div');
@@ -138,12 +139,13 @@ function createShareDropdown() {
 
 // Tính vị trí dropdown dựa trên vị trí button
 function positionDropdown() {
-	const shareButton = document.getElementById('share-button');
+	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
 	const dropdown = document.getElementById('share-dropdown');
 
-	if (!shareButton || !dropdown) return;
+	if (!shareButtons.length || !dropdown) return;
 
-	const buttonRect = shareButton.getBoundingClientRect();
+	// Ưu tiên nút đầu tiên
+	const buttonRect = shareButtons[0].getBoundingClientRect();
 
 	// Vị trí ban đầu của dropdown sẽ ở dưới button, bên phải căn chỉnh
 	dropdown.style.top = `${buttonRect.bottom}px`;
@@ -163,8 +165,8 @@ function positionDropdown() {
 
 function setupMediaShareEvents() {
 	// Đảm bảo chỉ có một dropdown
-	const shareButton = document.getElementById('share-button');
-	if (!shareButton) {
+	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
+	if (!shareButtons.length) {
 		// Button chưa được tạo, thử lại sau
 		if (!(window as any).__mediaShareRetry) (window as any).__mediaShareRetry = 0;
 		if ((window as any).__mediaShareRetry++ < 20) {
@@ -182,7 +184,9 @@ function setupMediaShareEvents() {
 	if (!dropdown) return;
 
 	// Xóa event cũ nếu có
-	if (toggleDropdown) shareButton.removeEventListener('click', toggleDropdown);
+	for (const btn of shareButtons) {
+		if (toggleDropdown) btn.removeEventListener('click', toggleDropdown);
+	}
 	if (closeDropdownOutside) document.removeEventListener('click', closeDropdownOutside);
 	if (copyLink && copyLinkButton) copyLinkButton.removeEventListener('click', copyLink);
 
@@ -198,17 +202,15 @@ function setupMediaShareEvents() {
 	};
 
 	closeDropdownOutside = function (e: MouseEvent) {
-		if (
-			!shareButton.contains(e.target as Node) &&
-			!dropdown.contains(e.target as Node)
-		) {
+		const clickedInsideButton = shareButtons.some(btn => btn.contains(e.target as Node));
+		if (!clickedInsideButton && !dropdown.contains(e.target as Node)) {
 			dropdown.classList.remove('active');
 		}
 	};
 
 	if (copyLinkButton) {
 		copyLink = function () {
-			const url = shareButton.getAttribute('data-url') || window.location.href;
+			const url = shareButtons[0].getAttribute('data-url') || window.location.href;
 			navigator.clipboard.writeText(url).then(() => {
 				// Hiển thị thông báo
 				const feedbackEl = document.querySelector('.copy-feedback');
@@ -218,11 +220,11 @@ function setupMediaShareEvents() {
 
 				const feedback = document.createElement('div');
 				feedback.className = 'copy-feedback';
-				const locale = shareButton.getAttribute('data-locale') || 'en-US';
+				const locale = shareButtons[0].getAttribute('data-locale') || 'en-US';
 				feedback.textContent = i18n(locale as any).components.mediaShare?.linkCopied ?? "Link copied!";
 
 				// Gán vị trí cho feedback dựa trên vị trí button
-				const buttonRect = shareButton.getBoundingClientRect();
+				const buttonRect = shareButtons[0].getBoundingClientRect();
 				feedback.style.top = `${buttonRect.top - 40}px`;
 				feedback.style.left = `${buttonRect.left}px`;
 
@@ -248,8 +250,10 @@ function setupMediaShareEvents() {
 		copyLinkButton.addEventListener('click', copyLink);
 	}
 
-	// Gắn event
-	shareButton.addEventListener('click', toggleDropdown);
+	// Gắn event cho tất cả các nút
+	for (const btn of shareButtons) {
+		btn.addEventListener('click', toggleDropdown);
+	}
 	document.addEventListener('click', closeDropdownOutside);
 
 	// Cập nhật vị trí khi resize
@@ -274,3 +278,20 @@ document.addEventListener('nav', () => {
 	// Thiết lập lại
 	setupMediaShareEvents();
 });
+
+// function updateShareButtonState() {
+// 	const isOnline = navigator.onLine;
+// 	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
+// 	for (const shareButton of shareButtons) {
+// 		if (isOnline) {
+// 			shareButton.disabled = false;
+// 			shareButton.classList.remove('disabled');
+// 		} else {
+// 			shareButton.disabled = true;
+// 			shareButton.classList.add('disabled');
+// 		}
+// 	}
+// }
+
+// document.addEventListener("nav", updateShareButtonState);
+// document.addEventListener("DOMContentLoaded", updateShareButtonState);
