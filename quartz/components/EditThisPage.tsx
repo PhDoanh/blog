@@ -1,5 +1,6 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types";
 import { i18n } from "../i18n";
+import { classNames } from "../util/lang";
 
 interface Options {
 	// GitHub repository details
@@ -9,23 +10,24 @@ interface Options {
 
 export default ((opts: Options) => {
 
-	function EditThisPage({ fileData, cfg }: QuartzComponentProps) {
+	function EditThisPage({ fileData, cfg, displayClass }: QuartzComponentProps) {
 		const fileRelativePath = fileData.relativePath;
 		const editUrl = `https://github.com/${opts.owner}/${opts.repo}/edit/main/${fileRelativePath}`;
 
 		return (
 			<a
 				href={editUrl}
-				class="edit-page-btn"
+				class={classNames(displayClass, "edit-page-btn")}
 				target="_blank"
 				rel="noopener noreferrer"
 				title={i18n(cfg.locale).components.editThisPage?.tooltip ?? ""}
 				aria-label={i18n(cfg.locale).components.editThisPage?.title ?? "Edit this page"}
+				role="button"
 			>
 				<svg
 					class="edit-icon"
-					width="24"
-					height="24"
+					width="20"
+					height="20"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
@@ -54,11 +56,6 @@ export default ((opts: Options) => {
 		justify-content: center;
 		color: var(--darkgray);
 		gap: 5px;
-    }
-
-    .edit-page-btn svg {
-		width: 20px;
-		height: 20px;
     }
 
     .edit-page-btn:hover {

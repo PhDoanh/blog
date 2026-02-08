@@ -3,14 +3,15 @@ import script from "./scripts/bookmark.inline"
 import style from "./styles/bookmark.scss"
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { i18n } from "../i18n"
+import { classNames } from "../util/lang"
 
 export default (() => {
-	function Bookmark({ fileData, cfg }: QuartzComponentProps) {
+	function Bookmark({ fileData, cfg, displayClass }: QuartzComponentProps) {
 		const slug = fileData.slug
 		return (
 			<button
 				id="bookmark-btn"
-				class="bookmark-btn"
+				class={classNames(displayClass, "bookmark-btn")}
 				data-slug={slug}
 				title={i18n(cfg.locale).components.bookmark?.tooltip ?? ""}
 				aria-label={i18n(cfg.locale).components.bookmark?.title ?? "Bookmark"}
@@ -18,8 +19,8 @@ export default (() => {
 				<svg
 					class="bookmark-icon"
 					xmlns="http://www.w3.org/2000/svg"
-					width="24"
-					height="24"
+					width="20"
+					height="20"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
