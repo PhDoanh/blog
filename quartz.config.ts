@@ -99,7 +99,7 @@ const config: QuartzConfig = {
       Plugin.CustomOgImages({
         excludeRoot: true,
       }),
-      Plugin.Offline({ precachePages: ["./"] }),
+      Plugin.Offline(),
     ],
   },
 }
