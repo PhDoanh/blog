@@ -12,11 +12,6 @@
 	gap: 5px;
 }
 
-.bookmark-btn svg {
-	width: 20px;
-	height: 20px;
-}
-
 .bookmark-btn:hover {
 	background-color: var(--header-btn-bg, --lightgray);
 }
@@ -93,18 +88,4 @@
 .bookmark-modal-btn.secondary {
 	background: var(--lightgray);
 	color: var(--darkgray);
-}
-
-.offline-notice {
-	display: none;
-	background: #ffeaea;
-	color: #b71c1c;
-	padding: 0.5rem 1rem;
-	border-radius: 4px;
-	margin-bottom: 1rem;
-	text-align: center;
-}
-
-body.offline .offline-notice {
-	display: block;
 }

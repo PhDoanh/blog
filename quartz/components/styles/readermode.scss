@@ -1,35 +1,39 @@
 .readermode {
-  cursor: pointer;
-  position: relative;
-  background: none;
-  border: none;
-  border-radius: 4px;
-  padding: 0.69rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: var(--darkgray);
-  transition: background-color 0.2s;
-  gap: 5px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0.69rem;
+	transition: background-color 0.2s;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--darkgray);
+	border-radius: 4px;
+	gap: 5px;
+}
 
+.readermode:hover {
+  background-color: var(--header-btn-bg, --lightgray);
+}
 
-  &:hover {
-    background-color: var(--header-btn-bg, --lightgray);
-  }
+.readermode svg {
+  top: calc(50% - 10px);
+  fill: none;
+  stroke: var(--darkgray);
+  transition: opacity 0.1s ease;
+}
 
-  & svg {
-    width: 20px;
-    height: 20px;
-    top: calc(50% - 10px);
-    fill: none;
-    stroke: var(--darkgray);
-    transition: opacity 0.1s ease;
-  }
+.readermode-text {
+  font-size: 1rem;
+  font-weight: 500;
+}
 
-  .readermode-text {
-    font-size: 1rem;
-    font-weight: 500;
-  }
+.readermode.active .readermode-icon {
+	stroke: var(--secondary);
+}
+
+.readermode.active .readermode-text {
+	color: var(--secondary);
 }
 
 :root[reader-mode="on"] {

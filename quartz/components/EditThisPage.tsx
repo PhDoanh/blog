@@ -1,31 +1,29 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types";
 import { i18n } from "../i18n";
+import { classNames } from "../util/lang";
+import { joinSegments } from "../util/path";
 
-interface Options {
-	// GitHub repository details
-	owner: string
-	repo: string
-}
+export default (() => {
 
-export default ((opts: Options) => {
-
-	function EditThisPage({ fileData, cfg }: QuartzComponentProps) {
-		const fileRelativePath = fileData.relativePath;
-		const editUrl = `https://github.com/${opts.owner}/${opts.repo}/edit/main/${fileRelativePath}`;
+	function EditThisPage({ fileData, cfg, displayClass }: QuartzComponentProps) {
+		const fileRelativePath = fileData.relativePath || "";
+		const [firstFolder, ...rest] = fileRelativePath.split("/");
+		const editUrl = joinSegments(cfg.baseUrl ?? "", "admin/index.htm#/collections", firstFolder, "entries" ,rest.join("/").replace(/\.[^/.]+$/, ""));
 
 		return (
 			<a
 				href={editUrl}
-				class="edit-page-btn"
+				class={classNames(displayClass, "edit-page-btn")}
 				target="_blank"
 				rel="noopener noreferrer"
 				title={i18n(cfg.locale).components.editThisPage?.tooltip ?? ""}
 				aria-label={i18n(cfg.locale).components.editThisPage?.title ?? "Edit this page"}
+				role="button"
 			>
 				<svg
 					class="edit-icon"
-					width="24"
-					height="24"
+					width="20"
+					height="20"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="currentColor"
@@ -56,11 +54,6 @@ export default ((opts: Options) => {
 		gap: 5px;
     }
 
-    .edit-page-btn svg {
-		width: 20px;
-		height: 20px;
-    }
-
     .edit-page-btn:hover {
 		background-color: var(--header-btn-bg, --lightgray);
 		color: var(--darkgray);
@@ -72,4 +65,4 @@ export default ((opts: Options) => {
     }`;
 
 	return EditThisPage;
-}) satisfies QuartzComponentConstructor<Options>;
+}) satisfies QuartzComponentConstructor;

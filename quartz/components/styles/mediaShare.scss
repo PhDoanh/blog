@@ -1,29 +1,29 @@
-.media-share {
-	position: relative;
-	display: inline-block;
-}
-
 .share-button {
-	background: none;
+	background: transparent;
 	border: none;
 	cursor: pointer;
 	padding: 0.69rem;
-	display: flex;
+	transition: background-color 0.2s;
+	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	color: var(--darkgray);
-	transition: background-color 0.3s;
 	border-radius: 4px;
-		gap: 5px;
-	}
+	gap: 5px;
+}
 	
-	.share-button:hover {
-		background-color: var(--header-btn-bg, --lightgray);
-	}
-	
-	.share-text {
-		font-size: 1rem;
-		font-weight: 500;
+.share-button:hover {
+	background-color: var(--header-btn-bg, --lightgray);
+}
+
+.share-button.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.share-text {
+	font-size: 1rem;
+	font-weight: 500;
 }
 
 /* Styles for dropdown that will be created via JavaScript */

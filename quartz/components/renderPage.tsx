@@ -28,6 +28,14 @@ export function pageResources(
 ): StaticResources {
   const contentIndexPath = joinSegments(baseDir, "static/contentIndex.json")
   const contentIndexScript = `const fetchData = fetch("${contentIndexPath}").then(data => data.json())`
+  const networkStatusScript = `
+  function updateOnlineStatus() {
+	  localStorage.setItem('network-status', navigator.onLine ? 'online' : 'offline');
+  }
+  window.addEventListener('online', updateOnlineStatus);
+  window.addEventListener('offline', updateOnlineStatus);
+  updateOnlineStatus();
+  `
 
   const resources: StaticResources = {
     css: [
@@ -47,6 +55,12 @@ export function pageResources(
         contentType: "inline",
         spaPreserve: true,
         script: contentIndexScript,
+      },
+      {
+        loadTime: "beforeDOMReady",
+        contentType: "inline",
+        spaPreserve: true,
+        script: networkStatusScript,
       },
       ...staticResources.js,
     ],

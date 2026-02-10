@@ -15,9 +15,10 @@ export const left = [
   }),
   Component.Explorer(
     {
-      folderDefaultState: "open",
+      folderDefaultState: "collapsed",
       useSavedState: true,
       filterFn: (node) => {
+        if (node.isFolder) return true;
         return node.data?.tags?.includes("explorable") === true;
       },
     }
@@ -45,11 +46,33 @@ const sharedFlex = Component.Flex({
 export const sharedPageComponents: SharedLayout = {
   head: Component.Head(),
   header: [
-    Component.Bookmark(),
+    // Not render on home page, and tags/folder pages
+    Component.ConditionalRender({
+      component: Component.Bookmark(),
+      condition: (page) => {
+        const excludedPages = ["index", "tags"];
+        const slug = page.fileData.slug ?? "";
+        const isExcluded = excludedPages.some(
+          (ex) => slug === ex
+            || slug.startsWith(`${ex}/`)
+            || slug.endsWith('/index')
+        );
+        return !isExcluded;
+      },
+    }),
     Component.MediaShare(),
-    Component.EditThisPage({
-      owner: "PhDoanh",
-      repo: "content",
+    Component.ConditionalRender({
+      component: Component.EditThisPage(),
+      condition: (page) => {
+        const excludedPages = ["index", "contribution", "tags", "beyond-code"];
+        const slug = page.fileData.slug ?? "";
+        const isExcluded = excludedPages.some(
+          (ex) => slug === ex
+            || slug.startsWith(`${ex}/`)
+            || slug.endsWith('/index')
+        );
+        return !isExcluded;
+      },
     }),
     Component.ArticleLinksGraph(
       {
@@ -78,7 +101,6 @@ export const sharedPageComponents: SharedLayout = {
         return fileDir === currentDir && f.slug !== fileData.slug;
       },
     }),
-    // YourGarden component, mobile only
     Component.MobileOnly(Component.BookmarksGraph()),
     Component.Comments({
       provider: 'giscus',
@@ -125,7 +147,6 @@ export const defaultContentPageLayout: PageLayout = {
   ],
   left,
   right: [
-    // YourGarden component, desktop only
     Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
   ],
@@ -140,7 +161,6 @@ export const defaultListPageLayout: PageLayout = {
   ],
   left,
   right: [
-    // YourGarden component, desktop only
     Component.DesktopOnly(Component.BookmarksGraph()),
     Component.DesktopOnly(Component.TableOfContents()),
   ],

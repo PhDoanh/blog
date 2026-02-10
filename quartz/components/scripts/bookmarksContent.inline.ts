@@ -114,6 +114,13 @@ async function renderBookmarks(props?: QuartzComponentProps) {
 		})
 
 		containerEl.replaceChildren(ul)
+
+		// Setup popover for dynamically created links without triggering nav event
+		// Dispatch a custom event to setup popovers for this specific container
+		const setupPopoverEvent = new CustomEvent('setup-popover', {
+			detail: { container: ul }
+		})
+		document.dispatchEvent(setupPopoverEvent)
 	} catch (error) {
 		console.error("Failed to load bookmarks:", error)
 		containerEl.innerHTML = "<p>Failed to load bookmarks.</p>"
