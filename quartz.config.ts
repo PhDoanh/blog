@@ -20,7 +20,6 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
-    // baseUrl: "localhost:8080",
     ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md"],
     defaultDateType: "modified",
     theme: {

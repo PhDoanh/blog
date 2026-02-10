@@ -8,7 +8,7 @@ export default (() => {
 	function EditThisPage({ fileData, cfg, displayClass }: QuartzComponentProps) {
 		const fileRelativePath = fileData.relativePath || "";
 		const [firstFolder, ...rest] = fileRelativePath.split("/");
-		const editUrl = joinSegments(cfg.baseUrl ?? "", "admin/index.htm#/collections", firstFolder, "entries" ,rest.join("/").replace(/\.[^/.]+$/, ""));
+		const editUrl = joinSegments(`https://${cfg.baseUrl ?? "example.com"}`, "admin/index.htm#/collections", firstFolder, "entries" ,rest.join("/").replace(/\.[^/.]+$/, ""));
 
 		return (
 			<a
