@@ -50,19 +50,29 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.Bookmark(),
       condition: (page) => {
+        const excludedPages = ["index", "tags"];
         const slug = page.fileData.slug ?? "";
-        return !!(
-          page.fileData.filePath &&
-          !slug.startsWith("tags/") &&
-          slug !== "index" &&
-          !slug.endsWith("/index")
+        const isExcluded = excludedPages.some(
+          (ex) => slug === ex
+            || slug.startsWith(`${ex}/`)
+            || slug.endsWith('/index')
         );
+        return !isExcluded;
       },
     }),
     Component.MediaShare(),
-    Component.EditThisPage({
-      owner: "PhDoanh",
-      repo: "content",
+    Component.ConditionalRender({
+      component: Component.EditThisPage(),
+      condition: (page) => {
+        const excludedPages = ["index", "contribution", "tags", "beyond-code"];
+        const slug = page.fileData.slug ?? "";
+        const isExcluded = excludedPages.some(
+          (ex) => slug === ex
+            || slug.startsWith(`${ex}/`)
+            || slug.endsWith('/index')
+        );
+        return !isExcluded;
+      },
     }),
     Component.ArticleLinksGraph(
       {

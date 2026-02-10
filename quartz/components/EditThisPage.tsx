@@ -1,18 +1,14 @@
 import { QuartzComponentConstructor, QuartzComponentProps } from "./types";
 import { i18n } from "../i18n";
 import { classNames } from "../util/lang";
+import { joinSegments } from "../util/path";
 
-interface Options {
-	// GitHub repository details
-	owner: string
-	repo: string
-}
-
-export default ((opts: Options) => {
+export default (() => {
 
 	function EditThisPage({ fileData, cfg, displayClass }: QuartzComponentProps) {
-		const fileRelativePath = fileData.relativePath;
-		const editUrl = `https://github.com/${opts.owner}/${opts.repo}/edit/main/${fileRelativePath}`;
+		const fileRelativePath = fileData.relativePath || "";
+		const [firstFolder, ...rest] = fileRelativePath.split("/");
+		const editUrl = joinSegments(cfg.baseUrl ?? "", "admin/index.htm#/collections", firstFolder, "entries" ,rest.join("/").replace(/\.[^/.]+$/, ""));
 
 		return (
 			<a
@@ -69,4 +65,4 @@ export default ((opts: Options) => {
     }`;
 
 	return EditThisPage;
-}) satisfies QuartzComponentConstructor<Options>;
+}) satisfies QuartzComponentConstructor;
