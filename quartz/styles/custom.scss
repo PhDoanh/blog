@@ -2,7 +2,6 @@
 @use "./variables.scss" as *;
 @use "../../content/.obsidian/snippets/img.css" as *;
 
-// put your custom CSS here!
 :root[saved-theme="light"] {
   --graph-bg-alpha: 0;
   --header-btn-bg: var(--lightgray);
@@ -33,6 +32,10 @@
   --tag-expert-color: #c299ff;
 }
 
+#quartz-root {
+  isolation: isolate;
+}
+
 // Beginner
 a.internal.tag-link[href$="tags/Beginner"] {
   background: var(--tag-beginner-bg);
@@ -48,6 +51,7 @@ a.internal.tag-link[href$="tags/Beginner"]::before {
   font-weight: normal;
 }
 
+/* reading-level tags with similar structure but different colors and backgrounds */
 // Intermediate
 a.internal.tag-link[href$="tags/Intermediate"] {
   background: var(--tag-intermediate-bg);
@@ -93,18 +97,18 @@ a.internal.tag-link[href$="tags/Expert"]::before {
   font-weight: normal;
 }
 
-// Adjust font size in folder container - Explorer Component
+/* Adjust font size in folder container - Explorer Component */
 .folder-container div>a {
   font-size: 1rem;
 }
 
-// Increase spacing between list items
+/* Increase spacing between list items */
 article ol li,
 article ul li {
   margin-bottom: 0.5rem;
 }
 
-// Custom callout styles
+/* Custom callout styles */
 .callout {
   --callout-icon-challenge: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJyYWluLWljb24gbHVjaWRlLWJyYWluIj48cGF0aCBkPSJNMTIgMThWNSIvPjxwYXRoIGQ9Ik0xNSAxM2E0LjE3IDQuMTcgMCAwIDEtMy00IDQuMTcgNC4xNyAwIDAgMS0zIDQiLz48cGF0aCBkPSJNMTcuNTk4IDYuNUEzIDMgMCAxIDAgMTIgNWEzIDMgMCAxIDAtNS41OTggMS41Ii8+PHBhdGggZD0iTTE3Ljk5NyA1LjEyNWE0IDQgMCAwIDEgMi41MjYgNS43NyIvPjxwYXRoIGQ9Ik0xOCAxOGE0IDQgMCAwIDAgMi03LjQ2NCIvPjxwYXRoIGQ9Ik0xOS45NjcgMTcuNDgzQTQgNCAwIDEgMSAxMiAxOGE0IDQgMCAxIDEtNy45NjctLjUxNyIvPjxwYXRoIGQ9Ik02IDE4YTQgNCAwIDAgMS0yLTcuNDY0Ii8+PHBhdGggZD0iTTYuMDAzIDUuMTI1YTQgNCAwIDAgMC0yLjUyNiA1Ljc3Ii8+PC9zdmc+');
   --callout-icon-bell: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJlbGwtcmluZy1pY29uIGx1Y2lkZS1iZWxsLXJpbmciPjxwYXRoIGQ9Ik0xMC4yNjggMjFhMiAyIDAgMCAwIDMuNDY0IDAiLz48cGF0aCBkPSJNMjIgOGMwLTIuMy0uOC00LjMtMi02Ii8+PHBhdGggZD0iTTMuMjYyIDE1LjMyNkExIDEgMCAwIDAgNCAxN2gxNmExIDEgMCAwIDAgLjc0LTEuNjczQzE5LjQxIDEzLjk1NiAxOCAxMi40OTkgMTggOEE2IDYgMCAwIDAgNiA4YzAgNC40OTktMS40MTEgNS45NTYtMi43MzggNy4zMjYiLz48cGF0aCBkPSJNNCAyQzIuOCAzLjcgMiA1LjcgMiA4Ii8+PC9zdmc+');
@@ -168,11 +172,12 @@ article ul li {
   }
 }
 
-// Customize the audio player controls
+/* Customize the audio player controls */
 audio::-webkit-media-controls-panel {
   background-color: var(--lightgray);
 }
 
+/* Custom font for elements using handwrtiting style */
 b.handtext {
   font-weight: normal;
   font-size: large;
@@ -185,8 +190,8 @@ b.handtext {
   font-size: medium;
 }
 
-/* Định nghĩa scrollbar toàn cục */
-/* Cho Webkit (Chrome, Safari, Edge mới) */
+/* Define global scrollbar */
+// For Webkit (Chrome, Safari, new Edge)
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
   background: transparent;
@@ -202,7 +207,7 @@ body::-webkit-scrollbar-thumb:hover {
   background: var(--darkgray);
 }
 
-/* Cho Firefox */
+// For Firefox
 html,
 body {
   scrollbar-width: thin;
@@ -217,17 +222,38 @@ header {
   white-space: nowrap;
 }
 
+
 .contributors,
 .contributors h3,
 .contributors-container {
   margin: 0;
 }
 
+/* Set max height for Table Of Contents */
 ul.toc-content.overflow {
   max-height: 250px;
 }
 
 @media all and ($mobile) {
+
+  .search>.search-button {
+    background: transparent;
+  }
+
+  .search>.search-button>p {
+    display: none; 
+  }
+
+  .search>.search-button svg {
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin: 0;
+  }
+
+  .darkmode {
+    position: initial;
+  }
 
   .page>#quartz-body .sidebar.left:has(.explorer) {
     margin: 0 -1rem;
@@ -243,20 +269,20 @@ ul.toc-content.overflow {
   }
 
   .toc {
-    min-height: auto;
-    margin-bottom: 1.5rem;
+    overflow-y: visible;
   }
 
-  // Giữ mũi tên luôn mở rộng trên mobile
   button.toc-header {
     &.collapsed .fold {
       transform: rotateZ(0deg);
     }
   }
 
-  // Loại bỏ hiệu ứng mờ dần trên mobile và giữ chúng luôn sáng
+  // Remove fade effect on mobile and keep them always bright
   ul.toc-content.overflow {
     max-height: none;
+    overflow: visible;
+    overscroll-behavior: auto;
 
     &>li>a {
       opacity: 0.75;
@@ -269,11 +295,6 @@ ul.toc-content.overflow {
       &:hover {
         opacity: 1;
       }
-    }
-
-    // Hiển thị nội dung TOC ngay cả khi đang ở trạng thái collapsed
-    &.collapsed {
-      display: block !important;
     }
   }
 
@@ -288,50 +309,106 @@ ul.toc-content.overflow {
   }
 }
 
-#quartz-root {
-  isolation: isolate;
-}
+@media all and ($desktop) {
 
-body.animation-ready #quartz-body {
-  [saved-theme="dark"] & {
-    --animation-name: fade2;
+  // scrollbar for code blocks
+  pre,
+  code {
+
+    // Hide default scrollbar
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.1s
+    }
+
+    // Show scrollbar on hover with fade-in effect
+    &:hover::-webkit-scrollbar-thumb {
+      opacity: 0.6;
+    }
+
+    // Effect when hovering over the scrollbar
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--darkgray);
+      opacity: 0.8;
+    }
+
+    // For Firefox
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.1s;
+
+    &:hover {
+      scrollbar-color: var(--gray) transparent;
+    }
   }
 
-  [saved-theme="light"] & {
-    --animation-name: fade;
+  header {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    transition: scrollbar-color 0.1s;
+
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--gray);
+      border-radius: 4px;
+      opacity: 0;
+      transition: opacity 0.1s;
+    }
+
+    &:hover::-webkit-scrollbar-thumb {
+      opacity: 0.6;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: var(--darkgray);
+      opacity: 0.8;
+    }
+
+    &:hover {
+      scrollbar-color: var(--gray) transparent;
+    }
   }
 
-  @for $i from 1 through 4 {
-    @for $j from 1 through 8 {
-      &>*:nth-child(#{$i})>*:nth-child(#{$j}) {
-        animation: var(--animation-name) 2s ease 1 normal backwards;
-        animation-delay: #{0.1 * $j + 0.4 * $i}s;
+  // Staggered fade-in animation for content on theme change
+  body.animation-ready #quartz-body {
+    [saved-theme="dark"] & {
+      --animation-name: fade2;
+    }
+  
+    [saved-theme="light"] & {
+      --animation-name: fade;
+    }
+  
+    @for $i from 1 through 4 {
+      @for $j from 1 through 8 {
+        &>*:nth-child(#{$i})>*:nth-child(#{$j}) {
+          animation: var(--animation-name) 2s ease 1 normal backwards;
+          animation-delay: #{0.1 * $j + 0.4 * $i}s;
+        }
       }
     }
   }
 }
 
-@keyframes fade {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade2 {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-// dappled light
+/* Dappled Light as animation background */
 #dappled-light {
   animation-duration: 0s;
   animation-fill-mode: forwards;
@@ -508,6 +585,7 @@ body.animation-ready #quartz-body {
   }
 }
 
+/* Keyframes */
 @keyframes sunrise {
   0% {
     background-color: var(--night);
@@ -570,81 +648,22 @@ body.animation-ready #quartz-body {
   }
 }
 
-@media all and ($desktop) {
-
-  /* Định nghĩa scrollbar cho các khối code */
-  pre,
-  code {
-
-    /* Ẩn thanh cuộn mặc định */
-    &::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--gray);
-      border-radius: 4px;
-      opacity: 0;
-      transition: opacity 0.1s
-    }
-
-    /* Hiển thị thanh cuộn khi hover với hiệu ứng fade in */
-    &:hover::-webkit-scrollbar-thumb {
-      opacity: 0.6;
-    }
-
-    /* Hiệu ứng khi hover vào thanh cuộn */
-    &::-webkit-scrollbar-thumb:hover {
-      background: var(--darkgray);
-      opacity: 0.8;
-    }
-
-    /* Cho Firefox */
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-    transition: scrollbar-color 0.1s;
-
-    &:hover {
-      scrollbar-color: var(--gray) transparent;
-    }
+@keyframes fade {
+  0% {
+    opacity: 0;
   }
 
-  header {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
-    transition: scrollbar-color 0.1s;
+  100% {
+    opacity: 1;
+  }
+}
 
-    &::-webkit-scrollbar {
-      height: 8px;
-    }
+@keyframes fade2 {
+  0% {
+    opacity: 0;
+  }
 
-    &::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: var(--gray);
-      border-radius: 4px;
-      opacity: 0;
-      transition: opacity 0.1s;
-    }
-
-    &:hover::-webkit-scrollbar-thumb {
-      opacity: 0.6;
-    }
-
-    &::-webkit-scrollbar-thumb:hover {
-      background: var(--darkgray);
-      opacity: 0.8;
-    }
-
-    &:hover {
-      scrollbar-color: var(--gray) transparent;
-    }
+  100% {
+    opacity: 1;
   }
 }
