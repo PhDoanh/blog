@@ -97,6 +97,7 @@ const config: QuartzConfig = {
           movableColumns: true,
           initialSort: [{ column: "col0", dir: "asc" }], // sort by first column
           selectable: false,
+          height: "400px",
         },
       })
     ],

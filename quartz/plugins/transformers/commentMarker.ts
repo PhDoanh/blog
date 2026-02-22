@@ -9,6 +9,7 @@ export interface MarkerConfig {
 	dataAttrs?: Record<string, string>
 	// Target HTML Tag (default: "table")
 	targetTag?: string
+	tabulatorOptions?: Record<string, any>
 }
 
 export interface Options {
@@ -23,15 +24,127 @@ const defaultOptions: Options = {
 			dataAttrs: { tabulator: "true" },
 			targetTag: "table",
 		},
-		"tabulator-nopager": {
-			dataAttrs: { tabulator: "true", "tabulator-pagination": "false" },
+		"tabulator-resources-hub": {
+			dataAttrs: { tabulator: "true" },
 			targetTag: "table",
+			tabulatorOptions: {
+				layout: "fitColumns",
+				responsiveLayout: "collapse",
+				responsiveLayoutCollapseStartOpen: false,
+				columnDefaults: {
+					minWidth: 30,
+				},
+				pagination: true,
+				paginationSize: 25,
+				paginationSizeSelector: [10, 25, 50],
+				movableColumns: false,
+				selectable: false,
+				rowHeader: {
+					formatter: "responsiveCollapse",
+					width: 30,
+					minWidth: 30,
+					hozAlign: "center",
+					resizable: false,
+					headerSort: false,
+				},
+				height: "1000px",
+				columns: [
+					// responsive: 0 = never collapse
+					// responsive: higher number = first collapse
+					{
+						title: "Title",
+						field: "col0",
+						formatter: "html",
+						minWidth: 130,
+						responsive: 0,
+						headerFilter: "input",
+					},
+					{
+						title: "Type",
+						field: "col2",
+						formatter: "html",
+						width: 85,
+						responsive: 0,
+						headerFilter: "list",
+						headerFilterParams: { valuesLookup: true, clearable: true },
+					},
+					{
+						title: "Description",
+						field: "col1",
+						formatter: "html",
+						minWidth: 250,
+						responsive: 1,
+						headerFilter: "input",
+					},
+					{
+						title: "Level",
+						field: "col4",
+						formatter: "html",
+						minWidth: 130,
+						responsive: 1,
+						headerFilter: "list",
+						headerFilterParams: {
+							values: ["Beginner", "Intermediate", "Advanced", "Expert"],
+							clearable: true,
+						},
+					},
+					{
+						title: "Free?",
+						field: "col6",
+						formatter: "html",
+						width: 85,
+						responsive: 1,
+						hozAlign: "center",
+						headerFilter: "list",
+						headerFilterParams: { valuesLookup: true, clearable: true },
+					},
+					// Collapse this group first on mobile
+					{
+						title: "Topic",
+						field: "col3",
+						formatter: "html",
+						minWidth: 110,
+						responsive: 3,
+						headerFilter: "input",
+					},
+					{
+						title: "My Verdict",
+						field: "col5",
+						formatter: "html",
+						minWidth: 140,
+						responsive: 3,
+						headerFilter: "input",
+					},
+					{
+						title: "Language",
+						field: "col7",
+						formatter: "html",
+						minWidth: 100,
+						responsive: 2,
+						headerFilter: "list",
+						headerFilterParams: { valuesLookup: true, clearable: true },
+					},
+					// Least important — collapse first 
+					{
+						title: "My Status",
+						field: "col8",
+						formatter: "html",
+						width: 100,
+						responsive: 4,
+						headerFilter: "list",
+						headerFilterParams: { valuesLookup: true, clearable: true },
+					},
+					{
+						title: "Source/Author",
+						field: "col9",
+						formatter: "html",
+						width: 110,
+						responsive: 4,
+						headerFilter: "input",
+					},
+				],
+			},
 		},
-		// CSS-only: compact table
-		// compact: {
-		//   className: "table-compact",
-		//   targetTag: "table",
-		// },
 	},
 	tabulatorOptions: {
 		layout: "fitColumns",
@@ -92,6 +205,13 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 						if (config.dataAttrs) {
 							for (const [k, v] of Object.entries(config.dataAttrs)) {
 								next.properties = { ...next.properties, [`data-${k}`]: v }
+							}
+						}
+
+						if (config.tabulatorOptions) {
+							next.properties = {
+								...next.properties,
+								"data-tabulator-opts": JSON.stringify(config.tabulatorOptions),
 							}
 						}
 
@@ -163,7 +283,10 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 									var data = Array.from(tableEl.querySelectorAll("tbody tr")).map(function (tr) {
 										var cells = tr.querySelectorAll("td")
 										return headers.reduce(function (row, col, i) {
-											row[col.field] = cells[i] ? cells[i].innerHTML.trim() : ""
+											var cell = cells[i]
+											if (!cell) { row[col.field] = ""; return row }
+											row[col.field] = cell.innerHTML.trim()
+											row[col.field + "_text"] = cell.textContent.trim()
 											return row
 										}, {})
 									})
@@ -174,10 +297,26 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 									tableEl.style.display = "none"
 									tableEl.setAttribute("aria-hidden", "true")
 
-									// Per-table override from data attributes (if any)
+									// Per-marker tabulatorOptions injected through data-tabulator-opts
 									var perTableOpts = {}
-									if (tableEl.dataset.tabulatorPagination === "false") {
-										perTableOpts.pagination = false
+									if (tableEl.dataset.tabulatorOpts) {
+										try {
+											Object.assign(perTableOpts, JSON.parse(tableEl.dataset.tabulatorOpts))
+										} catch (e) { }
+									}
+
+									if (perTableOpts.columns) {
+										perTableOpts.columns = perTableOpts.columns.map(function (col) {
+											if (col.formatter === "html" && col.headerFilter === "list") {
+												col.headerFilterFunc = function (headerValue, _rowValue, rowData) {
+													if (!headerValue) return true
+													return (rowData[col.field + "_text"] || "")
+														.toLowerCase()
+														.includes(headerValue.toLowerCase())
+												}
+											}
+											return col
+										})
 									}
 
 									new Tabulator(container, {
