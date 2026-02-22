@@ -1,11 +1,12 @@
 import { FullSlug, resolveRelative } from "../util/path"
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
-import { tagsToExclude } from "../cfg"
+import { tagsToExclude, pagesToExclude } from "../cfg"
 
 export default (() => {
   const TagList: QuartzComponent = ({ fileData, displayClass }: QuartzComponentProps) => {
     const tags = fileData.frontmatter?.tags?.filter(tag => !tagsToExclude.includes(tag)) ?? []
+    if (pagesToExclude.includes(fileData.slug!)) return null
     if (tags && tags.length > 0) {
       return (
         <ul class={classNames(displayClass, "tags")}>
