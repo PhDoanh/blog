@@ -61,7 +61,6 @@ BackToTop.css = `
 `
 
 BackToTop.afterDOMLoaded = `
-// Lưu vị trí cuộn cuối cùng để xác định hướng cuộn
 let lastScrollPosition = 0;
 
 let calcScrollValue = () => {
@@ -73,21 +72,17 @@ let calcScrollValue = () => {
 	let calcHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 	let scrollValue = Math.round((pos * 100) / calcHeight);
 	
-	// Hiển thị nút khi cuộn xuống quá 300px và đang cuộn lên
 	if (pos > 300 && pos <= lastScrollPosition) {
 		scrollProgress.classList.add("visible");
 	} else {
 		scrollProgress.classList.remove("visible");
 	}
 	
-	// Cập nhật vị trí cuộn cuối cùng
 	lastScrollPosition = pos;
 	
-	// Cập nhật hiệu ứng tiến trình
 	scrollProgress.style.background = \`conic-gradient(var(--secondary) \${scrollValue}%, var(--gray) \${scrollValue}%)\`;
 };
 
-// Xử lý sự kiện click để cuộn lên đầu trang
 let scrollToTop = () => {
 	window.scrollTo({
 		top: 0,
@@ -95,7 +90,6 @@ let scrollToTop = () => {
 	});
 };
 
-// Đăng ký sự kiện
 let setupBackToTop = () => {
 	const scrollProgress = document.getElementById("progress");
 	if (scrollProgress) {
@@ -108,7 +102,6 @@ let setupBackToTop = () => {
 document.addEventListener("DOMContentLoaded", setupBackToTop);
 document.addEventListener("nav", setupBackToTop);
 
-// Cleanup khi component unmount
 window.addCleanup?.(() => {
 	window.onscroll = null;
 	const scrollProgress = document.getElementById("progress");

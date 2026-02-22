@@ -49,10 +49,7 @@ export default ((opts: Options) => {
     )
   }
 
-  // Add styles for the component
   GitHubContributors.css = styles
-
-  // JavaScript to fetch and display contributors
   GitHubContributors.afterDOMLoaded = script
 
   return GitHubContributors

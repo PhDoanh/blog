@@ -1,13 +1,11 @@
 import { i18n } from "../../i18n"
 
-// Định nghĩa callback ở scope module để giữ tham chiếu cố định
+// Define callback functions outside to ensure they can be removed and re-added properly
 let toggleDropdown: ((e: MouseEvent) => void) | null = null;
 let closeDropdownOutside: ((e: MouseEvent) => void) | null = null;
 let copyLink: (() => void) | null = null;
 
-// Tạo dropdown element và gắn vào document.body
 function createShareDropdown() {
-	// Kiểm tra nếu dropdown đã tồn tại thì xóa
 	const existingDropdown = document.getElementById('share-dropdown');
 	if (existingDropdown) {
 		document.body.removeChild(existingDropdown);
@@ -16,7 +14,7 @@ function createShareDropdown() {
 	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
 	if (!shareButtons.length) return;
 
-	// Lấy dữ liệu từ data attributes của nút đầu tiên
+	// Get data attributes from the first share button (assuming all buttons have the same data)
 	const firstButton = shareButtons[0];
 	const url = firstButton.getAttribute('data-url') || window.location.href;
 	const encodedUrl = encodeURIComponent(url);
@@ -25,12 +23,10 @@ function createShareDropdown() {
 	const showCopy = firstButton.getAttribute('data-show-copy') !== 'false';
 	const locale = firstButton.getAttribute('data-locale') || 'en-US';
 
-	// Tạo dropdown
 	const dropdown = document.createElement('div');
 	dropdown.className = 'share-dropdown';
 	dropdown.id = 'share-dropdown';
 
-	// Thêm các platform
 	let dropdownContent = '';
 
 	if (platforms.includes('facebook')) {
@@ -116,7 +112,7 @@ function createShareDropdown() {
         `;
 	}
 
-	// Thêm nút copy link nếu được yêu cầu
+	// Add copy link option if enabled
 	if (showCopy) {
 		dropdownContent += `
             <button class="share-option copy-link" id="copy-link">
@@ -130,44 +126,36 @@ function createShareDropdown() {
 	}
 
 	dropdown.innerHTML = dropdownContent;
-
-	// Thêm dropdown vào document body
 	document.body.appendChild(dropdown);
 
 	return dropdown;
 }
 
-// Tính vị trí dropdown dựa trên vị trí button
+// Calculate and set the position of the dropdown based on the first share button
 function positionDropdown() {
 	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
 	const dropdown = document.getElementById('share-dropdown');
 
 	if (!shareButtons.length || !dropdown) return;
 
-	// Ưu tiên nút đầu tiên
 	const buttonRect = shareButtons[0].getBoundingClientRect();
 
-	// Vị trí ban đầu của dropdown sẽ ở dưới button, bên phải căn chỉnh
 	dropdown.style.top = `${buttonRect.bottom}px`;
 	dropdown.style.left = `${buttonRect.left}px`;
 
-	// Kiểm tra nếu dropdown sẽ bị cắt bởi cạnh phải màn hình
 	const dropdownRect = dropdown.getBoundingClientRect();
 	if (dropdownRect.right > window.innerWidth) {
 		dropdown.style.left = `${buttonRect.right - dropdownRect.width}px`;
 	}
 
-	// Kiểm tra nếu dropdown sẽ bị cắt bởi cạnh dưới màn hình
 	if (dropdownRect.bottom > window.innerHeight) {
 		dropdown.style.top = `${buttonRect.top - dropdownRect.height}px`;
 	}
 }
 
 function setupMediaShareEvents() {
-	// Đảm bảo chỉ có một dropdown
 	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
 	if (!shareButtons.length) {
-		// Button chưa được tạo, thử lại sau
 		if (!(window as any).__mediaShareRetry) (window as any).__mediaShareRetry = 0;
 		if ((window as any).__mediaShareRetry++ < 20) {
 			setTimeout(setupMediaShareEvents, 50);
@@ -175,7 +163,6 @@ function setupMediaShareEvents() {
 		return;
 	}
 
-	// Tạo dropdown
 	createShareDropdown();
 
 	const dropdown = document.getElementById('share-dropdown');
@@ -183,21 +170,17 @@ function setupMediaShareEvents() {
 
 	if (!dropdown) return;
 
-	// Xóa event cũ nếu có
 	for (const btn of shareButtons) {
 		if (toggleDropdown) btn.removeEventListener('click', toggleDropdown);
 	}
 	if (closeDropdownOutside) document.removeEventListener('click', closeDropdownOutside);
 	if (copyLink && copyLinkButton) copyLinkButton.removeEventListener('click', copyLink);
 
-	// Tạo event mới
 	toggleDropdown = function (e: MouseEvent) {
 		e.stopPropagation();
 
-		// Tính lại vị trí dropdown trước khi hiển thị
 		positionDropdown();
 
-		// Toggle trạng thái hiển thị dropdown
 		dropdown.classList.toggle('active');
 	};
 
@@ -223,7 +206,6 @@ function setupMediaShareEvents() {
 				const locale = shareButtons[0].getAttribute('data-locale') || 'en-US';
 				feedback.textContent = i18n(locale as any).components.mediaShare?.linkCopied ?? "Link copied!";
 
-				// Gán vị trí cho feedback dựa trên vị trí button
 				const buttonRect = shareButtons[0].getBoundingClientRect();
 				feedback.style.top = `${buttonRect.top - 40}px`;
 				feedback.style.left = `${buttonRect.left}px`;
@@ -250,13 +232,11 @@ function setupMediaShareEvents() {
 		copyLinkButton.addEventListener('click', copyLink);
 	}
 
-	// Gắn event cho tất cả các nút
 	for (const btn of shareButtons) {
 		btn.addEventListener('click', toggleDropdown);
 	}
 	document.addEventListener('click', closeDropdownOutside);
 
-	// Cập nhật vị trí khi resize
 	window.addEventListener('resize', () => {
 		if (dropdown.classList.contains('active')) {
 			positionDropdown();
@@ -264,34 +244,13 @@ function setupMediaShareEvents() {
 	});
 }
 
-// Khởi tạo lần đầu
 setupMediaShareEvents();
 
-// Khởi tạo lại khi SPA navigation
 document.addEventListener('nav', () => {
-	// Xóa dropdown cũ nếu có
 	const existingDropdown = document.getElementById('share-dropdown');
 	if (existingDropdown) {
 		document.body.removeChild(existingDropdown);
 	}
 
-	// Thiết lập lại
 	setupMediaShareEvents();
 });
-
-// function updateShareButtonState() {
-// 	const isOnline = navigator.onLine;
-// 	const shareButtons = Array.from(document.getElementsByClassName('share-button')) as HTMLButtonElement[];
-// 	for (const shareButton of shareButtons) {
-// 		if (isOnline) {
-// 			shareButton.disabled = false;
-// 			shareButton.classList.remove('disabled');
-// 		} else {
-// 			shareButton.disabled = true;
-// 			shareButton.classList.add('disabled');
-// 		}
-// 	}
-// }
-
-// document.addEventListener("nav", updateShareButtonState);
-// document.addEventListener("DOMContentLoaded", updateShareButtonState);
