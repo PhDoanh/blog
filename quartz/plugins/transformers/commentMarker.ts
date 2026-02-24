@@ -234,7 +234,7 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 						spaPreserve: true,
 					},
 					{
-						content: `${cfg.configuration.baseUrl}/static/tabulator-quartz.css`,
+						content: `https://${cfg.configuration.baseUrl}/static/tabulator-quartz.css`,
 						inline: false,
 						spaPreserve: true,
 					},
