@@ -105,175 +105,175 @@ export const Offline: QuartzEmitterPlugin = () => {
 
 			// Service worker script: optimized version with better error handling and performance
 			const serviceWorker = `
-		importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.4.1/workbox-sw.js');
-		const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
+importScripts('https://cdn.jsdelivr.net/npm/workbox-sw@7.3.0/build/workbox-sw.js');
+const { staticResourceCache, googleFontsCache, imageCache, offlineFallback } = workbox.recipes;
 
-		staticResourceCache();
-		googleFontsCache();
-		imageCache();
-		offlineFallback({ pageFallback: './offline.html' });
+staticResourceCache({maxEntries: 60, maxAgeSeconds: 7 * 24 * 60 * 60});
+googleFontsCache();
+imageCache();
+offlineFallback({ pageFallback: './offline.html' });
 
-		const CACHE_NAME = 'quartz-bookmark-cache-v3';
-		const OLD_CACHE_NAME = 'quartz-bookmark-cache-v1';
-		const MAX_CACHE_SIZE = 100;
-		const NETWORK_TIMEOUT = 3000;
+const CACHE_NAME = 'quartz-bookmark-cache-v4';
+const OLD_CACHE_NAME = 'quartz-bookmark-cache-v1';
+const MAX_CACHE_SIZE = 100;
+const NETWORK_TIMEOUT = 3000;
 
-		// Utility: Normalize URL to avoid duplicate cache entries
-		const normalizeUrl = (url) => {
-			const normalized = new URL(url, self.location.origin);
-			normalized.hash = '';
-			return normalized.pathname;
-		};
+// Utility: Normalize URL to avoid duplicate cache entries
+const normalizeUrl = (url) => {
+	const normalized = new URL(url, self.location.origin);
+	normalized.hash = '';
+	return normalized.pathname;
+};
 
-		// Utility: Trim cache to max size using LRU strategy
-		const trimCache = async (cacheName, maxSize) => {
-			const cache = await caches.open(cacheName);
-			const keys = await cache.keys();
-			if (keys.length > maxSize) {
-				// Delete oldest entries (assuming keys are ordered by insertion time)
-				const keysToDelete = keys.slice(0, keys.length - maxSize);
-				await Promise.all(keysToDelete.map(key => cache.delete(key)));
-			}
-		};
+// Utility: Trim cache to max size using LRU strategy
+const trimCache = async (cacheName, maxSize) => {
+	const cache = await caches.open(cacheName);
+	const keys = await cache.keys();
+	if (keys.length > maxSize) {
+		// Delete oldest entries (assuming keys are ordered by insertion time)
+		const keysToDelete = keys.slice(0, keys.length - maxSize);
+		await Promise.all(keysToDelete.map(key => cache.delete(key)));
+	}
+};
 
-		// Install event: Precache essential pages
-		self.addEventListener('install', event => {
-			console.log('[SW] Installing service worker v3');
-			event.waitUntil(
-				caches.open(CACHE_NAME)
-					.then(cache => {
-						// Cache precache pages
-						return cache.addAll(${JSON.stringify(precachePages)}).catch(err => {
-							console.warn('[SW] Failed to precache some pages:', err);
-							// Try caching pages individually
-							return Promise.allSettled(
-								${JSON.stringify(precachePages)}.map(url => 
-									cache.add(url).catch(e => console.warn(\`[SW] Failed to cache \${url}:\`, e))
-								)
-							);
-						});
-					})
-					.then(() => self.skipWaiting()) // Activate immediately
-			);
-		});
+// Install event: Precache essential pages
+self.addEventListener('install', event => {
+	console.log('[SW] Installing service worker v4');
+	event.waitUntil(
+		caches.open(CACHE_NAME)
+			.then(cache => {
+				// Cache precache pages
+				return cache.addAll(${JSON.stringify(precachePages)}).catch(err => {
+					console.warn('[SW] Failed to precache some pages:', err);
+					// Try caching pages individually
+					return Promise.allSettled(
+						${JSON.stringify(precachePages)}.map(url => 
+							cache.add(url).catch(e => console.warn(\`[SW] Failed to cache \${url}:\`, e))
+						)
+					);
+				});
+			})
+			.then(() => self.skipWaiting()) // Activate immediately
+	);
+});
 
-		// Activate event: Clean up old caches
-		self.addEventListener('activate', event => {
-			console.log('[SW] Activating service worker v3');
-			event.waitUntil(
-				caches.keys()
-					.then(cacheNames => {
-						return Promise.all(
-							cacheNames
-								.filter(name => name !== CACHE_NAME && name.startsWith('quartz-bookmark-cache'))
-								.map(name => {
-									console.log('[SW] Deleting old cache:', name);
-									return caches.delete(name);
-								})
-						);
-					})
-					.then(() => self.clients.claim()) // Take control of all pages
-			);
-		});
+// Activate event: Clean up old caches
+self.addEventListener('activate', event => {
+	console.log('[SW] Activating service worker v4');
+	event.waitUntil(
+		caches.keys()
+			.then(cacheNames => {
+				return Promise.all(
+					cacheNames
+						.filter(name => name !== CACHE_NAME && name.startsWith('quartz-bookmark-cache'))
+						.map(name => {
+							console.log('[SW] Deleting old cache:', name);
+							return caches.delete(name);
+						})
+				);
+			})
+			.then(() => self.clients.claim()) // Take control of all pages
+	);
+});
 
-		// Message event: Handle cache/remove requests from client
-		self.addEventListener('message', event => {
-			const handleMessage = async () => {
-				try {
-					if (!event.data || !event.data.type) {
-						return;
-					}
-
-					const { type, url } = event.data;
-					const cache = await caches.open(CACHE_NAME);
-
-					if (type === 'CACHE_PAGE') {
-						const normalizedUrl = normalizeUrl(url);
-						const response = await fetch(url);
-
-						if (response && response.ok) {
-							await cache.put(normalizedUrl, response.clone());
-							await trimCache(CACHE_NAME, MAX_CACHE_SIZE);
-
-							// Send response back to client
-							event.ports[0]?.postMessage({ success: true, url });
-							console.log('[SW] Cached page:', normalizedUrl);
-						} else {
-							event.ports[0]?.postMessage({ success: false, url, error: 'Response not OK' });
-						}
-					} else if (type === 'REMOVE_PAGE') {
-						const normalizedUrl = normalizeUrl(url);
-						const deleted = await cache.delete(normalizedUrl);
-
-						event.ports[0]?.postMessage({ success: deleted, url });
-						console.log('[SW] Removed page from cache:', normalizedUrl);
-					}
-				} catch (error) {
-					console.error('[SW] Error handling message:', error);
-					event.ports[0]?.postMessage({ success: false, error: error.message });
-				}
-			};
-
-			event.waitUntil(handleMessage());
-		});
-
-		// Fetch event: Network-first with timeout, fallback to cache
-		self.addEventListener('fetch', event => {
-			const url = new URL(event.request.url);
-
-			// Chỉ handle navigation requests
-			if (event.request.mode !== 'navigate') {
+// Message event: Handle cache/remove requests from client
+self.addEventListener('message', event => {
+	const handleMessage = async () => {
+		try {
+			if (!event.data || !event.data.type) {
 				return;
 			}
 
-			event.respondWith(
-				(async () => {
-					const cache = await caches.open(CACHE_NAME);
-					const normalizedPath = normalizeUrl(event.request.url);
+			const { type, url } = event.data;
+			const cache = await caches.open(CACHE_NAME);
 
-					// Network-first with timeout
-					const networkPromise = fetch(event.request).then(async response => {
-						if (response && response.ok) {
-							return response;
-						}
+			if (type === 'CACHE_PAGE') {
+				const normalizedUrl = normalizeUrl(url);
+				const response = await fetch(url);
 
-						// If 404, return immediately (do not fallback to cache)
-						if (response && response.status === 404) {
-							return response;
-						}
+				if (response && response.ok) {
+					await cache.put(normalizedUrl, response.clone());
+					await trimCache(CACHE_NAME, MAX_CACHE_SIZE);
 
-						// Other status codes, throw to fallback to cache
-						throw new Error('Response not OK');
-					});
+					// Send response back to client
+					event.ports[0]?.postMessage({ success: true, url });
+					console.log('[SW] Cached page:', normalizedUrl);
+				} else {
+					event.ports[0]?.postMessage({ success: false, url, error: 'Response not OK' });
+				}
+			} else if (type === 'REMOVE_PAGE') {
+				const normalizedUrl = normalizeUrl(url);
+				const deleted = await cache.delete(normalizedUrl);
 
-					// Create timeout promise
-					const timeoutPromise = new Promise((_, reject) => {
-						setTimeout(() => reject(new Error('Network timeout')), NETWORK_TIMEOUT);
-					});
+				event.ports[0]?.postMessage({ success: deleted, url });
+				console.log('[SW] Removed page from cache:', normalizedUrl);
+			}
+		} catch (error) {
+			console.error('[SW] Error handling message:', error);
+			event.ports[0]?.postMessage({ success: false, error: error.message });
+		}
+	};
 
-					try {
-						// Race between network and timeout
-						return await Promise.race([networkPromise, timeoutPromise]);
-					} catch (error) {
-						console.warn(\`[SW] Network failed for \${normalizedPath}, using cache:\`, error.message);
+	event.waitUntil(handleMessage());
+});
 
-						// Fallback to cache
-						const cachedResponse = await cache.match(normalizedPath);
-						if (cachedResponse) {
-							return cachedResponse;
-						}
+// Fetch event: Network-first with timeout, fallback to cache
+self.addEventListener('fetch', event => {
+	const url = new URL(event.request.url);
 
-						// Finally fallback to offline page
-						return cache.match('./offline.html') || new Response('Offline', {
-							status: 503,
-							statusText: 'Service Unavailable'
-						});
-					}
-				})()
-			);
-		});
+	// Chỉ handle navigation requests
+	if (event.request.mode !== 'navigate') {
+		return;
+	}
 
-		console.log('[SW] Service Worker v3 loaded');
+	event.respondWith(
+		(async () => {
+			const cache = await caches.open(CACHE_NAME);
+			const normalizedPath = normalizeUrl(event.request.url);
+
+			// Network-first with timeout
+			const networkPromise = fetch(event.request).then(async response => {
+				if (response && response.ok) {
+					return response;
+				}
+
+				// If 404, return immediately (do not fallback to cache)
+				if (response && response.status === 404) {
+					return response;
+				}
+
+				// Other status codes, throw to fallback to cache
+				throw new Error('Response not OK');
+			});
+
+			// Create timeout promise
+			const timeoutPromise = new Promise((_, reject) => {
+				setTimeout(() => reject(new Error('Network timeout')), NETWORK_TIMEOUT);
+			});
+
+			try {
+				// Race between network and timeout
+				return await Promise.race([networkPromise, timeoutPromise]);
+			} catch (error) {
+				console.warn(\`[SW] Network failed for \${normalizedPath}, using cache:\`, error.message);
+
+				// Fallback to cache
+				const cachedResponse = await cache.match(normalizedPath);
+				if (cachedResponse) {
+					return cachedResponse;
+				}
+
+				// Finally fallback to offline page
+				return cache.match('./offline.html') || new Response('Offline', {
+					status: 503,
+					statusText: 'Service Unavailable'
+				});
+			}
+		})()
+	);
+});
+
+console.log('[SW] Service Worker v4 loaded');
 			`;
 
 			yield write({
