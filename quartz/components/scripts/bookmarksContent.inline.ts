@@ -1,6 +1,7 @@
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
 import { i18n, ValidLocale } from "../../i18n"
 import { joinSegments } from "../../util/path"
+import { tagsToExclude, pagesToExcludeAllTags } from "../../cfg"
 
 function getBookmarks(): string[] {
 	try {
@@ -102,9 +103,10 @@ async function renderBookmarks() {
 
 			// Tags
 			if (page.tags && page.tags.length > 0) {
+				const tags = pagesToExcludeAllTags.includes(page.slug!) ? [] : page.tags?.filter(tag => !tagsToExclude.includes(tag)) ?? []
 				const tagList = document.createElement("ul")
 				tagList.className = "tags"
-				page.tags.forEach((tag) => {
+				tags.forEach((tag) => {
 					const tagLi = document.createElement("li")
 					const tagLink = document.createElement("a")
 					tagLink.className = "internal tag-link"

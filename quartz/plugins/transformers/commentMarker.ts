@@ -261,7 +261,6 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 
 								function loadTabulator(cb) {
 									if (window.Tabulator) { cb(); return; }
-									loadCSS();
 									var s = document.createElement("script");
 									s.src = JS_URL;
 									s.onload = cb;
@@ -273,6 +272,7 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 									var tables = document.querySelectorAll("table[data-tabulator]");
 									if (!tables.length) return;
 
+									loadCSS();
 									loadTabulator(function () {
 										if (window.__tabulatorDefaults && window.Tabulator) {
 											Object.assign(Tabulator.defaultOptions, window.__tabulatorDefaults);
