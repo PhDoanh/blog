@@ -47,7 +47,7 @@ const defaultOptions: Options = {
 					resizable: false,
 					headerSort: false,
 				},
-				height: "1000px",
+				height: "500px",
 				columns: [
 					// responsive: 0 = never collapse
 					// responsive: higher number = first collapse
@@ -225,27 +225,11 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 		// Inject Tabulator CSS/JS into all pages (load once, then cache)
 		externalResources(_ctx: BuildCtx) {
 			const { cfg } = _ctx
+			const BASE = `https://${cfg.configuration.baseUrl}/static`
 
 			return {
-				css: [
-					{
-						content: "https://unpkg.com/tabulator-tables@6.3.1/dist/css/tabulator.min.css",
-						inline: false,
-						spaPreserve: true,
-					},
-					{
-						content: `https://${cfg.configuration.baseUrl}/static/tabulator-quartz.css`,
-						inline: false,
-						spaPreserve: true,
-					},
-				],
+				css: [],
 				js: [
-					{
-						src: "https://unpkg.com/tabulator-tables@6.3.1/dist/js/tabulator.min.js",
-						contentType: "external" as const,
-						loadTime: "afterDOMReady" as const,
-						spaPreserve: true,
-					},
 					{
 						contentType: "inline" as const,
 						loadTime: "afterDOMReady" as const,
@@ -259,77 +243,105 @@ export const CommentMarker: QuartzTransformerPlugin<Partial<Options>> = (userOpt
 						loadTime: "afterDOMReady" as const,
 						spaPreserve: true,
 						script: `
-						(function () {
-							// Apply global defaults once
-							if (window.__tabulatorDefaults && window.Tabulator) {
-								Object.assign(Tabulator.defaultOptions, window.__tabulatorDefaults)
-								window.__tabulatorDefaults = null // only apply once
-							}
+							(function () {
+								var BASE = "${BASE}";
+								var JS_URL = BASE + "/tabulator.min.js";
+								var CSS_URLS = [BASE + "/tabulator.min.css", BASE + "/tabulator-quartz.css"];
 
-							function initTabulator() {
-								document.querySelectorAll("table[data-tabulator]").forEach(function (tableEl) {
-									if (tableEl.dataset.tabulatorInit) return
-									tableEl.dataset.tabulatorInit = "1"
+								function loadCSS() {
+									if (document.querySelector("link[data-tabulator-css]")) return;
+									CSS_URLS.forEach(function (href) {
+										var link = document.createElement("link");
+										link.rel = "stylesheet";
+										link.href = href;
+										link.setAttribute("data-tabulator-css", "1");
+										document.head.appendChild(link);
+									});
+								}
 
-									var headers = Array.from(tableEl.querySelectorAll("thead th")).map(function (th, i) {
-										return {
-											title: th.textContent.trim(),
-											field: "col" + i,
-											headerFilter: "input",
-											formatter: "html",
+								function loadTabulator(cb) {
+									if (window.Tabulator) { cb(); return; }
+									loadCSS();
+									var s = document.createElement("script");
+									s.src = JS_URL;
+									s.onload = cb;
+									document.head.appendChild(s);
+								}
+
+								function initTabulator() {
+									// Page not include table -> return and unload JS/CSS
+									var tables = document.querySelectorAll("table[data-tabulator]");
+									if (!tables.length) return;
+
+									loadTabulator(function () {
+										if (window.__tabulatorDefaults && window.Tabulator) {
+											Object.assign(Tabulator.defaultOptions, window.__tabulatorDefaults);
+											window.__tabulatorDefaults = null;
 										}
-									})
 
-									var data = Array.from(tableEl.querySelectorAll("tbody tr")).map(function (tr) {
-										var cells = tr.querySelectorAll("td")
-										return headers.reduce(function (row, col, i) {
-											var cell = cells[i]
-											if (!cell) { row[col.field] = ""; return row }
-											row[col.field] = cell.innerHTML.trim()
-											row[col.field + "_text"] = cell.textContent.trim()
-											return row
-										}, {})
-									})
+										tables.forEach(function (tableEl) {
+											if (tableEl.dataset.tabulatorInit) return;
+											tableEl.dataset.tabulatorInit = "1";
 
-									var container = document.createElement("div")
-									container.className = "tabulator-container"
-									tableEl.insertAdjacentElement("afterend", container)
-									tableEl.style.display = "none"
-									tableEl.setAttribute("aria-hidden", "true")
+											var headers = Array.from(tableEl.querySelectorAll("thead th")).map(function (th, i) {
+												return {
+													title: th.textContent.trim(),
+													field: "col" + i,
+													headerFilter: "input",
+													formatter: "html",
+												};
+											});
 
-									// Per-marker tabulatorOptions injected through data-tabulator-opts
-									var perTableOpts = {}
-									if (tableEl.dataset.tabulatorOpts) {
-										try {
-											Object.assign(perTableOpts, JSON.parse(tableEl.dataset.tabulatorOpts))
-										} catch (e) { }
-									}
+											var data = Array.from(tableEl.querySelectorAll("tbody tr")).map(function (tr) {
+												var cells = tr.querySelectorAll("td");
+												return headers.reduce(function (row, col, i) {
+													var cell = cells[i];
+													if (!cell) { row[col.field] = ""; return row; }
+													row[col.field] = cell.innerHTML.trim();
+													row[col.field + "_text"] = cell.textContent.trim();
+													return row;
+												}, {});
+											});
 
-									if (perTableOpts.columns) {
-										perTableOpts.columns = perTableOpts.columns.map(function (col) {
-											if (col.formatter === "html" && col.headerFilter === "list") {
-												col.headerFilterFunc = function (headerValue, _rowValue, rowData) {
-													if (!headerValue) return true
-													return (rowData[col.field + "_text"] || "")
-														.toLowerCase()
-														.includes(headerValue.toLowerCase())
-												}
+											var container = document.createElement("div");
+											container.className = "tabulator-container";
+											tableEl.insertAdjacentElement("afterend", container);
+											tableEl.style.display = "none";
+											tableEl.setAttribute("aria-hidden", "true");
+
+											var perTableOpts = {};
+											if (tableEl.dataset.tabulatorOpts) {
+												try {
+													Object.assign(perTableOpts, JSON.parse(tableEl.dataset.tabulatorOpts));
+												} catch (e) {}
 											}
-											return col
-										})
-									}
 
-									new Tabulator(container, {
-										data: data,
-										columns: headers,
-										...perTableOpts,
-									})
-								})
-							}
+											if (perTableOpts.columns) {
+												perTableOpts.columns = perTableOpts.columns.map(function (col) {
+													if (col.formatter === "html" && col.headerFilter === "list") {
+														col.headerFilterFunc = function (headerValue, _rowValue, rowData) {
+															if (!headerValue) return true;
+															return (rowData[col.field + "_text"] || "")
+																.toLowerCase()
+																.includes(headerValue.toLowerCase());
+														};
+													}
+													return col;
+												});
+											}
 
-							initTabulator()
-							document.addEventListener("nav", initTabulator)
-						})()
+											new Tabulator(container, {
+												data: data,
+												columns: headers,
+												...perTableOpts,
+											});
+										});
+									});
+								}
+
+								initTabulator();
+								document.addEventListener("nav", initTabulator);
+							})();
 						`.trim(),
 					},
 				],
