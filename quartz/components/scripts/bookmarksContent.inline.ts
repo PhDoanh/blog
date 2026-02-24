@@ -1,6 +1,5 @@
 import { ContentDetails } from "../../plugins/emitters/contentIndex"
-import { QuartzComponentProps } from "../types"
-import { i18n } from "../../i18n"
+import { i18n, ValidLocale } from "../../i18n"
 import { joinSegments } from "../../util/path"
 
 function getBookmarks(): string[] {
@@ -11,9 +10,17 @@ function getBookmarks(): string[] {
 	}
 }
 
-async function renderBookmarks(props?: QuartzComponentProps) {
-	const locale = props?.cfg?.locale || 'en-US';
-	const cfg = props?.cfg;
+function getBasePath(): string {
+	const metaBase = document.head.querySelector<HTMLMetaElement>('meta[name="base-url"]')?.content
+	if (metaBase) {
+		return new URL(`https://${metaBase}`).pathname
+	}
+	const pathParts = window.location.pathname.split("/")
+	return pathParts.length > 1 && pathParts[1] ? `/${pathParts[1]}` : "/"
+}
+
+async function renderBookmarks() {
+	const locale = (document.head.querySelector<HTMLMetaElement>('meta[name="locale"]')?.content) as ValidLocale;
 	const countEl = document.getElementById("bookmark-count")
 	const containerEl = document.getElementById("bookmark-list-container")
 	if (!countEl || !containerEl) return
@@ -31,8 +38,8 @@ async function renderBookmarks(props?: QuartzComponentProps) {
 
 	// Fetch full metadata from contentIndex
 	try {
-		const url = new URL(`https://${cfg?.baseUrl ?? "example.com"}`)
-		const res = await fetch(joinSegments(url.pathname, "/static/contentIndex.json"))
+		const basePath = getBasePath()
+		const res = await fetch(joinSegments(basePath, "static/contentIndex.json"))
 		const allContent = Object.values(await res.json()) as ContentDetails[]
 
 		// Filter bookmarked pages
@@ -85,7 +92,7 @@ async function renderBookmarks(props?: QuartzComponentProps) {
 
 			const h3 = document.createElement("h3")
 			const link = document.createElement("a")
-			link.href = joinSegments(url.pathname, `${page.slug}`)
+			link.href = joinSegments(basePath, `${page.slug}`)
 			link.className = "internal"
 			link.textContent = page.title ?? page.slug!
 			h3.appendChild(link)
@@ -101,7 +108,7 @@ async function renderBookmarks(props?: QuartzComponentProps) {
 					const tagLi = document.createElement("li")
 					const tagLink = document.createElement("a")
 					tagLink.className = "internal tag-link"
-					tagLink.href = joinSegments(url.pathname, `/tags/${tag}`)
+					tagLink.href = joinSegments(basePath, `/tags/${tag}`)
 					tagLink.textContent = tag
 					tagLi.appendChild(tagLink)
 					tagList.appendChild(tagLi)

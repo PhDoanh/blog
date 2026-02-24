@@ -20,7 +20,7 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
-    // baseUrl: "http://localhost:8080",
+    // baseUrl: "localhost:8080",
     ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md", "_infio_prompts", ".infio_json_db", ".github", "private"],
     defaultDateType: "modified",
     theme: {

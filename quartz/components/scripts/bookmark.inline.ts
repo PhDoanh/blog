@@ -1,5 +1,4 @@
-import { QuartzComponentProps } from "../types"
-import { i18n } from "../../i18n"
+import { i18n, ValidLocale } from "../../i18n"
 
 // Bookmark logic
 function getBookmarks() {
@@ -26,13 +25,13 @@ function updateBookmarkBtns() {
 		else btn.classList.remove('active');
 	});
 }
-function showBookmarkModal(slug: string, isRemoving: boolean, props?: QuartzComponentProps) {
+function showBookmarkModal(slug: string, isRemoving: boolean) {
 	if (!slug) return;
 	// Overlay
 	const overlay = document.createElement('div');
 	overlay.className = 'bookmark-modal-overlay';
 	// Modal
-    const locale = props?.cfg?.locale || 'en-US';
+	const locale = (document.head.querySelector<HTMLMetaElement>('meta[name="locale"]')?.content) as ValidLocale;
 	const modal = document.createElement('div');
 	modal.className = 'bookmark-modal';
 	modal.innerHTML = `
@@ -137,7 +136,7 @@ function setupBookmarkBtns() {
 			e.preventDefault();
 			const slug = btn.getAttribute('data-slug');
 			const isMarked = isBookmarked(slug || '');
-			showBookmarkModal(slug || '', isMarked, {} as QuartzComponentProps);
+			showBookmarkModal(slug || '', isMarked);
 		};
 		btn.addEventListener('click', handler);
 		bookmarkBtnHandlers.set(btn, handler);
