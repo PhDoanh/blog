@@ -64,7 +64,13 @@ export const sharedPageComponents: SharedLayout = {
     Component.ConditionalRender({
       component: Component.EditThisPage(),
       condition: (page) => {
-        const excludedPages = ["index", "contribution", "tags", "beyond-code"];
+        const excludedPages = [
+          "index",
+          "contribution",
+          "tags",
+          "beyond-code",
+          "resources-hub",
+        ];
         const slug = page.fileData.slug ?? "";
         const isExcluded = excludedPages.some(
           (ex) => slug === ex

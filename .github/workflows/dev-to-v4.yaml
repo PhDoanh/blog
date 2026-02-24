@@ -5,10 +5,6 @@ on:
     # Kích hoạt workflow mỗi 24h (0:00 UTC)
     - cron: '0 0 * * *'
   workflow_dispatch: # Cho phép kích hoạt thủ công
-    inputs:
-      resumeUrl:
-        description: 'n8n callback URL'
-        required: true
 
 permissions:
   contents: write
@@ -84,13 +80,3 @@ jobs:
         run: |
           # Push thay đổi lên v4
           git push origin v4
-
-      - name: Signal n8n to resume
-        if: always() # Đảm bảo luôn gửi tín hiệu kể cả khi các step trước bị lỗi
-        run: |
-          curl -X POST "${{ github.event.inputs.resumeUrl }}" \
-               -H "Content-Type: application/json" \
-               -d '{
-                 "status": "${{ job.status }}", 
-                 "log_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-               }'
