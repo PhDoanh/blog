@@ -6,7 +6,7 @@ import { i18n } from "../i18n"
 import { classNames } from "../util/lang"
 
 interface MediaShareOptions {
-	platforms: string[],
+	platforms: string[], // support "facebook", "linkedin", "reddit", "twitter", "ínstagram"
 	copyButton?: boolean,
 }
 
@@ -19,7 +19,6 @@ export default ((opts?: Partial<MediaShareOptions>) => {
 	const options = opts ?? defaultOptions
 
 	const MediaShare: QuartzComponent = ({cfg, displayClass, fileData}: QuartzComponentProps) => {
-		// Lấy FullSlug từ props.fileData và tạo URL đầy đủ
 		const baseUrl = cfg.baseUrl ?? ""
 		const fullSlug = fileData.slug ?? ""
 		const fullUrl = `https://${baseUrl}/${fullSlug}`

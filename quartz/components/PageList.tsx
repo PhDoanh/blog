@@ -2,7 +2,7 @@ import { FullSlug, isFolderPath, resolveRelative } from "../util/path"
 import { QuartzPluginData } from "../plugins/vfile"
 import { Date, getDate } from "./Date"
 import { QuartzComponent, QuartzComponentProps } from "./types"
-import { GlobalConfiguration } from "../cfg"
+import { GlobalConfiguration, pagesToExclude } from "../cfg"
 import { tagsToExclude } from "../cfg"
 
 export type SortFn = (f1: QuartzPluginData, f2: QuartzPluginData) => number
@@ -69,7 +69,7 @@ export const PageList: QuartzComponent = ({ cfg, fileData, allFiles, limit, sort
     <ul class="section-ul">
       {list.map((page) => {
         const title = page.frontmatter?.title
-        const tags = page.frontmatter?.tags?.filter(tag => !tagsToExclude.includes(tag)) ?? []
+        const tags = pagesToExclude.includes(page.slug!) ? [] : page.frontmatter?.tags?.filter(tag => !tagsToExclude.includes(tag)) ?? []
 
         return (
           <li class="section-li">

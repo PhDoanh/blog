@@ -113,7 +113,7 @@ export default (() => {
 
         {cfg.baseUrl && (
           <>
-            <meta property="twitter:domain" content={cfg.baseUrl}></meta>
+            <meta property="twitter:domain" name="base-url" content={cfg.baseUrl}></meta>
             <meta property="og:url" content={socialUrl}></meta>
             <meta property="twitter:url" content={socialUrl}></meta>
           </>
@@ -130,6 +130,7 @@ export default (() => {
         <meta name="author" content="Doanh" />
         <meta name="generator" content="Quartz" />
         <meta name="tags" content={tags} />
+        <meta name="locale" content={cfg.locale} />
         <meta
           name="robots"
           content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"

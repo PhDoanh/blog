@@ -95,3 +95,4 @@ export type SharedLayout = Pick<FullPageLayout, "head" | "header" | "footer" | "
 
 // Extended configuration
 export const tagsToExclude = ["explorable"];
+export const pagesToExclude = ["resources-hub"];

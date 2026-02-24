@@ -20,7 +20,8 @@ const config: QuartzConfig = {
     },
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
-    ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md"],
+    // baseUrl: "localhost:8080",
+    ignorePatterns: ["templates", ".obsidian", "README.md", "LICENSE.md", "_infio_prompts", ".infio_json_db", ".github", "private"],
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
@@ -74,6 +75,31 @@ const config: QuartzConfig = {
       }),
       Plugin.Description(),
       Plugin.Latex({ renderEngine: "katex" }),
+      Plugin.CommentMarker({
+        tabulatorOptions: {
+          layout: "fitColumns",
+          responsiveLayout: "collapse",
+          responsiveLayoutCollapseStartOpen: false,
+          columnDefaults: {
+            minWidth: 100,
+          },
+          rowHeader: {
+            formatter: "responsiveCollapse",
+            width: 30,
+            minWidth: 30,
+            hozAlign: "center",
+            resizable: false,
+            headerSort: false,
+          },
+          pagination: true,
+          paginationSize: 25,
+          paginationSizeSelector: [10, 25, 50],
+          movableColumns: true,
+          initialSort: [{ column: "col0", dir: "asc" }], // sort by first column
+          selectable: false,
+          height: "400px",
+        },
+      })
     ],
     filters: [Plugin.ExplicitPublish()],
     emitters: [

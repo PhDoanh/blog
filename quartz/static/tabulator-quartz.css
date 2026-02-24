@@ -1,0 +1,262 @@
+/*
+	Runtime CSS variable integration layer for Tabulator + Quartz SSG.
+	Load AFTER the base Tabulator CDN CSS.
+	Source SCSS: tabulator_quartz.scss
+*/
+
+.tabulator {
+	background-color: var(--light, #faf8f8);
+	border-color: var(--lightgray, #e5e5e5);
+	border-radius: 5px;
+	font-family: var(--bodyFont, inherit);
+}
+
+.tabulator .tabulator-header {
+	background-color: var(--lightgray, #e5e5e5);
+	border-bottom-color: var(--gray, #b8b8b8);
+	color: var(--dark, #2b2b2b);
+}
+
+.tabulator .tabulator-header .tabulator-col {
+	background-color: var(--lightgray, #e5e5e5);
+	border-right-color: var(--lightgray, #e5e5e5);
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter input,
+.tabulator .tabulator-header .tabulator-col .tabulator-header-filter select {
+	background-color: var(--light, #faf8f8);
+	border: 1px solid var(--gray, #b8b8b8);
+	color: var(--darkgray, #4e4e4e);
+	border-radius: 3px;
+	padding: 2px 5px;
+	box-sizing: border-box;
+	width: 100%;
+}
+
+.tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+	border-bottom-color: var(--gray, #b8b8b8);
+}
+
+.tabulator .tabulator-header .tabulator-col[aria-sort="none"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+	border-bottom-color: var(--gray, #b8b8b8);
+}
+
+.tabulator .tabulator-header .tabulator-col[aria-sort="ascending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+	border-bottom-color: var(--secondary, #284b63);
+}
+
+.tabulator .tabulator-header .tabulator-col[aria-sort="descending"] .tabulator-col-content .tabulator-col-sorter .tabulator-arrow {
+	border-top-color: var(--secondary, #284b63);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tabulator .tabulator-header .tabulator-col.tabulator-sortable.tabulator-col-sorter-element:hover {
+    background-color: var(--gray, #b8b8b8);
+  }
+}
+
+.tabulator .tabulator-header .tabulator-col.tabulator-moving {
+  background-color: var(--gray, #b8b8b8);
+  border-color: var(--gray, #b8b8b8);
+}
+
+.tabulator .tabulator-header .tabulator-calcs-holder {
+	background: var(--lightgray, #e5e5e5) !important;
+	border-color: var(--lightgray, #e5e5e5);
+}
+
+.tabulator .tabulator-header .tabulator-calcs-holder .tabulator-row {
+	background: var(--lightgray, #e5e5e5) !important;
+}
+
+.tabulator .tabulator-tableholder .tabulator-table {
+	background-color: var(--light, #faf8f8);
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator .tabulator-tableholder .tabulator-placeholder .tabulator-placeholder-contents {
+	color: var(--gray, #b8b8b8);
+}
+
+.tabulator .tabulator-footer {
+	background-color: var(--lightgray, #e5e5e5);
+	border-top-color: var(--gray, #b8b8b8);
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator .tabulator-footer .tabulator-page-size {
+	border-color: var(--gray, #b8b8b8);
+	background: var(--light, #faf8f8);
+	color: var(--darkgray, #4e4e4e);
+	border-radius: 3px;
+}
+
+.tabulator .tabulator-footer .tabulator-paginator {
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator .tabulator-footer .tabulator-page-counter {
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator .tabulator-footer .tabulator-page {
+	border-color: var(--lightgray, #e5e5e5);
+	background: transparent;
+	color: var(--darkgray, #4e4e4e);
+	border-radius: 3px;
+}
+
+.tabulator .tabulator-footer .tabulator-page.active {
+	color: var(--secondary, #284b63);
+	border-color: var(--secondary, #284b63);
+	font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.tabulator .tabulator-footer .tabulator-page:not(:disabled):hover {
+		background-color: var(--lightgray, #dde1e3);
+		color: var(--dark, #2b2b2b);
+	}
+}
+
+/* Row-level (outside .tabulator scope) */
+
+.tabulator-row {
+	background-color: var(--light, #faf8f8);
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator-row.tabulator-row-even {
+	background-color: var(--lightgray, #f0eeee);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.tabulator-row.tabulator-selectable:hover {
+		background-color: var(--highlight, #dde1e3);
+	}
+}
+
+.tabulator-row.tabulator-selected {
+	background-color: var(--highlight, #c8d5dd);
+}
+
+.tabulator-row .tabulator-cell {
+	border-right-color: var(--lightgray, #e5e5e5);
+}
+
+.tabulator-row .tabulator-cell.tabulator-row-header {
+	background: var(--lightgray, #e5e5e5);
+}
+
+.tabulator-row .tabulator-cell.tabulator-editing {
+	border-color: var(--secondary, #284b63);
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-left {
+	border-right-color: var(--gray, #b8b8b8);
+}
+
+.tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-right {
+	border-left-color: var(--gray, #b8b8b8);
+}
+
+.tabulator-row .tabulator-cell .tabulator-data-tree-branch {
+	border-left-color: var(--gray, #b8b8b8);
+	border-bottom-color: var(--gray, #b8b8b8);
+}
+
+.tabulator-row .tabulator-responsive-collapse {
+	border-top-color: var(--lightgray, #e5e5e5);
+	border-bottom-color: var(--lightgray, #e5e5e5);
+}
+
+.tabulator-row.tabulator-group {
+	background: var(--lightgray, #e5e5e5);
+	border-top-color: var(--gray, #b8b8b8);
+	border-bottom-color: var(--gray, #b8b8b8);
+	color: var(--dark, #2b2b2b);
+}
+
+.tabulator-row.tabulator-group .tabulator-arrow {
+	border-left-color: var(--secondary, #284b63);
+}
+
+.tabulator-row.tabulator-group.tabulator-group-visible .tabulator-arrow {
+	border-top-color: var(--secondary, #284b63);
+}
+
+/* Popup / Menu */
+
+.tabulator-popup-container {
+	background: var(--light, #faf8f8);
+	border-color: var(--lightgray, #e5e5e5);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.tabulator-menu .tabulator-menu-item:not(.tabulator-menu-item-disabled):hover {
+		background: var(--lightgray, #f0eeee);
+		color: var(--dark, #2b2b2b);
+	}
+}
+
+.tabulator-menu .tabulator-menu-separator {
+	border-top-color: var(--lightgray, #e5e5e5);
+}
+
+/* Edit list */
+
+.tabulator-edit-list .tabulator-edit-list-item {
+	color: var(--darkgray, #4e4e4e);
+}
+
+.tabulator-edit-list .tabulator-edit-list-item.active,
+.tabulator-edit-list .tabulator-edit-list-item:hover {
+	background: var(--secondary, #284b63);
+	color: var(--light, #faf8f8);
+}
+
+.tabulator-edit-list .tabulator-edit-list-group {
+	border-bottom-color: var(--lightgray, #e5e5e5);
+	color: var(--dark, #2b2b2b);
+}
+
+/* Toggle */
+
+.tabulator-toggle {
+	border-color: var(--lightgray, #ccc);
+	background: var(--lightgray, #dcdcdc);
+}
+
+.tabulator-toggle.tabulator-toggle-on {
+	background: var(--secondary, #284b63);
+}
+
+.tabulator-toggle .tabulator-toggle-switch {
+	background: var(--light, #fff);
+	border-color: var(--lightgray, #ccc);
+}
+
+/* Responsive collapse sub-panel */
+.tabulator-row .tabulator-responsive-collapse {
+  padding: 6px 8px;
+  background-color: var(--light, #faf8f8);
+}
+
+.tabulator-row .tabulator-responsive-collapse table {
+  width: 100%;
+  border: none;
+  font-size: 0.9em;
+}
+
+.tabulator-row .tabulator-responsive-collapse table tr td:first-of-type {
+  font-weight: 600;
+  color: var(--dark, #2b2b2b);
+  padding-right: 12px;
+  white-space: nowrap;
+}
+
+.tabulator-row .tabulator-responsive-collapse table tr td:last-of-type {
+  color: var(--darkgray, #4e4e4e);
+  width: 100%;
+}
