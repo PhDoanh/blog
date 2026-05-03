@@ -113,6 +113,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 	const visited = getVisited()
 	removeAllChildren(graph)
 
+	// DEBUG: verify container dimensions at render time
+	console.debug("[graph] renderGraph called", {
+		slug,
+		offsetWidth: graph.offsetWidth,
+		offsetHeight: graph.offsetHeight,
+		visibility: getComputedStyle(graph).visibility,
+		display: getComputedStyle(graph.parentElement!).display,
+	})
+
 	let {
 		drag: enableDrag,
 		zoom: enableZoom,
@@ -135,6 +144,10 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 			v,
 		]),
 	)
+
+	// DEBUG: verify data loaded
+	console.debug("[graph] fetchData resolved, entries:", data.size)
+
 	const links: SimpleLinkData[] = []
 	const tags: SimpleSlug[] = []
 	const validLinks = new Set(data.keys())
@@ -172,19 +185,26 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 	}
 
 	const neighbourhood = new Set<SimpleSlug>()
+	// FIX #1 (BFS infinite loop): use a separate mutable depth counter
+	// so the original config value isn't mutated across multiple BFS iterations.
+	// The original code mutated `depth` from the destructured D3Config which
+	// caused the sentinel counter to decrement the shared variable.
+	let remainingDepth = depth
 	const wl: (SimpleSlug | "__SENTINEL")[] = [slug, "__SENTINEL"]
-	if (depth >= 0) {
-		while (depth >= 0 && wl.length > 0) {
+	if (remainingDepth >= 0) {
+		while (remainingDepth >= 0 && wl.length > 0) {
 			const cur = wl.shift()!
 			if (cur === "__SENTINEL") {
-				depth--
-				wl.push("__SENTINEL")
+				remainingDepth--
+				if (remainingDepth >= 0) wl.push("__SENTINEL")
 			} else {
-				neighbourhood.add(cur)
-				const adj = adjacency.get(cur)
-				if (adj) {
-					const newNodes = [...adj.out, ...adj.in].filter((n) => !neighbourhood.has(n))
-					wl.push(...newNodes)
+				if (!neighbourhood.has(cur)) {
+					neighbourhood.add(cur)
+					const adj = adjacency.get(cur)
+					if (adj) {
+						const newNodes = [...adj.out, ...adj.in].filter((n) => !neighbourhood.has(n))
+						wl.push(...newNodes)
+					}
 				}
 			}
 		}
@@ -192,6 +212,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 		validLinks.forEach((id) => neighbourhood.add(id))
 		if (showTags) tags.forEach((tag) => neighbourhood.add(tag))
 	}
+
+	// DEBUG: BFS result
+	console.debug("[graph] BFS neighbourhood size:", neighbourhood.size, "depth:", depth)
 
 	const nodes = [...neighbourhood].map((url) => {
 		const text = url.startsWith("tags/") ? "#" + url.substring(5) : (data.get(url)?.title ?? url)
@@ -211,6 +234,9 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 			})),
 	}
 
+	// DEBUG: graph data
+	console.debug("[graph] graphData nodes:", graphData.nodes.length, "links:", graphData.links.length)
+
 	// Precompute node radii once — reused for hitArea, circle draw, and forceCollide
 	const nodeRadiusMap = new Map<SimpleSlug, number>()
 	for (const node of graphData.nodes) {
@@ -220,8 +246,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 	}
 	const nodeRadius = (d: NodeData) => nodeRadiusMap.get(d.id) ?? 2
 
-	const width = graph.offsetWidth
-	const height = graph.offsetHeight
+	// FIX #2 (width=0/height=0): graph-container is hidden (visibility:hidden +
+	// opacity:0) when renderGraph runs lazily on first click, so offsetWidth/
+	// offsetHeight are both 0 — Pixi creates a 0×0 canvas and nothing renders.
+	// Solution: read dimensions from the viewport instead.
+	const width = graph.offsetWidth || window.innerWidth
+	const height = graph.offsetHeight || window.innerHeight
+
+	// DEBUG: final canvas dimensions used
+	console.debug("[graph] canvas dimensions:", { width, height })
 
 	// we virtualize the simulation and use pixi to actually render it
 	const simulation: Simulation<NodeData, LinkData> = forceSimulation<NodeData>(graphData.nodes)
@@ -414,6 +447,14 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 		resolution: window.devicePixelRatio,
 		eventMode: "static",
 	})
+
+	// DEBUG: verify Pixi canvas size
+	console.debug("[graph] Pixi app initialized", {
+		rendererType: app.renderer.type,
+		canvasWidth: app.canvas.width,
+		canvasHeight: app.canvas.height,
+	})
+
 	graph.appendChild(app.canvas)
 
 	const stage = app.stage
@@ -624,6 +665,7 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<Grap
 		},
 		setVisible: (visible: boolean) => {
 			isGraphVisible = visible
+			console.debug("[graph] setVisible:", visible)
 		},
 	}
 }
@@ -646,10 +688,19 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 	const triggerButtons = document.querySelectorAll(".graph-trigger-button") as NodeListOf<HTMLElement>
 	const closeButtons = document.querySelectorAll(".graph-close-button") as NodeListOf<HTMLElement>
 
+	console.debug("[graph] nav event", { slug, containers: graphContainers.length, triggers: triggerButtons.length })
+
 	let graphInitialized = false
 
 	async function initAndShowGraph() {
+		console.debug("[graph] initAndShowGraph called, initialized:", graphInitialized)
 		if (!graphInitialized) {
+			// FIX #3 (setVisible race): show the overlay BEFORE renderGraph so that
+			// offsetWidth/offsetHeight return real viewport dimensions, not 0.
+			// The container must be visible when we read its size.
+			for (const container of graphContainerOuters) {
+				container.classList.add("active")
+			}
 			cleanupGraph()
 			for (const container of graphContainers) {
 				graphHandle = await renderGraph(container, slug)
@@ -657,9 +708,11 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 			graphInitialized = true
 		}
 		graphHandle?.setVisible(true)
+		// Ensure overlay is active (idempotent if already added above)
 		for (const container of graphContainerOuters) {
 			container.classList.add("active")
 		}
+		console.debug("[graph] graph shown, handle:", graphHandle)
 	}
 
 	function hideGraph() {
