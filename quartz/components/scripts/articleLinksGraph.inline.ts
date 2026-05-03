@@ -52,6 +52,11 @@ type NodeRenderData = GraphicsInfo & {
 	label: Text
 }
 
+type GraphHandle = {
+	cleanup: () => void
+	setVisible: (visible: boolean) => void
+}
+
 const localStorageKey = "graph-visited"
 function getVisited(): Set<SimpleSlug> {
 	return new Set(JSON.parse(localStorage.getItem(localStorageKey) ?? "[]"))
@@ -68,11 +73,17 @@ type TweenNode = {
 	stop: () => void
 }
 
+// Cache result across navigations — hardware capability doesn't change
+let cachedGraphicsAPI: "webgpu" | "webgl" | null = null
+
 // workaround for pixijs webgpu issue: https://github.com/pixijs/pixijs/issues/11389
 async function determineGraphicsAPI(): Promise<"webgpu" | "webgl"> {
+	if (cachedGraphicsAPI) return cachedGraphicsAPI
+
 	const adapter = await navigator.gpu?.requestAdapter().catch(() => null)
 	const device = adapter && (await adapter.requestDevice().catch(() => null))
 	if (!device) {
+		cachedGraphicsAPI = "webgl"
 		return "webgl"
 	}
 
@@ -83,16 +94,21 @@ async function determineGraphicsAPI(): Promise<"webgpu" | "webgl"> {
 
 	// we have to return webgl so pixijs automatically falls back to canvas
 	if (!gl) {
+		cachedGraphicsAPI = "webgl"
 		return "webgl"
 	}
 
 	const webglMaxTextures = gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)
 	const webgpuMaxTextures = device.limits.maxSampledTexturesPerShaderStage
 
-	return webglMaxTextures === webgpuMaxTextures ? "webgpu" : "webgl"
+	// Cleanup the probe context to avoid leaking WebGL contexts (mobile has limited slots)
+	gl.getExtension("WEBGL_lose_context")?.loseContext()
+
+	cachedGraphicsAPI = webglMaxTextures === webgpuMaxTextures ? "webgpu" : "webgl"
+	return cachedGraphicsAPI
 }
 
-async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
+async function renderGraph(graph: HTMLElement, fullSlug: FullSlug): Promise<GraphHandle> {
 	const slug = simplifySlug(fullSlug)
 	const visited = getVisited()
 	removeAllChildren(graph)
@@ -146,20 +162,30 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 		}
 	}
 
+	// Precompute adjacency map for O(1) BFS lookups instead of O(n) filter per node
+	const adjacency = new Map<SimpleSlug, { out: SimpleSlug[]; in: SimpleSlug[] }>()
+	for (const link of links) {
+		if (!adjacency.has(link.source)) adjacency.set(link.source, { out: [], in: [] })
+		if (!adjacency.has(link.target)) adjacency.set(link.target, { out: [], in: [] })
+		adjacency.get(link.source)!.out.push(link.target)
+		adjacency.get(link.target)!.in.push(link.source)
+	}
+
 	const neighbourhood = new Set<SimpleSlug>()
 	const wl: (SimpleSlug | "__SENTINEL")[] = [slug, "__SENTINEL"]
 	if (depth >= 0) {
 		while (depth >= 0 && wl.length > 0) {
-			// compute neighbours
 			const cur = wl.shift()!
 			if (cur === "__SENTINEL") {
 				depth--
 				wl.push("__SENTINEL")
 			} else {
 				neighbourhood.add(cur)
-				const outgoing = links.filter((l) => l.source === cur)
-				const incoming = links.filter((l) => l.target === cur)
-				wl.push(...outgoing.map((l) => l.target), ...incoming.map((l) => l.source))
+				const adj = adjacency.get(cur)
+				if (adj) {
+					const newNodes = [...adj.out, ...adj.in].filter((n) => !neighbourhood.has(n))
+					wl.push(...newNodes)
+				}
 			}
 		}
 	} else {
@@ -184,6 +210,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 				target: nodes.find((n) => n.id === l.target)!,
 			})),
 	}
+
+	// Precompute node radii once — reused for hitArea, circle draw, and forceCollide
+	const nodeRadiusMap = new Map<SimpleSlug, number>()
+	for (const node of graphData.nodes) {
+		const adj = adjacency.get(node.id)
+		const numLinks = (adj?.out.length ?? 0) + (adj?.in.length ?? 0)
+		nodeRadiusMap.set(node.id, 2 + Math.sqrt(numLinks))
+	}
+	const nodeRadius = (d: NodeData) => nodeRadiusMap.get(d.id) ?? 2
 
 	const width = graph.offsetWidth
 	const height = graph.offsetHeight
@@ -227,13 +262,6 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 		} else {
 			return computedStyleMap["--gray"]
 		}
-	}
-
-	function nodeRadius(d: NodeData) {
-		const numLinks = graphData.links.filter(
-			(l) => l.source.id === d.id || l.target.id === d.id,
-		).length
-		return 2 + Math.sqrt(numLinks)
 	}
 
 	let hoveredNodeId: string | null = null
@@ -549,8 +577,15 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 	}
 
 	let stopAnimation = false
+	let isGraphVisible = false
+
 	function animate(time: number) {
 		if (stopAnimation) return
+		requestAnimationFrame(animate)
+
+		// Pause rendering when graph is hidden — avoids wasting CPU/GPU every frame
+		if (!isGraphVisible) return
+
 		for (const n of nodeRenderData) {
 			const { x, y } = n.simulationData
 			if (!x || !y) continue
@@ -571,22 +606,34 @@ async function renderGraph(graph: HTMLElement, fullSlug: FullSlug) {
 
 		tweens.forEach((t) => t.update(time))
 		app.renderer.render(stage)
-		requestAnimationFrame(animate)
 	}
 
 	requestAnimationFrame(animate)
-	return () => {
-		stopAnimation = true
-		app.destroy()
+
+	// Pause rendering when the browser tab is hidden
+	const handleVisibilityChange = () => {
+		if (document.hidden) isGraphVisible = false
+	}
+	document.addEventListener("visibilitychange", handleVisibilityChange)
+
+	return {
+		cleanup: () => {
+			stopAnimation = true
+			document.removeEventListener("visibilitychange", handleVisibilityChange)
+			app.destroy()
+		},
+		setVisible: (visible: boolean) => {
+			isGraphVisible = visible
+		},
 	}
 }
 
-let graphCleanup: (() => void) | null = null
+let graphHandle: GraphHandle | null = null
 
 function cleanupGraph() {
-	if (graphCleanup) {
-		graphCleanup()
-		graphCleanup = null
+	if (graphHandle) {
+		graphHandle.cleanup()
+		graphHandle = null
 	}
 }
 
@@ -599,19 +646,44 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 	const triggerButtons = document.querySelectorAll(".graph-trigger-button") as NodeListOf<HTMLElement>
 	const closeButtons = document.querySelectorAll(".graph-close-button") as NodeListOf<HTMLElement>
 
-	// Initialize the graph in the background (frosted glass state)
-	async function renderGraphs() {
-		cleanupGraph()
-		for (const container of graphContainers) {
-			graphCleanup = await renderGraph(container, slug)
+	let graphInitialized = false
+
+	async function initAndShowGraph() {
+		if (!graphInitialized) {
+			cleanupGraph()
+			for (const container of graphContainers) {
+				graphHandle = await renderGraph(container, slug)
+			}
+			graphInitialized = true
+		}
+		graphHandle?.setVisible(true)
+		for (const container of graphContainerOuters) {
+			container.classList.add("active")
 		}
 	}
 
-	await renderGraphs()
+	function hideGraph() {
+		graphHandle?.setVisible(false)
+		for (const container of graphContainerOuters) {
+			container.classList.remove("active")
+		}
+		// Remove will-change after transition completes
+		const closeBtn = document.querySelector(".graph-close-button") as HTMLElement | null
+		if (closeBtn) setTimeout(() => { closeBtn.style.willChange = "auto" }, 300)
+	}
 
-	// Handle theme changes by re-rendering the graph
+	// Handle theme changes — only re-render if graph is currently visible
 	const handleThemeChange = () => {
-		void renderGraphs()
+		const isOpen = [...graphContainerOuters].some((c) => c.classList.contains("active"))
+		if (isOpen) {
+			graphInitialized = false
+			cleanupGraph()
+			void initAndShowGraph()
+		} else {
+			// Force re-init on next open to pick up new theme colors
+			graphInitialized = false
+			cleanupGraph()
+		}
 	}
 
 	document.addEventListener("themechange", handleThemeChange)
@@ -619,37 +691,26 @@ document.addEventListener("nav", async (e: CustomEventMap["nav"]) => {
 		document.removeEventListener("themechange", handleThemeChange)
 	})
 
-	// Handle toggling the graph to active state
-	function showGraph() {
-		for (const container of graphContainerOuters) {
-			container.classList.add("active")
-		}
-	}
-
-	function hideGraph() {
-		for (const container of graphContainerOuters) {
-			container.classList.remove("active")
-		}
-	}
-
-	// Set up event listeners for trigger and close buttons
 	triggerButtons.forEach((button) => {
-		button.addEventListener("click", showGraph)
+		button.addEventListener("click", () => {
+			// Apply will-change just before animation
+			const closeBtn = document.querySelector(".graph-close-button") as HTMLElement | null
+			if (closeBtn) closeBtn.style.willChange = "opacity"
+			void initAndShowGraph()
+		})
 	})
 
 	closeButtons.forEach((button) => {
 		button.addEventListener("click", hideGraph)
 	})
 
-	// Register escape key handler
 	for (const container of graphContainerOuters) {
 		registerEscapeHandler(container, hideGraph)
 	}
 
-	// Add cleanup for event listeners
 	window.addCleanup(() => {
 		triggerButtons.forEach((button) => {
-			button.removeEventListener("click", showGraph)
+			button.removeEventListener("click", () => void initAndShowGraph())
 		})
 		closeButtons.forEach((button) => {
 			button.removeEventListener("click", hideGraph)

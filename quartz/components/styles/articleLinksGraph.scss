@@ -31,20 +31,27 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		z-index: -2; // Below all content by default
+		z-index: -2;
 		pointer-events: none;
 		visibility: hidden;
 		opacity: 0;
 		transition: opacity 0.3s ease, visibility 0s 0.3s;
 
 		&.active {
-			z-index: 9999; // Ensure graph is above #dappled-light (z-index: -1) and all content
+			z-index: 9999;
 			pointer-events: all;
 			visibility: visible;
 			opacity: 1;
-			transition: opacity 0.3s ease, visibility 0s 0s;	
-			backdrop-filter: blur(8px);
+			transition: opacity 0.3s ease, visibility 0s 0s;
+			// Reduced blur radius (8px → 4px): ~4x cheaper GPU paint cost
+			backdrop-filter: blur(4px);
 			background: rgba(0, 0, 0, var(--graph-bg-alpha, 0));
+
+			// Disable blur entirely on mobile to avoid GPU thrash
+			@media (max-width: 768px) {
+				backdrop-filter: none;
+				background: rgba(0, 0, 0, 0.75);
+			}
 		}
 
 		.graph-container {
@@ -56,24 +63,26 @@
 			pointer-events: none;
 			opacity: 0;
 			transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			// Removed backdrop-filter: blur(24px) from ::after pseudo-element.
+			// The frosted-glass effect was applied when graph was still hidden
+			// (opacity: 0), so it never contributed to any visible UI while
+			// silently consuming GPU resources on every page load.
 			&::after {
-					content: "";
-					position: absolute;
-					inset: 0;
-					backdrop-filter: blur(24px);
-					opacity: 1;
-					transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-					will-change: opacity; // GPU acceleration hint
-				}
+				content: "";
+				position: absolute;
+				inset: 0;
+				opacity: 1;
+				transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+			}
 		}
 
 		&.active .graph-container {
 			opacity: 1;
 			pointer-events: all;
 			&::after {
-					opacity: 0;
-					pointer-events: none;
-				}
+				opacity: 0;
+				pointer-events: none;
+			}
 		}
 
 		.graph-close-button {
@@ -91,8 +100,8 @@
 			cursor: pointer;
 			opacity: 0;
 			pointer-events: none;
-			z-index: 10000; // Above graph container (9999)
-			will-change: opacity; // GPU acceleration for fade transition
+			z-index: 10000;
+			// will-change removed: managed via JS just-in-time before animation
 			transition: opacity 0.3s ease;
 		}
 
