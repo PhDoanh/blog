@@ -1,6 +1,5 @@
 @use "./base.scss";
 @use "./variables.scss" as *;
-@use "../../content/.obsidian/snippets/img.css" as *;
 
 :root[saved-theme="light"] {
   --graph-bg-alpha: 0;
@@ -412,64 +411,31 @@ ul.toc-content.overflow {
     &:hover {
       scrollbar-color: var(--gray) transparent;
     }
-  }
-
-  // Staggered fade-in animation for content on theme change
-  body.animation-ready #quartz-body {
-    [saved-theme="dark"] & {
-      --animation-name: fade2;
     }
-  
-    [saved-theme="light"] & {
-      --animation-name: fade;
-    }
-  
-    @for $i from 1 through 4 {
-      @for $j from 1 through 8 {
-        &>*:nth-child(#{$i})>*:nth-child(#{$j}) {
-          animation: var(--animation-name) 2s ease 1 normal backwards;
-          animation-delay: #{0.1 * $j + 0.4 * $i}s;
-        }
-      }
-    }
-  }
 }
 
 /* Dappled Light as animation background */
 #dappled-light {
-  animation-duration: 0s;
+  animation: none;
   animation-fill-mode: forwards;
-  animation-timing-function: linear;
+
   pointer-events: none;
   position: fixed;
   height: 100%;
   width: 100%;
   isolation: isolate;
-  z-index: -1; // Explicit stacking below content, above base
-  content-visibility: auto; // Allow browser to skip rendering when off-screen
-  contain: layout style paint; // Optimize rendering isolation
+  z-index: -1;
 
   --day: #fffdfa;
-	--evening: #fccc83;
-	--dusk: #db7a2a;
-	--night: #0a0f0a;
-	--dawn: #132b1d;
-	--morning: #9fb3bf;
+  --evening: #fccc83;
+    --dusk: #db7a2a;
+    --night: #0a0f0a;
+    --dawn: #132b1d;
+    --morning: #9fb3bf;
 
-	--shadow: #1a1917;
-	--bounce-light: #fffffc;
-	--timing-fn: cubic-bezier(0.455, 0.19, 0, 0.985);
-
-  body.animation-ready & {
-    animation-play-state: running;
-    animation-duration: 1s;
-    animation-name: sunrise;
-  }
-
-  [saved-theme="dark"] body.animation-ready & {
-    animation-duration: 1.5s;
-    animation-name: sunset;
-  }
+  --shadow: #1a1917;
+    --bounce-light: #fffffc;
+    --timing-fn: cubic-bezier(0.455, 0.19, 0, 0.985);
 
   [saved-theme="dark"] & {
     --shadow: #030704;
@@ -486,7 +452,6 @@ ul.toc-content.overflow {
       height: 100%;
       width: 100%;
       backdrop-filter: blur(var(--blur-amount));
-      will-change: backdrop-filter; // GPU acceleration hint
       mask-image: linear-gradient(
         252deg,
         transparent,
@@ -543,7 +508,6 @@ ul.toc-content.overflow {
     transform-origin: top right;
     transform-style: preserve-3d;
     transform: matrix3d(0.75, -0.0625, 0, 0.0008, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
-    will-change: transform, opacity; // Pre-allocate GPU layer for smooth transitions
 
     [saved-theme="dark"] & {
       opacity: 0.3;
@@ -561,8 +525,6 @@ ul.toc-content.overflow {
     height: 1400px;
     background-image: url("./static/leaves.webp");
     perspective: 400px;
-    animation: billow 8s ease-in-out infinite;
-    will-change: transform; // GPU compositing for smooth animation
   }
 
   #blinds {
@@ -612,6 +574,49 @@ ul.toc-content.overflow {
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  body.animation-ready #dappled-light {
+    animation-play-state: running;
+    animation-duration: 1s;
+    animation-name: sunrise;
+  }
+
+  [saved-theme="dark"] body.animation-ready #dappled-light {
+    animation-duration: 1.5s;
+    animation-name: sunset;
+  }
+
+  #dappled-light #leaves {
+    animation: billow 8s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  #dappled-light>.perspective {
+    will-change: transform, opacity;
+  }
+
+  // Staggered fade-in (desktop only)
+  @media all and ($desktop) {
+    body.animation-ready #quartz-body {
+      [saved-theme="dark"] & {
+        --animation-name: fade2;
+      }
+
+      [saved-theme="light"] & {
+        --animation-name: fade;
+      }
+
+      @for $i from 1 through 4 {
+        @for $j from 1 through 8 {
+          &>*:nth-child(#{$i})>*:nth-child(#{$j}) {
+            animation: var(--animation-name) 2s ease 1 normal backwards;
+            animation-delay: #{0.1 * $j + 0.4 * $i}s;
+          }
+        }
+      }
+    }
+  }
+}
 /* Keyframes */
 @keyframes sunrise {
   0% {

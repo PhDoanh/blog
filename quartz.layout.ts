@@ -80,20 +80,20 @@ export const sharedPageComponents: SharedLayout = {
         return !isExcluded;
       },
     }),
-    Component.ArticleLinksGraph(
-      {
-        localGraph: {
-          scale: 1.5,
-          linkDistance: 50,
-          fontSize: 0.6,
-          opacityScale: 1,
-          showTags: true,
-          removeTags: ["explorable"],
-          focusOnHover: true,
-          enableRadial: true,
-        },
-      }
-    ),
+    // Component.ArticleLinksGraph(
+    //   {
+    //     localGraph: {
+    //       scale: 1.5,
+    //       linkDistance: 50,
+    //       fontSize: 0.6,
+    //       opacityScale: 1,
+    //       showTags: true,
+    //       removeTags: ["explorable"],
+    //       focusOnHover: true,
+    //       enableRadial: true,
+    //     },
+    //   }
+    // ),
     Component.ReaderMode(),
   ],
   afterBody: [

@@ -14,10 +14,7 @@ const config: QuartzConfig = {
     description: "Vườn công nghệ số được trồng và chăm sóc bởi Doanh",
     enableSPA: true,
     enablePopovers: true,
-    analytics: {
-      provider: "google",
-      tagId: "G-59D57MVJSQ",
-    },
+    analytics: null,
     locale: "en-US",
     baseUrl: "phdoanh.github.io/blog",
     // baseUrl: "localhost:8080",
@@ -25,7 +22,7 @@ const config: QuartzConfig = {
     defaultDateType: "modified",
     theme: {
       fontOrigin: "googleFonts",
-      cdnCaching: true,
+      cdnCaching: false,
       typography: {
         title: "Montserrat Underline",
         header: "Space Grotesk",

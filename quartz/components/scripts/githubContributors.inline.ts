@@ -99,5 +99,7 @@ async function fetchContributors() {
 	}
 }
 
-fetchContributors();
+document.addEventListener("DOMContentLoaded", () => {
+	setTimeout(fetchContributors, 2000)
+})
 document.addEventListener('nav', fetchContributors);
